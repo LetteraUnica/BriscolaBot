@@ -8,11 +8,11 @@ from src.env.briscola.BriscolaState import BriscolaState
 from src.env.briscola.Card import Card
 
 
-def priority(card: Card, hand_seed: int, briscola_seed: int):
+def card_priority(card: Card, hand_seed: int, briscola_seed: int):
     seed, rank = card.get_seed(), card.get_rank()
 
     if seed == briscola_seed:
-        return 10 * card.get_priority() + 1
+        return Constants.cards_per_seed * card.get_priority() + 1
 
     if seed == hand_seed:
         return card.get_priority()
@@ -75,7 +75,7 @@ class TwoPlayerBriscola(AECEnv):
         hand_seed = first_card.get_seed()
         briscola_seed = self.state.get_briscola_seed()
         points = first_card.get_points() + second_card.get_points()
-        if priority(first_card, hand_seed, briscola_seed) > priority(second_card, hand_seed, briscola_seed):
+        if card_priority(first_card, hand_seed, briscola_seed) > card_priority(second_card, hand_seed, briscola_seed):
             return 0, points
         return 1, points
 
