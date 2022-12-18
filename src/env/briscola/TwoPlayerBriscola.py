@@ -1,7 +1,7 @@
-from typing import Any
+from typing import Any, Optional
 
-from gymnasium.spaces import Discrete
-from gymnasium.vector.utils import spaces
+import numpy as np
+from pettingzoo import AECEnv
 
 from src.env.briscola.BriscolaConstants import Constants
 from src.env.briscola.BriscolaState import BriscolaState
@@ -20,28 +20,36 @@ def priority(card: Card, hand_seed: int, briscola_seed: int):
     return 0
 
 
-class TwoPlayerBriscola:
+class TwoPlayerBriscola(AECEnv):
+    def seed(self, seed: Optional[int] = None):
+        raise NotImplementedError()
+
+    def observe(self, agent: str) -> dict[str, Any]:
+        return self.state.get_current_player_observation()
+
+    def render(self) -> str:
+        return self.state.__repr__()
+
+    def state(self) -> np.ndarray:
+        raise NotImplementedError()
+
     def __init__(self):
-        self.action_space = Discrete(Constants.hand_cards)
-        self.observation_space = spaces.Dict(seen_cards=spaces.MultiBinary(Constants.hand_cards),
-                                             hand_cards=spaces.MultiDiscrete(
-                                                 [Constants.deck_cards + 1] * Constants.hand_cards, "int"),
-                                             table_card=spaces.Discrete(Constants.deck_cards + 1),
-                                             briscola_card=spaces.Discrete(Constants.deck_cards))
+        super().__init__()
 
         self.state = BriscolaState()
 
         self.reset()
 
-    def reset(self) -> dict[str, Any]:
+    def reset(self, seed: Optional[int] = None, return_info: bool = False, options: Optional[dict] = None) -> \
+            dict[str, Any]:
         self.state.reset()
         return self.state.get_current_player_observation()
 
     def is_over(self) -> bool:
-        pass
+        return self.state.no_card_in_player_hand()
 
     def step(self, card_index: int) -> tuple[dict[str, Any], int, int, bool]:
-        assert self.action_space.contains(card_index)
+        assert 0 <= card_index < Constants.hand_cards
 
         if self.state.no_card_on_table():
             self.throw_card_on_table(card_index)
@@ -49,9 +57,7 @@ class TwoPlayerBriscola:
             return self.state.get_current_player_observation(), -1, -1, self.is_over()
 
         second_thrown_card = self.state.pop_current_player_card(card_index)
-        print(self.state.get_table_card(), second_thrown_card, self.state.get_briscola_seed())
         player_won, points = self.get_score(self.state.get_table_card(), second_thrown_card)
-        print(player_won, points)
         self.state.add_points(points, player_won)
 
         if player_won == 1:

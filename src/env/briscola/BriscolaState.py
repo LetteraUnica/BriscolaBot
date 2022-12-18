@@ -105,3 +105,6 @@ class BriscolaState:
 
     def get_first_player(self) -> int:
         return self.player_order[0]
+
+    def no_card_in_player_hand(self) -> bool:
+        return sum([len(cards) for cards in self.player_cards]) == 0
