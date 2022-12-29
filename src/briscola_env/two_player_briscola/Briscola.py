@@ -8,8 +8,8 @@ from gymnasium import Space
 from gymnasium.spaces import Dict, MultiBinary, Discrete, MultiDiscrete
 from pettingzoo import AECEnv
 
-from src.env.two_player_briscola.BriscolaConstants import Constants
-from src.env.two_player_briscola.utils import get_seed, get_points, get_priority
+from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
+from src.briscola_env.two_player_briscola.utils import get_seed, get_points, get_priority
 
 
 @dataclass
@@ -43,21 +43,12 @@ def create_deck():
     return sample(range(Constants.deck_cards), k=Constants.deck_cards)
 
 
-def other_player(agent: str) -> str:
-    return "agent_0" if agent == "agent_1" else "agent_1"
-
-
 class Briscola(AECEnv):
-    num_agents: int = Constants.n_agents
-    agents: list[str] = ["agent_" + str(agent) for agent in range(num_agents)]
-    possible_agents: list[str] = agents.copy()
-    max_num_agents: int = num_agents
-    truncations: dict[str, int] = dict([(agent, 0) for agent in agents])
-    infos: dict[str, dict] = dict([(agent, {}) for agent in agents])
-
     def __init__(self, seed: Optional[int] = None):
         super().__init__()
-        self.state: State = None
+        self.state = None
+        self.possible_agents: list[str] = ["player_" + str(agent) for agent in range(Constants.n_agents)]
+        self.agents = self.possible_agents.copy()
         self.rewards: dict[str, float] = {agent: 0 for agent in self.agents}
         self.reset(seed)
 
@@ -71,16 +62,13 @@ class Briscola(AECEnv):
             "agent_points": MultiDiscrete([Constants.total_points + 1] * Constants.n_agents)
         })
 
-    @cache
-    def action_space(self, agent: str) -> Space:
-        return Discrete(len(self.state.hand_cards[agent]))
-
-    @property
-    def action_spaces(self) -> dict[str, Space]:
-        return dict([(agent, self.action_space(agent)) for agent in self.agents])
-
     def reset(self, seed: Optional[int] = None, return_info: bool = False, options: Optional[dict] = None) -> None:
         self.seed(seed)
+        self.rewards = {agent: 0 for agent in self.agents}
+        self._cumulative_rewards = {agent: 0 for agent in self.agents}
+        self.infos = {agent: {} for agent in self.agents}
+        self.observations = {agent: None for agent in self.agents}
+        self.num_moves = 0
         deck = create_deck()
 
         self.state = State(deck=deck,
@@ -94,6 +82,14 @@ class Briscola(AECEnv):
         self.zero_out_reward()
         self.deal_cards(Constants.hand_cards)
 
+    @cache
+    def action_space(self, agent: str) -> Space:
+        return Discrete(len(self.state.hand_cards[agent]))
+
+#    @property
+#    def action_spaces(self) -> dict[str, Space]:
+#        return dict([(agent, self.action_space(agent)) for agent in self.agents])
+
     def zero_out_reward(self):
         [self.rewards.update({agent: 0}) for agent in self.agents]
 
@@ -106,11 +102,16 @@ class Briscola(AECEnv):
         return dict([(agent, self.state.get_number_of_card_in_hand(agent) == 0) for agent in self.agents])
 
     @property
-    def _cumulative_rewards(self) -> dict[str, float]:
-        return self.state.agent_points
+    def truncations(self) -> dict[str, bool]:
+        return self.terminations
 
     def step(self, action: int) -> None:
         assert action in self.action_space(self.agent_selection)
+
+        if self.terminations[self.agent_selection] or self.truncations[self.agent_selection]:
+            return
+
+        self._cumulative_rewards[self.agent_selection] = 0
 
         if self.state.table_card == Constants.null_card_number:
             self.state.table_card = self.state.pop_card_of_agent(self.agent_selection, action)
@@ -122,7 +123,7 @@ class Briscola(AECEnv):
             hand_seed, briscola_seed = get_seed(first_card), get_seed(self.state.briscola_card)
 
             if get_priority(first_card, hand_seed, briscola_seed) > get_priority(second_card, hand_seed, briscola_seed):
-                winner = other_player(self.agent_selection)
+                winner = self.other_player(self.agent_selection)
             else:
                 winner = self.agent_selection
                 self.invert_player_turn()
@@ -133,10 +134,15 @@ class Briscola(AECEnv):
             self.state.table_card = Constants.null_card_number
             self.deal_cards(1)
 
+        self._accumulate_rewards()
         self.next_turn()
 
+    def other_player(self, agent: str) -> str:
+        return self.agents[0] if agent == self.agents[1] else self.agents[1]
+
     def next_turn(self):
-        self.state.current_agent = other_player(self.state.current_agent)
+        self.num_moves += 1
+        self.state.current_agent = self.other_player(self.state.current_agent)
 
     def invert_player_turn(self):
         self.next_turn()
@@ -151,7 +157,7 @@ class Briscola(AECEnv):
             "briscola_card": self.state.briscola_card,
             "table_card": self.state.table_card,
             "hand_cards": self.state.hand_cards[agent] + [Constants.null_card_number] * number_null_cards,
-            "agent_points": [self.state.agent_points[agent], self.state.agent_points[other_player(agent)]]
+            "agent_points": [self.state.agent_points[agent], self.state.agent_points[self.other_player(agent)]]
         }
 
     def render(self) -> str:

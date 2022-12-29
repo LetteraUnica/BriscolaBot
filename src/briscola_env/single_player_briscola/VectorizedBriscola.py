@@ -1,6 +1,6 @@
 from typing import Optional, Any
 
-from src.env.two_player_briscola import TwoPlayerBriscola
+from src.briscola_env.two_player_briscola import TwoPlayerBriscola
 
 
 class VectorizedBriscola:

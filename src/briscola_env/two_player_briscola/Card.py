@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from src.env.two_player_briscola.BriscolaConstants import Constants
-from src.env.two_player_briscola.utils import get_rank, get_seed
+from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
+from src.briscola_env.two_player_briscola.utils import get_rank, get_seed
 
 
 @dataclass

@@ -4,9 +4,9 @@ from gymnasium import Space
 from gymnasium.vector.utils import spaces
 from pettingzoo import AECEnv
 
-from src.env.two_player_briscola.BriscolaConstants import Constants
-from src.env.two_player_briscola.BriscolaState import BriscolaState
-from src.env.two_player_briscola.Card import Card
+from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
+from src.briscola_env.two_player_briscola.BriscolaState import BriscolaState
+from src.briscola_env.two_player_briscola.Card import Card
 
 
 def card_priority(card: Card, hand_seed: int, briscola_seed: int):
