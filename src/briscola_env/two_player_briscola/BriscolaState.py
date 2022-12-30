@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from random import sample, shuffle
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict
+
+from src.briscola_env.two_player_briscola.Card import Card
 
 from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
-from src.briscola_env.two_player_briscola.Card import Card
 
 
 def other_player(player: int) -> int:

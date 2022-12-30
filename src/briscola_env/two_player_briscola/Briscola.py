@@ -1,11 +1,11 @@
 import random
 from dataclasses import dataclass
-from functools import cache
 from random import sample
 from typing import Optional, Any
 
+import numpy as np
 from gymnasium import Space
-from gymnasium.spaces import Dict, MultiBinary, Discrete, MultiDiscrete
+from gymnasium.spaces import Dict, Discrete, Box
 from pettingzoo import AECEnv
 
 from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
@@ -38,6 +38,9 @@ class State:
     def add_seen_cards(self, cards: list[int]):
         self.seen_cards.extend(cards)
 
+    def number_of_agent_cards(self, agent: str) -> int:
+        return len(self.hand_cards[agent])
+
 
 def create_deck():
     return sample(range(Constants.deck_cards), k=Constants.deck_cards)
@@ -46,81 +49,93 @@ def create_deck():
 class Briscola(AECEnv):
     def __init__(self, seed: Optional[int] = None):
         super().__init__()
-        self.state = None
+        self.num_moves = None
+        self.game_state = None
+
         self.possible_agents: list[str] = ["player_" + str(agent) for agent in range(Constants.n_agents)]
         self.agents = self.possible_agents.copy()
-        self.rewards: dict[str, float] = {agent: 0 for agent in self.agents}
-        self.reset(seed)
 
-    @cache
-    def observation_space(self, agent: str) -> Space:
-        return Dict({
-            "seen_cards": MultiBinary(Constants.deck_cards),
-            "briscola_card": Discrete(Constants.deck_cards),
-            "table_card": Discrete(Constants.deck_cards + 1),
-            "hand_cards": MultiDiscrete([Constants.deck_cards + 1] * Constants.hand_cards),
-            "agent_points": MultiDiscrete([Constants.total_points + 1] * Constants.n_agents)
-        })
+        self.action_spaces = {agent: Discrete(Constants.hand_cards) for agent in self.agents}
+        self.observation_spaces = {
+            agent: Dict(
+                {
+                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards, 6), dtype=np.float32),
+                    "action_mask": Box(low=0, high=1, shape=(Constants.hand_cards,), dtype=np.int8),
+                }) for agent in self.agents
+        }
+
+        self.infos = {i: {} for i in self.agents}
+
+        self.reset(seed)
 
     def reset(self, seed: Optional[int] = None, return_info: bool = False, options: Optional[dict] = None) -> None:
         self.seed(seed)
+
+        self.agents = self.possible_agents.copy()
         self.rewards = {agent: 0 for agent in self.agents}
         self._cumulative_rewards = {agent: 0 for agent in self.agents}
-        self.infos = {agent: {} for agent in self.agents}
-        self.observations = {agent: None for agent in self.agents}
+        self.truncations = {i: False for i in self.agents}
+
         self.num_moves = 0
         deck = create_deck()
+        self.game_state = State(deck=deck,
+                                seen_cards=[],
+                                hand_cards=dict([(agent, []) for agent in self.agents]),
+                                table_card=Constants.null_card_number,
+                                briscola_card=deck[0],
+                                current_agent=sample(self.agents, k=1)[0],
+                                agent_points=dict([(agent, 0) for agent in self.agents]))
 
-        self.state = State(deck=deck,
-                           seen_cards=[],
-                           hand_cards=dict([(agent, []) for agent in self.agents]),
-                           table_card=Constants.null_card_number,
-                           briscola_card=deck[0],
-                           current_agent=sample(self.agents, k=1)[0],
-                           agent_points=dict([(agent, 0) for agent in self.agents]))
-
-        self.zero_out_reward()
         self.deal_cards(Constants.hand_cards)
 
-    @cache
-    def action_space(self, agent: str) -> Space:
-        return Discrete(len(self.state.hand_cards[agent]))
+    def observation_space(self, agent: str) -> Space:
+        return self.observation_spaces[agent]
 
-#    @property
-#    def action_spaces(self) -> dict[str, Space]:
-#        return dict([(agent, self.action_space(agent)) for agent in self.agents])
+    def action_space(self, agent: str) -> Space:
+        return self.action_spaces[agent]
 
     def zero_out_reward(self):
         [self.rewards.update({agent: 0}) for agent in self.agents]
 
     @property
     def agent_selection(self) -> str:
-        return self.state.current_agent
+        return self.game_state.current_agent
 
     @property
     def terminations(self) -> dict[str, bool]:
-        return dict([(agent, self.state.get_number_of_card_in_hand(agent) == 0) for agent in self.agents])
+        return dict([(agent, self.game_state.get_number_of_card_in_hand(agent) == 0) for agent in self.agents])
 
-    @property
-    def truncations(self) -> dict[str, bool]:
-        return self.terminations
+    def observe(self, agent: str) -> dict[str, Any]:
+        observation = np.zeros((Constants.deck_cards, 6), dtype=np.float32)
+        observation[self.game_state.seen_cards, 0] = 1
+        observation[self.game_state.briscola_card, 1] = 1
+        if self.game_state.table_card < Constants.null_card_number:
+            observation[self.game_state.table_card, 2] = 1
+        observation[self.game_state.hand_cards[agent], 3] = 1
+        observation[:, 4] = self.game_state.agent_points[agent] / Constants.total_points
+        observation[:, 5] = self.game_state.agent_points[self.other_player(agent)] / Constants.total_points
+
+        action_mask = np.zeros((Constants.hand_cards,), dtype=np.int8)
+        action_mask[self.legal_actions(agent)] = 1
+
+        return {"observation": observation, "action_mask": action_mask}
+
+    def legal_actions(self, agent: str) -> list[int]:
+        return list(range(self.game_state.number_of_agent_cards(agent)))
 
     def step(self, action: int) -> None:
-        assert action in self.action_space(self.agent_selection)
+        assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
 
-        if self.terminations[self.agent_selection] or self.truncations[self.agent_selection]:
-            return
+        assert action in self.legal_actions(self.agent_selection), "played illegal move"
 
-        self._cumulative_rewards[self.agent_selection] = 0
-
-        if self.state.table_card == Constants.null_card_number:
-            self.state.table_card = self.state.pop_card_of_agent(self.agent_selection, action)
+        if self.game_state.table_card == Constants.null_card_number:
+            self.game_state.table_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
             self.zero_out_reward()
         else:
-            first_card = self.state.table_card
-            second_card = self.state.pop_card_of_agent(self.agent_selection, action)
+            first_card = self.game_state.table_card
+            second_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
             total_points = get_points(first_card) + get_points(second_card)
-            hand_seed, briscola_seed = get_seed(first_card), get_seed(self.state.briscola_card)
+            hand_seed, briscola_seed = get_seed(first_card), get_seed(self.game_state.briscola_card)
 
             if get_priority(first_card, hand_seed, briscola_seed) > get_priority(second_card, hand_seed, briscola_seed):
                 winner = self.other_player(self.agent_selection)
@@ -129,11 +144,12 @@ class Briscola(AECEnv):
                 self.invert_player_turn()
 
             self.rewards[winner] = total_points
-            self.state.agent_points[winner] += total_points
-            self.state.add_seen_cards([first_card, second_card])
-            self.state.table_card = Constants.null_card_number
+            self.game_state.agent_points[winner] += total_points
+            self.game_state.add_seen_cards([first_card, second_card])
+            self.game_state.table_card = Constants.null_card_number
             self.deal_cards(1)
 
+        self._cumulative_rewards[self.agent_selection] = 0
         self._accumulate_rewards()
         self.next_turn()
 
@@ -142,7 +158,7 @@ class Briscola(AECEnv):
 
     def next_turn(self):
         self.num_moves += 1
-        self.state.current_agent = self.other_player(self.state.current_agent)
+        self.game_state.current_agent = self.other_player(self.game_state.current_agent)
 
     def invert_player_turn(self):
         self.next_turn()
@@ -150,26 +166,16 @@ class Briscola(AECEnv):
     def seed(self, random_seed: Optional[int] = None) -> None:
         random.seed(random_seed)
 
-    def observe(self, agent: str) -> dict[str, Any]:
-        number_null_cards = Constants.hand_cards - len(self.state.hand_cards[agent])
-        return {
-            "seen_cards": [1 if card in self.state.seen_cards else 0 for card in range(Constants.deck_cards)],
-            "briscola_card": self.state.briscola_card,
-            "table_card": self.state.table_card,
-            "hand_cards": self.state.hand_cards[agent] + [Constants.null_card_number] * number_null_cards,
-            "agent_points": [self.state.agent_points[agent], self.state.agent_points[self.other_player(agent)]]
-        }
-
     def render(self) -> str:
-        return self.state.__repr__()
+        return self.game_state.__repr__()
 
     def state(self) -> State:
-        return self.state
+        pass
 
     def deal_cards(self, n_cards: int):
         for agent in self.agents:
-            cards = self.state.extract_cards(n_cards)
-            self.state.add_cards_to(agent, cards)
+            cards = self.game_state.extract_cards(n_cards)
+            self.game_state.add_cards_to(agent, cards)
 
     def close(self):
         super().close()
