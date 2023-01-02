@@ -1,15 +1,14 @@
-import random
 from dataclasses import dataclass
-from random import sample
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
 import numpy as np
 from gymnasium import Space
 from gymnasium.spaces import Dict, Discrete, Box
+from numpy.random import Generator
 from pettingzoo import AECEnv
 
-from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
-from src.briscola_env.two_player_briscola.utils import get_seed, get_points, get_priority
+from src.envs.two_player_briscola.BriscolaConstants import Constants
+from src.envs.two_player_briscola.utils import get_seed, get_points, get_priority
 
 
 @dataclass
@@ -21,6 +20,7 @@ class State:
     briscola_card: int
     current_agent: str
     agent_points: dict[str, float]
+    num_moves: int
 
     def get_number_of_card_in_hand(self, agent: str) -> int:
         return len(self.hand_cards[agent])
@@ -42,15 +42,11 @@ class State:
         return len(self.hand_cards[agent])
 
 
-def create_deck():
-    return sample(range(Constants.deck_cards), k=Constants.deck_cards)
-
-
-class Briscola(AECEnv):
+class TwoPlayerBriscola(AECEnv):
     def __init__(self, seed: Optional[int] = None):
         super().__init__()
-        self.num_moves = None
-        self.game_state = None
+        self.rng: Optional[Generator] = None
+        self.game_state: Union[State, None] = None
 
         self.possible_agents: list[str] = ["player_" + str(agent) for agent in range(Constants.n_agents)]
         self.agents = self.possible_agents.copy()
@@ -59,8 +55,8 @@ class Briscola(AECEnv):
         self.observation_spaces = {
             agent: Dict(
                 {
-                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards, 6), dtype=np.float32),
-                    "action_mask": Box(low=0, high=1, shape=(Constants.hand_cards,), dtype=np.int8),
+                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards*4 + Constants.n_agents,), dtype=np.float32),
+                    "action_mask": Box(low=0, high=1, shape=(Constants.hand_cards,), dtype=np.float32),
                 }) for agent in self.agents
         }
 
@@ -76,17 +72,21 @@ class Briscola(AECEnv):
         self._cumulative_rewards = {agent: 0 for agent in self.agents}
         self.truncations = {i: False for i in self.agents}
 
-        self.num_moves = 0
-        deck = create_deck()
-        self.game_state = State(deck=deck,
+        deck = np.arange(Constants.deck_cards)
+        self.rng.shuffle(deck)
+        self.game_state = State(deck=list(deck),
                                 seen_cards=[],
                                 hand_cards=dict([(agent, []) for agent in self.agents]),
                                 table_card=Constants.null_card_number,
                                 briscola_card=deck[0],
-                                current_agent=sample(self.agents, k=1)[0],
-                                agent_points=dict([(agent, 0) for agent in self.agents]))
+                                current_agent=self.rng.choice(self.agents, size=1)[0],
+                                agent_points=dict([(agent, 0) for agent in self.agents]),
+                                num_moves=0)
 
         self.deal_cards(Constants.hand_cards)
+
+    def seed(self, seed: Optional[int] = None) -> None:
+        self.rng = np.random.default_rng(seed)
 
     def observation_space(self, agent: str) -> Space:
         return self.observation_spaces[agent]
@@ -106,14 +106,19 @@ class Briscola(AECEnv):
         return dict([(agent, self.game_state.get_number_of_card_in_hand(agent) == 0) for agent in self.agents])
 
     def observe(self, agent: str) -> dict[str, Any]:
-        observation = np.zeros((Constants.deck_cards, 6), dtype=np.float32)
+        observation = np.zeros((Constants.deck_cards, 4), dtype=np.float32)
         observation[self.game_state.seen_cards, 0] = 1
         observation[self.game_state.briscola_card, 1] = 1
         if self.game_state.table_card < Constants.null_card_number:
             observation[self.game_state.table_card, 2] = 1
         observation[self.game_state.hand_cards[agent], 3] = 1
-        observation[:, 4] = self.game_state.agent_points[agent] / Constants.total_points
-        observation[:, 5] = self.game_state.agent_points[self.other_player(agent)] / Constants.total_points
+        observation = np.concatenate((
+            observation.flatten(),
+            np.array([
+                self.game_state.agent_points[agent] / Constants.total_points,
+                self.game_state.agent_points[self.other_player(agent)] / Constants.total_points
+            ])
+        ), dtype=np.float32)
 
         action_mask = np.zeros((Constants.hand_cards,), dtype=np.int8)
         action_mask[self.legal_actions(agent)] = 1
@@ -157,14 +162,11 @@ class Briscola(AECEnv):
         return self.agents[0] if agent == self.agents[1] else self.agents[1]
 
     def next_turn(self):
-        self.num_moves += 1
+        self.game_state.num_moves += 1
         self.game_state.current_agent = self.other_player(self.game_state.current_agent)
 
     def invert_player_turn(self):
         self.next_turn()
-
-    def seed(self, random_seed: Optional[int] = None) -> None:
-        random.seed(random_seed)
 
     def render(self) -> str:
         return self.game_state.__repr__()

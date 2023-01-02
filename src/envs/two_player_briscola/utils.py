@@ -1,4 +1,4 @@
-from src.briscola_env.two_player_briscola.BriscolaConstants import Constants
+from src.envs.two_player_briscola.BriscolaConstants import Constants
 
 
 def get_seed(card: int) -> int:
