@@ -3,7 +3,6 @@ from random import sample, shuffle
 from typing import List, Any, Dict
 
 from src.envs.two_player_briscola import Card
-
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 
 

@@ -55,7 +55,8 @@ class TwoPlayerBriscola(AECEnv):
         self.observation_spaces = {
             agent: Dict(
                 {
-                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards*4 + Constants.n_agents,), dtype=np.float32),
+                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards * 4 + Constants.n_agents,),
+                                       dtype=np.float32),
                     "action_mask": Box(low=0, high=1, shape=(Constants.hand_cards,), dtype=np.float32),
                 }) for agent in self.agents
         }
@@ -131,7 +132,7 @@ class TwoPlayerBriscola(AECEnv):
     def step(self, action: int) -> None:
         assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
 
-        assert action in self.legal_actions(self.agent_selection), "played illegal move"
+        assert action in self.legal_actions(self.agent_selection), "invalid action"
 
         if self.game_state.table_card == Constants.null_card_number:
             self.game_state.table_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
