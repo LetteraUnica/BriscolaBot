@@ -8,7 +8,19 @@ from numpy.random import Generator
 from pettingzoo import AECEnv
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
-from src.envs.two_player_briscola.utils import get_seed, get_points, get_priority
+from src.envs.two_player_briscola.utils import get_seed, get_rank, is_first_player_win, \
+    get_cards_points
+
+
+def card_to_string(card: int) -> str:
+    if card == Constants.null_card_number:
+        return "NA"
+    seed, rank = get_seed(card), get_rank(card)
+    return f"{rank}{Constants.seed_representation[seed]}"
+
+
+def cards_to_string(cards: list[int]) -> str:
+    return " ".join(card_to_string(card) for card in cards)
 
 
 @dataclass
@@ -40,6 +52,17 @@ class State:
 
     def number_of_agent_cards(self, agent: str) -> int:
         return len(self.hand_cards[agent])
+
+    def __repr__(self):
+        hand_cards = {k: cards_to_string(v) for k, v in self.hand_cards.items()}
+        return f"deck: {cards_to_string(self.deck)}\n" \
+               f"seen_cards: {cards_to_string(self.seen_cards)}\n" \
+               f"hand_cards: {hand_cards}\n" \
+               f"table_card: {card_to_string(self.table_card)}\n" \
+               f"briscola_card: {card_to_string(self.briscola_card)}\n" \
+               f"current_agent: {self.current_agent}\n" \
+               f"agent_points: {self.agent_points}\n" \
+               f"num_moves: {self.num_moves}\n"
 
 
 class TwoPlayerBriscola(AECEnv):
@@ -140,20 +163,23 @@ class TwoPlayerBriscola(AECEnv):
         else:
             first_card = self.game_state.table_card
             second_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
-            total_points = get_points(first_card) + get_points(second_card)
-            hand_seed, briscola_seed = get_seed(first_card), get_seed(self.game_state.briscola_card)
+            hand_points = get_cards_points([first_card, second_card])
 
-            if get_priority(first_card, hand_seed, briscola_seed) > get_priority(second_card, hand_seed, briscola_seed):
+            if is_first_player_win(first_card, second_card, get_seed(self.game_state.briscola_card)):
                 winner = self.other_player(self.agent_selection)
             else:
                 winner = self.agent_selection
                 self.invert_player_turn()
 
-            self.rewards[winner] = total_points
-            self.game_state.agent_points[winner] += total_points
+            self.rewards[winner] = hand_points / Constants.total_points
+            self.game_state.agent_points[winner] += hand_points
             self.game_state.add_seen_cards([first_card, second_card])
             self.game_state.table_card = Constants.null_card_number
-            self.deal_cards(1)
+            self.deal_cards(1, winner)
+
+        if self.is_over() and not self.is_even():
+            game_winner = sorted(self.game_state.agent_points.items(), key=lambda x: x[1], reverse=True)[0][0]
+            self.rewards[game_winner] += Constants.reward_for_winning
 
         self._cumulative_rewards[self.agent_selection] = 0
         self._accumulate_rewards()
@@ -167,7 +193,7 @@ class TwoPlayerBriscola(AECEnv):
         self.game_state.current_agent = self.other_player(self.game_state.current_agent)
 
     def invert_player_turn(self):
-        self.next_turn()
+        self.game_state.current_agent = self.other_player(self.game_state.current_agent)
 
     def render(self) -> str:
         return self.game_state.__repr__()
@@ -175,10 +201,24 @@ class TwoPlayerBriscola(AECEnv):
     def state(self) -> State:
         pass
 
-    def deal_cards(self, n_cards: int):
-        for agent in self.agents:
+    def deal_cards(self, n_cards: int, winner: Optional[str] = None) -> None:
+        if winner is not None:
+            agents = [winner, self.other_player(winner)]
+        else:
+            agents = self.agents
+
+        for agent in agents:
             cards = self.game_state.extract_cards(n_cards)
             self.game_state.add_cards_to(agent, cards)
 
     def close(self):
         super().close()
+
+    def is_over(self):
+        return all(self.terminations.values())
+
+    def is_even(self):
+        return self.game_state.agent_points[self.agents[0]] == self.game_state.agent_points[self.agents[1]]
+
+    def __repr__(self) -> str:
+        return self.game_state.__repr__()

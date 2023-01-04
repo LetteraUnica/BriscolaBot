@@ -23,3 +23,12 @@ def get_priority(card: int, hand_seed: int, briscola_seed: int) -> int:
         return Constants.card_priorities[rank]
 
     return 0
+
+
+def is_first_player_win(first_card: int, second_card: int, briscola_seed: int) -> bool:
+    hand_seed = get_seed(first_card)
+    return get_priority(first_card, hand_seed, briscola_seed) > get_priority(second_card, hand_seed, briscola_seed)
+
+
+def get_cards_points(cards: list[int]) -> int:
+    return sum([get_points(card) for card in cards])
