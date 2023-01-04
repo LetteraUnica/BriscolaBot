@@ -2,6 +2,7 @@ from typing import Dict
 
 
 class Constants:
+    reward_for_winning = 0.2
     seed_representation: Dict[int, str] = {0: "C",
                                            1: "B",
                                            2: "S",
@@ -28,6 +29,7 @@ class Constants:
                                    9: 4}
     total_points: int = 120
     cards_per_seed: int = 10
+    n_seeds: int = 4
     n_agents: int = 2
     hand_cards: int = 3
     deck_cards: int = 40
