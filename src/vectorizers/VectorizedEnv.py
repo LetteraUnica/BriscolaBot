@@ -8,17 +8,14 @@ class VectorizedEnv:
     def __init__(self, env_fn: Callable[[], AECEnv], n_envs: int):
         self.envs: list[AECEnv] = [env_fn() for _ in range(n_envs)]
 
-    def call(self, fn, *args):
-        return [env.__getattribute__(fn)(args) for env in self.envs]
-
     def reset(self):
-        self.call("reset")
+        return [env.reset() for env in self.envs]
 
     def step(self, actions):
         [env.step(action) for env, action in zip(self.envs, actions)]
 
     def observe(self, agent: str):
-        return self.call("observe", agent)
+        return [env.observe(agent) for env in self.envs]
 
     def last(self):
         return [env.last() for env in self.envs]
