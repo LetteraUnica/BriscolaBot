@@ -35,14 +35,15 @@ class NNAgent(nn.Module, Agent):
     def get_action(self, observations: tensor, action_masks: tensor = None):
         logits = self.actor(observations)
         if action_masks is not None:
-            logits += (action_masks - 1.) * 1e8
+            logits = logits + (action_masks - 1.) * 1e8
         probs = Categorical(logits=logits)
         return probs.sample()
 
-    def get_action_and_value(self, observations: tensor, action_masks: tensor = None):
+    def get_action_and_value(self, observations: tensor, action_masks: tensor = None, action=None):
         logits = self.actor(observations)
         if action_masks is not None:
-            logits += (action_masks - 1.) * 1e8
+            logits = logits + (action_masks - 1.) * 1e8
         probs = Categorical(logits=logits)
-        action = probs.sample()
+        if action is None:
+            action = probs.sample()
         return action, probs.log_prob(action), probs.entropy(), self.critic(observations)
