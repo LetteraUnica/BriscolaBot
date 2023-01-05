@@ -2,7 +2,6 @@ from typing import Dict
 
 
 class Constants:
-    reward_for_winning = 0.2
     seed_representation: Dict[int, str] = {0: "C",
                                            1: "B",
                                            2: "S",
