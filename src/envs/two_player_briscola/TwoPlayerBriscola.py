@@ -139,7 +139,7 @@ class TwoPlayerBriscola(AECEnv):
             observation[2, self.game_state.table_card] = 1
         observation[3, self.game_state.hand_cards[agent]] = 1
         observation = np.concatenate((
-            observation.flatten(),
+            observation.ravel(),
             np.array([
                 self.game_state.agent_points[agent] / Constants.total_points,
                 self.game_state.agent_points[self.other_player(agent)] / Constants.total_points

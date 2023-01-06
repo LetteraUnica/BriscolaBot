@@ -1,6 +1,7 @@
-from typing import Callable
+from typing import Callable, Any
 
 from gymnasium import Space
+from numpy import ndarray
 from pettingzoo import AECEnv
 
 
@@ -11,13 +12,13 @@ class VectorizedEnv:
     def reset(self):
         [env.reset() for env in self.envs]
 
-    def step(self, actions: list[int]):
+    def step(self, actions: ndarray):
         [env.step(action) for env, action in zip(self.envs, actions)]
 
-    def observe(self, agent: str):
+    def observe(self, agent: str) -> list[dict[str, ndarray]]:
         return [env.observe(agent) for env in self.envs]
 
-    def last(self):
+    def last(self) -> list[tuple[dict[str, ndarray], float, bool, bool, dict[str, Any]]]:
         return [env.last() for env in self.envs]
 
     def single_observation_space(self) -> Space:
