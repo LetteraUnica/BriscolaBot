@@ -3,6 +3,7 @@ from random import randint, choice, choices
 
 import numpy as np
 
+from src.envs.single_player_briscola.SinglePlayerBriscola import SinglePlayerBriscola
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
 from src.envs.two_player_briscola.utils import is_first_player_win, get_priority, get_seed
@@ -132,6 +133,29 @@ class MyTestCase(unittest.TestCase):
                 env.step(0)
                 self.assertTrue(first_card in env.game_state.hand_cards[env.agent_selection])
                 self.assertTrue(second_card in env.game_state.hand_cards[env.other_player(env.agent_selection)])
+
+    def test_observation_size(self):
+        env = TwoPlayerBriscola()
+        for _ in range(100):
+            env.reset()
+            while not env.is_over():
+                observation_with_mask = env.observe(env.agent_selection)
+                observation = observation_with_mask["observation"]
+                self.assertEqual(observation.size, Constants.deck_cards * 4 + Constants.n_agents)
+                self.assertTrue(observation_with_mask in env.observation_space(env.agent_selection))
+                env.step(0)
+
+    def test_reward(self):
+        env = TwoPlayerBriscola()
+        for _ in range(100):
+            env.reset()
+            prev_agent_points = env.game_state.agent_points.copy()
+            for i in range(Constants.deck_cards):
+                point_difference = env.game_state.agent_points[env.agent_selection] - prev_agent_points[
+                    env.agent_selection]
+                prev_agent_points[env.agent_selection] = env.game_state.agent_points[env.agent_selection]
+                assert env.last()[1] * Constants.total_points == point_difference
+                env.step(0)
 
 
 if __name__ == '__main__':

@@ -9,9 +9,9 @@ class VectorizedEnv:
         self.envs: list[AECEnv] = [env_fn() for _ in range(n_envs)]
 
     def reset(self):
-        return [env.reset() for env in self.envs]
+        [env.reset() for env in self.envs]
 
-    def step(self, actions):
+    def step(self, actions: list[int]):
         [env.step(action) for env, action in zip(self.envs, actions)]
 
     def observe(self, agent: str):

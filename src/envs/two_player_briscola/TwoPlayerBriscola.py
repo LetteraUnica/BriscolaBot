@@ -44,8 +44,9 @@ class State:
     def add_cards_to(self, agent_id: str, cards: list[int]):
         self.hand_cards[agent_id].extend(cards)
 
-    def pop_card_of_agent(self, agent: str, card_index: int) -> int:
-        return self.hand_cards[agent].pop(card_index)
+    def pop_card_of_agent(self, agent: str, card: int) -> int:
+        index = self.hand_cards[agent].index(card)
+        return self.hand_cards[agent].pop(index)
 
     def add_seen_cards(self, cards: list[int]):
         self.seen_cards.extend(cards)
@@ -66,21 +67,22 @@ class State:
 
 
 class TwoPlayerBriscola(AECEnv):
-    def __init__(self, seed: Optional[int] = None):
+    def __init__(self, seed: Optional[int] = None, reward_for_win: float = 0.):
         super().__init__()
+        self.reward_for_winning = reward_for_win
         self.rng: Optional[Generator] = None
         self.game_state: Union[State, None] = None
 
         self.possible_agents: list[str] = ["player_" + str(agent) for agent in range(Constants.n_agents)]
         self.agents = self.possible_agents.copy()
 
-        self.action_spaces = {agent: Discrete(Constants.hand_cards) for agent in self.agents}
+        self.action_spaces = {agent: Discrete(Constants.deck_cards) for agent in self.agents}
         self.observation_spaces = {
             agent: Dict(
                 {
                     "observation": Box(low=0, high=1, shape=(Constants.deck_cards * 4 + Constants.n_agents,),
                                        dtype=np.float32),
-                    "action_mask": Box(low=0, high=1, shape=(Constants.hand_cards,), dtype=np.float32),
+                    "action_mask": Box(low=0, high=1, shape=(Constants.deck_cards,), dtype=np.int64),
                 }) for agent in self.agents
         }
 
@@ -129,13 +131,13 @@ class TwoPlayerBriscola(AECEnv):
     def terminations(self) -> dict[str, bool]:
         return dict([(agent, self.game_state.get_number_of_card_in_hand(agent) == 0) for agent in self.agents])
 
-    def observe(self, agent: str) -> dict[str, Any]:
-        observation = np.zeros((Constants.deck_cards, 4), dtype=np.float32)
-        observation[self.game_state.seen_cards, 0] = 1
-        observation[self.game_state.briscola_card, 1] = 1
+    def observe(self, agent: str) -> dict[str, np.ndarray]:
+        observation = np.zeros((4, Constants.deck_cards), dtype=np.float32)
+        observation[0, self.game_state.seen_cards] = 1
+        observation[1, self.game_state.briscola_card] = 1
         if self.game_state.table_card < Constants.null_card_number:
-            observation[self.game_state.table_card, 2] = 1
-        observation[self.game_state.hand_cards[agent], 3] = 1
+            observation[2, self.game_state.table_card] = 1
+        observation[3, self.game_state.hand_cards[agent]] = 1
         observation = np.concatenate((
             observation.flatten(),
             np.array([
@@ -144,13 +146,13 @@ class TwoPlayerBriscola(AECEnv):
             ])
         ), dtype=np.float32)
 
-        action_mask = np.zeros((Constants.hand_cards,), dtype=np.int8)
+        action_mask = np.zeros((Constants.deck_cards,), dtype=np.int64)
         action_mask[self.legal_actions(agent)] = 1
 
         return {"observation": observation, "action_mask": action_mask}
 
     def legal_actions(self, agent: str) -> list[int]:
-        return list(range(self.game_state.number_of_agent_cards(agent)))
+        return self.game_state.hand_cards[agent]
 
     def step(self, action: int) -> None:
         assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
@@ -179,7 +181,7 @@ class TwoPlayerBriscola(AECEnv):
 
         if self.is_over() and not self.is_even():
             game_winner = sorted(self.game_state.agent_points.items(), key=lambda x: x[1], reverse=True)[0][0]
-            self.rewards[game_winner] += Constants.reward_for_winning
+            self.rewards[game_winner] += self.reward_for_winning
 
         self._cumulative_rewards[self.agent_selection] = 0
         self._accumulate_rewards()
