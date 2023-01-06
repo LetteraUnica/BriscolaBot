@@ -48,5 +48,5 @@ class SinglePlayerBriscola(Env):
     def _play_other_player_moves(self):
         if self.briscola_env.agent_selection == self.briscola_env.agents[1]:
             observation = self.briscola_env.observe(self.briscola_env.agent_selection)
-            self.briscola_env.step(self.adversary.get_action(observation))
+            self.briscola_env.step(self.adversary.get_actions(observation))
             self._play_other_player_moves()

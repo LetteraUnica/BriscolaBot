@@ -32,7 +32,7 @@ class NNAgent(nn.Module, Agent):
     def get_value(self, observations):
         return self.critic(observations)
 
-    def get_action(self, observations: tensor, action_masks: tensor = None):
+    def get_actions(self, observations: tensor, action_masks: tensor = None):
         logits = self.actor(observations)
         if action_masks is not None:
             logits = logits + (action_masks - 1.) * 1e8
