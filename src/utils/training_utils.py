@@ -11,7 +11,7 @@ def get_state_representation(envs: VectorizedEnv) -> tuple[Tensor, Tensor, Tenso
     obs = np.empty((len(envs),) + envs.single_observation_space()["observation"].shape, dtype=np.float32)
     action_masks = np.empty((len(envs), envs.single_action_space().n), dtype=np.int64)
     rewards = np.empty(len(envs), dtype=np.float32)
-    dones = np.empty(len(envs), dtype=np.int64)
+    dones = np.empty(len(envs), dtype=np.int8)
     for i, (observation, reward, termination, _, _) in enumerate(envs.last()):
         obs[i] = observation["observation"]
         action_masks[i] = observation["action_mask"]
@@ -26,6 +26,8 @@ def play_all_moves_of_player(envs: list[AECEnv], policy: Agent, player: str, dev
         envs_to_play = [env for env in envs
                         if env.agent_selection == player
                         and not env.terminations[player]]
+        if len(envs_to_play) == 0:
+            break
 
         obs, action_mask = [], []
         for env in envs_to_play:
