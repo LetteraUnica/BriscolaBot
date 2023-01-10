@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Optional, Any, Union
+from typing import Optional, Union
+from warnings import warn
 
 import numpy as np
 from gymnasium import Space
@@ -157,7 +158,9 @@ class TwoPlayerBriscola(AECEnv):
     def step(self, action: int) -> None:
         assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
 
-        assert action in self.legal_actions(self.agent_selection), "invalid action"
+        if action not in self.legal_actions(self.agent_selection):
+            action = self.legal_actions(self.agent_selection)[0]
+            warn(f"Tried to execute an illegal action, executing {action} instead")
 
         if self.game_state.table_card == Constants.null_card_number:
             self.game_state.table_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
@@ -179,13 +182,14 @@ class TwoPlayerBriscola(AECEnv):
             self.game_state.table_card = Constants.null_card_number
             self.deal_cards(1, winner)
 
+        self.next_turn()
+
         if self.is_over() and not self.is_even():
-            game_winner = sorted(self.game_state.agent_points.items(), key=lambda x: x[1], reverse=True)[0][0]
+            game_winner = self.winner()
             self.rewards[game_winner] += self.reward_for_winning
 
         self._cumulative_rewards[self.agent_selection] = 0
         self._accumulate_rewards()
-        self.next_turn()
 
     def other_player(self, agent: str) -> str:
         return self.agents[0] if agent == self.agents[1] else self.agents[1]
@@ -217,10 +221,23 @@ class TwoPlayerBriscola(AECEnv):
         super().close()
 
     def is_over(self):
-        return all(self.terminations.values())
+        return self.game_state.num_moves >= Constants.deck_cards
 
     def is_even(self):
         return self.game_state.agent_points[self.agents[0]] == self.game_state.agent_points[self.agents[1]]
+
+    def winner(self) -> Optional[str]:
+        if self.is_even():
+            return None
+        return sorted(self.game_state.agent_points.items(), key=lambda x: x[1], reverse=True)[0][0]
+
+    def get_game_outcome(self, agent: str) -> float:
+        if self.is_over():
+            if self.is_even():
+                return 0.5
+            else:
+                return 1. if self.winner() == agent else 0.
+        return 0.
 
     def __repr__(self) -> str:
         return self.game_state.__repr__()
