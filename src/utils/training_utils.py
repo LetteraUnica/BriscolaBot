@@ -1,7 +1,9 @@
+from typing import Callable
+
 import numpy as np
 import torch
 from pettingzoo import AECEnv
-from torch import Tensor
+from torch import Tensor, nn
 
 from src.agents import Agent
 from src.vectorizers import VectorizedEnv
@@ -21,7 +23,7 @@ def get_state_representation(envs: VectorizedEnv) -> tuple[Tensor, Tensor, Tenso
     return torch.tensor(obs), torch.tensor(action_masks), torch.tensor(rewards), torch.tensor(dones)
 
 
-def play_all_moves_of_player(envs: list[AECEnv], policy: Agent, player: str, device="cpu"):
+def play_all_moves_of_player(envs: list[AECEnv], policy: Agent, player: str, device: str = "cpu"):
     for _ in range(2):
         envs_to_play = [env for env in envs
                         if env.agent_selection == player
@@ -45,5 +47,4 @@ def play_all_moves_of_players(vec_env: VectorizedEnv, policies: list[Agent], pla
     n_envs, n_policies = len(vec_env), len(policies)
     for i, policy in enumerate(policies):
         start, end = (i * n_envs) // n_policies, ((i + 1) * n_envs) // n_policies
-        envs = vec_env[start:end]
-        play_all_moves_of_player(envs, policy, player, device)
+        play_all_moves_of_player(vec_env[start:end], policy, player, device)

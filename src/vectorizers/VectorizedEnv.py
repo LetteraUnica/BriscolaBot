@@ -1,8 +1,10 @@
-from typing import Callable, Any
+from typing import Callable, Any, Union
 
 from gymnasium import Space
 from numpy import ndarray
 from pettingzoo import AECEnv
+
+from src.envs.two_player_briscola import TwoPlayerBriscola
 
 
 class VectorizedEnv:
@@ -26,6 +28,12 @@ class VectorizedEnv:
 
     def single_action_space(self) -> Space:
         return self.envs[0].action_space(self.envs[0].agent_selection)
+
+    def agent_selections(self) -> list[str]:
+        return [env.agent_selection for env in self.envs]
+
+    def get_envs(self) -> Union[list[AECEnv], list[TwoPlayerBriscola]]:
+        return self.envs
 
     def __len__(self):
         return len(self.envs)
