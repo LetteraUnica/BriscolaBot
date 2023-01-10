@@ -9,9 +9,8 @@ class RandomAgent(Agent):
         self.n_actions = n_actions
 
     def get_actions(self, observations, action_masks=None):
-        if action_masks is None:
-            logits = torch.zeros((observations.shape[0], self.n_actions))
-        else:
-            logits = action_masks * 1e8
+        weights = torch.ones((observations.shape[0], self.n_actions))
+        if action_masks is not None:
+            weights[~action_masks.bool()] = 0.
 
-        return Categorical(logits=logits).sample()
+        return Categorical(probs=weights).sample()
