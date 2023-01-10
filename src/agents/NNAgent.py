@@ -12,21 +12,21 @@ def layer_init(layer, std=np.sqrt(2), bias_const=0.0):
 
 
 class NNAgent(nn.Module, Agent):
-    def __init__(self, observation_shape, action_size):
+    def __init__(self, observation_shape, action_size, hidden_size=256):
         super().__init__()
         self.critic = nn.Sequential(
-            layer_init(nn.Linear(np.array(observation_shape).prod(), 128)),
+            layer_init(nn.Linear(np.array(observation_shape).prod(), hidden_size)),
             nn.ReLU(),
-            layer_init(nn.Linear(128, 128)),
+            layer_init(nn.Linear(hidden_size, hidden_size)),
             nn.ReLU(),
-            layer_init(nn.Linear(128, 1), std=1.0),
+            layer_init(nn.Linear(hidden_size, 1), std=1.0),
         )
         self.actor = nn.Sequential(
-            layer_init(nn.Linear(np.array(observation_shape).prod(), 128)),
+            layer_init(nn.Linear(np.array(observation_shape).prod(), hidden_size)),
             nn.ReLU(),
-            layer_init(nn.Linear(128, 128)),
+            layer_init(nn.Linear(hidden_size, hidden_size)),
             nn.ReLU(),
-            layer_init(nn.Linear(128, action_size), std=0.01),
+            layer_init(nn.Linear(hidden_size, action_size), std=0.01),
         )
 
     def get_value(self, observations):
@@ -35,14 +35,14 @@ class NNAgent(nn.Module, Agent):
     def get_actions(self, observations: tensor, action_masks: tensor = None):
         logits = self.actor(observations)
         if action_masks is not None:
-            logits = logits + (action_masks - 1.) * 1e8
+            logits[~action_masks.bool()] = -1e8
         probs = Categorical(logits=logits)
         return probs.sample()
 
     def get_action_and_value(self, observations: tensor, action_masks: tensor = None, action=None):
         logits = self.actor(observations)
         if action_masks is not None:
-            logits = logits + (action_masks - 1.) * 1e8
+            logits[~action_masks.bool()] = -1e8
         probs = Categorical(logits=logits)
         if action is None:
             action = probs.sample()
