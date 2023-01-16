@@ -2,10 +2,10 @@ from typing import Dict
 
 
 class Constants:
-    seed_representation: Dict[int, str] = {0: "C",
-                                           1: "B",
-                                           2: "S",
-                                           3: "D"}
+    seed_representation: Dict[int, str] = {0: "B",
+                                           1: "C",
+                                           2: "D",
+                                           3: "S"}
     card_priorities: Dict[int, int] = {0: 10,
                                        1: 1,
                                        2: 9,

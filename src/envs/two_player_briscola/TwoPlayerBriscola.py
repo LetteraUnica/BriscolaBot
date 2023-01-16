@@ -68,9 +68,8 @@ class State:
 
 
 class TwoPlayerBriscola(AECEnv):
-    def __init__(self, seed: Optional[int] = None, reward_for_win: float = 0.):
+    def __init__(self, seed: Optional[int] = None):
         super().__init__()
-        self.reward_for_winning = reward_for_win
         self.rng: Optional[Generator] = None
         self.game_state: Union[State, None] = None
 
@@ -184,10 +183,6 @@ class TwoPlayerBriscola(AECEnv):
 
         self.next_turn()
 
-        if self.is_over() and not self.is_even():
-            game_winner = self.winner()
-            self.rewards[game_winner] += self.reward_for_winning
-
         self._cumulative_rewards[self.agent_selection] = 0
         self._accumulate_rewards()
 
@@ -226,7 +221,7 @@ class TwoPlayerBriscola(AECEnv):
     def is_even(self):
         return self.game_state.agent_points[self.agents[0]] == self.game_state.agent_points[self.agents[1]]
 
-    def winner(self) -> Optional[str]:
+    def game_winner(self) -> Optional[str]:
         if self.is_even():
             return None
         return sorted(self.game_state.agent_points.items(), key=lambda x: x[1], reverse=True)[0][0]
@@ -236,7 +231,7 @@ class TwoPlayerBriscola(AECEnv):
             if self.is_even():
                 return 0.5
             else:
-                return 1. if self.winner() == agent else 0.
+                return 1. if self.game_winner() == agent else 0.
         return 0.
 
     def __repr__(self) -> str:

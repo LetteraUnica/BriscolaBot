@@ -12,7 +12,7 @@ def layer_init(layer, std=np.sqrt(2), bias_const=0.0):
 
 
 class NNAgent(nn.Module, Agent):
-    def __init__(self, observation_shape, action_size, hidden_size=256):
+    def __init__(self, observation_shape, action_size, hidden_size=128):
         super().__init__()
         self.critic = nn.Sequential(
             layer_init(nn.Linear(np.array(observation_shape).prod(), hidden_size)),

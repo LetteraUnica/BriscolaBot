@@ -1,12 +1,9 @@
 import unittest
-from random import randint, choice, choices
+from random import choice
 
-import numpy as np
-
-from src.envs.single_player_briscola.SinglePlayerBriscola import SinglePlayerBriscola
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
-from src.envs.two_player_briscola.utils import is_first_player_win, get_priority, get_seed
+from src.envs.two_player_briscola.utils import is_first_player_win, get_seed
 
 
 def seed_rank_to_card(seed: int, rank: int) -> int:
@@ -213,7 +210,7 @@ class TestBriscola(unittest.TestCase):
             while not env.is_over():
                 play_random_actions(env)
 
-            winner = env.winner()
+            winner = env.game_winner()
             if winner is None:
                 self.assertTrue(env.is_even())
             else:
@@ -232,8 +229,8 @@ class TestBriscola(unittest.TestCase):
             if env.is_even():
                 [self.assertAlmostEqual(env.get_game_outcome(agent), 0.5) for agent in env.agents]
             else:
-                self.assertAlmostEqual(env.get_game_outcome(env.winner()), 1.)
-                self.assertAlmostEqual(env.get_game_outcome(env.other_player(env.winner())), 0.)
+                self.assertAlmostEqual(env.get_game_outcome(env.game_winner()), 1.)
+                self.assertAlmostEqual(env.get_game_outcome(env.other_player(env.game_winner())), 0.)
 
 
 if __name__ == '__main__':

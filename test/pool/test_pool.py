@@ -35,7 +35,7 @@ class TestPool(unittest.TestCase):
             self.assertEqual(len(samples), n_samples)
             self.assertEqual(indexes.size, n_samples)
             self.assertTrue(all([0 <= index < n_agents for index in indexes]))
-            self.assertTrue(0 in indexes)  # Player 0 must be always sampled
+            self.assertTrue(0 in indexes)  # Player 0 must always be sampled
 
     def test_max_size(self):
         pool = AgentPool(512)
