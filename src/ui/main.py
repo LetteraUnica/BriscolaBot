@@ -1,8 +1,9 @@
 import sys
 from time import sleep
-from typing import Optional
+from typing import Optional, Union
 
 import pygame
+from pygame.rect import Rect, RectType
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank
@@ -52,12 +53,18 @@ def draw_table_cards(screen: pygame.Surface, cards: list[int]):
         draw_card(screen, card, (x, y))
 
 
-def draw_human_hand(screen: pygame.Surface, human_cards: list[int]):
+def draw_human_hand(screen: pygame.Surface, human_cards: list[int]) -> list[Union[RectType, Rect]]:
+    card_rects = []
     for i, card in enumerate(human_cards):
         x = UIConstants.width - UIConstants.padding - UIConstants.card_width - i * (
                 UIConstants.card_width + UIConstants.space_between_cards)
         y = UIConstants.height - UIConstants.padding - UIConstants.card_height
-        draw_card(screen, card, (x, y))
+        card_image = load_card_image(card)
+        card_image = pygame.transform.scale(card_image, UIConstants.card_size)
+        screen.blit(card_image, (x, y))
+        card_rects.append(card_image.get_rect(topleft=(x, y)))
+
+    return card_rects
 
 
 def draw_ai_hand(screen: pygame.Surface, cards: list[int]):
@@ -74,15 +81,24 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(UIConstants.size)
     pygame.display.set_caption("Briscola")
 
+    card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
+    second_played_card = None
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # If esc is pressed, quit
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
+
+            mouse_pos = pygame.mouse.get_pos()
+            for i, card_rect in enumerate(card_rects):
+                if card_rect.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                    card_clicked = controller.get_player_cards(UIConstants.human_player)[i]
+
+                    controller.play_card(card_clicked)
 
         screen.fill(UIConstants.background_color)
         draw_briscola_card(screen, controller.get_briscola_card())
         draw_deck(screen)
-        draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
+        card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
         draw_ai_hand(screen, controller.get_player_cards(UIConstants.ai_player))
         draw_table_cards(screen, [Constants.null_card_number, controller.get_table_card()])
 
