@@ -1,5 +1,7 @@
 class UIConstants:
-    background_color: tuple[int, int, int] = (204, 204, 204)
+    white_color: tuple[int, int, int] = (255, 255, 255)
+    text_color: tuple[int, int, int] = (0, 0, 0)
+    background_color: tuple[int, int, int] = (255, 255, 128)
 
     width: int = 800
     height: int = 800

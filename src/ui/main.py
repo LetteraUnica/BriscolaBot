@@ -5,6 +5,7 @@ from typing import Optional, Union
 import pygame
 from pygame.rect import Rect, RectType
 
+from src.agents.NNAgent import NNAgent
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank
 from src.ui.Constants import UIConstants
@@ -75,6 +76,31 @@ def draw_ai_hand(screen: pygame.Surface, cards: list[int]):
         draw_card(screen, None, (x, y))
 
 
+def print_points(screen: pygame.Surface, player_points: float, ai_points: float):
+    font = pygame.font.Font(None, 36)
+    screen.blit(
+        font.render(f'AI points: {ai_points}', True, UIConstants.text_color, UIConstants.background_color),
+        (2 * UIConstants.padding, 2 * UIConstants.padding)
+    )
+
+    screen.blit(
+        font.render(f'Player points: {player_points}', True, UIConstants.text_color, UIConstants.background_color),
+        (2 * UIConstants.padding, UIConstants.height - 3 * UIConstants.padding)
+    )
+
+
+def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
+    pygame.draw.rect(screen, UIConstants.background_color, (0, 0, screen.get_width(), screen.get_height()))
+
+    font = pygame.font.Font(None, 60)
+
+    text = font.render(f'Player {player_won} won with {points} points!',
+                       True,
+                       UIConstants.text_color)
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    screen.blit(text, text_rect)
+
+
 if __name__ == "__main__":
     controller = BriscolaController()
     pygame.init()
@@ -82,8 +108,9 @@ if __name__ == "__main__":
     pygame.display.set_caption("Briscola")
 
     card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
-    second_played_card = None
     while True:
+        delay = 0.
+        card_clicked = None
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 sys.exit()
@@ -93,14 +120,29 @@ if __name__ == "__main__":
                 if card_rect.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONDOWN:
                     card_clicked = controller.get_player_cards(UIConstants.human_player)[i]
 
-                    controller.play_card(card_clicked)
+        if card_clicked is not None:
+            controller.play_card(card_clicked)
+        controller.play_ai_card()
+
+        if controller.two_cards_on_table():
+            delay += 2.
 
         screen.fill(UIConstants.background_color)
-        draw_briscola_card(screen, controller.get_briscola_card())
-        draw_deck(screen)
         card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
         draw_ai_hand(screen, controller.get_player_cards(UIConstants.ai_player))
-        draw_table_cards(screen, [Constants.null_card_number, controller.get_table_card()])
+        draw_table_cards(screen, controller.get_table_cards())
+        if controller.get_deck_size() > 0:
+            draw_briscola_card(screen, controller.get_briscola_card())
+            draw_deck(screen)
+        print_points(screen,
+                     controller.get_points_of_player(UIConstants.human_player),
+                     controller.get_points_of_player(UIConstants.ai_player))
 
-        sleep(0.03)
+        if controller.is_over():
+            print_win_screen(screen, controller.get_winner(), controller.get_winner_points())
+            controller.reset()
+            delay += 2.
+
         pygame.display.flip()
+        sleep(delay + 0.03)
+        controller.next_tick()
