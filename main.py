@@ -27,7 +27,12 @@ def get_card_path(card: Optional[int]) -> str:
 def load_card_image(card: int) -> pygame.Surface:
     card_path = get_card_path(card)
     card_image = pygame.image.load(card_path)
-    return card_image
+    return rescale(card_image)
+
+
+@cache
+def rescale(image: pygame.Surface) -> pygame.Surface:
+    return pygame.transform.smoothscale(image, (UIConstants.card_width, UIConstants.card_height))
 
 
 def draw_card(screen: pygame.Surface, card: Optional[int], location: tuple[int, int]):
@@ -35,10 +40,23 @@ def draw_card(screen: pygame.Surface, card: Optional[int], location: tuple[int, 
     screen.blit(card_image, location)
 
 
-def draw_deck(screen: pygame.Surface):
+@cache
+def load_deck_image() -> pygame.Surface:
     deck_image = pygame.image.load("src/ui/resources/deck.png")
+    return rescale(deck_image)
+
+
+def draw_deck(screen: pygame.Surface, deck_cards: int):
+    deck_image = load_deck_image()
     location = (UIConstants.padding, (UIConstants.height - UIConstants.card_height) // 2)
     screen.blit(deck_image, location)
+
+    font = pygame.font.Font(None, UIConstants.small_font_size)
+    screen.blit(
+        font.render(f'Remaining cards: {deck_cards}', True, UIConstants.text_color, UIConstants.background_color),
+        (UIConstants.padding,
+         (UIConstants.height - UIConstants.card_height) // 2 + UIConstants.card_height + UIConstants.padding)
+    )
 
 
 def draw_briscola_card(screen: pygame.Surface, briscola_card: int):
@@ -87,7 +105,7 @@ def draw_ai_hand(screen: pygame.Surface, cards: list[int]):
 
 
 def print_points(screen: pygame.Surface, player_points: float, ai_points: float):
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, UIConstants.small_font_size)
     screen.blit(
         font.render(f'AI points: {ai_points}', True, UIConstants.text_color, UIConstants.background_color),
         (2 * UIConstants.padding, 2 * UIConstants.padding)
@@ -102,7 +120,7 @@ def print_points(screen: pygame.Surface, player_points: float, ai_points: float)
 def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
     pygame.draw.rect(screen, UIConstants.background_color, (0, 0, screen.get_width(), screen.get_height()))
 
-    font = pygame.font.Font(None, 60)
+    font = pygame.font.Font(None, UIConstants.big_font_size)
     player_won = "You" if player_won == UIConstants.human_player else "AI"
     text = font.render(f'{player_won} won with {points} points!',
                        True,
@@ -144,7 +162,7 @@ if __name__ == "__main__":
         draw_table_cards(screen, controller.get_table_cards())
         if controller.get_deck_size() > 0:
             draw_briscola_card(screen, controller.get_briscola_card())
-            draw_deck(screen)
+            draw_deck(screen, controller.get_deck_size())
         print_points(screen,
                      controller.get_points_of_player(UIConstants.human_player),
                      controller.get_points_of_player(UIConstants.ai_player))
