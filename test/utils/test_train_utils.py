@@ -13,7 +13,7 @@ class TestTrainUtils(unittest.TestCase):
         n_actions = vec_env.single_action_space().n
         player_policy = RandomAgent(n_actions)
         vec_env.reset()
-        for _ in range(Constants.deck_cards // (2*Constants.n_agents) + 1):
+        for _ in range(Constants.deck_cards // (2 * Constants.n_agents) + 1):
             play_all_moves_of_player(vec_env.get_envs(), player_policy, "player_0")
             [self.assertEqual(agent, "player_1") for agent in vec_env.agent_selections()]
             play_all_moves_of_player(vec_env.get_envs(), player_policy, "player_1")
