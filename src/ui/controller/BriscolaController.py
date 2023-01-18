@@ -3,7 +3,7 @@ import torch
 from src.agents.NNAgent import NNAgent
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
-from src.ui.Constants import UIConstants
+from src.ui.UIConstants import UIConstants
 
 
 class BriscolaController:

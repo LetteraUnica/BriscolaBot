@@ -1,4 +1,5 @@
 import sys
+from functools import cache
 from time import sleep
 from typing import Optional, Union
 
@@ -8,20 +9,22 @@ from pygame.rect import Rect, RectType
 from src.agents.NNAgent import NNAgent
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank
-from src.ui.Constants import UIConstants
+from src.ui.UIConstants import UIConstants
 from src.ui.controller.BriscolaController import BriscolaController
 
 
+@cache
 def get_card_path(card: Optional[int]) -> str:
     if card is None:
         return f"resources/briscola_cards/back.png"
     if card == Constants.null_card_number:
-        return f"resources/briscola_cards/null_card.png"
+        return f"resources/briscola_cards/empty.png"
     seed, rank = get_seed(card), get_rank(card)
     card_string = f"{rank + 1}_{UIConstants.seed_to_string[seed]}"
     return f"resources/briscola_cards/{card_string}.png"
 
 
+@cache
 def load_card_image(card: int) -> pygame.Surface:
     card_path = get_card_path(card)
     card_image = pygame.image.load(card_path)
@@ -30,13 +33,11 @@ def load_card_image(card: int) -> pygame.Surface:
 
 def draw_card(screen: pygame.Surface, card: Optional[int], location: tuple[int, int]):
     card_image = load_card_image(card)
-    card_image = pygame.transform.scale(card_image, UIConstants.card_size)
     screen.blit(card_image, location)
 
 
 def draw_deck(screen: pygame.Surface):
     deck_image = pygame.image.load("resources/deck.png")
-    deck_image = pygame.transform.scale(deck_image, UIConstants.card_size)
     location = (UIConstants.padding, (UIConstants.height - UIConstants.card_height) // 2)
     screen.blit(deck_image, location)
 
@@ -56,14 +57,24 @@ def draw_table_cards(screen: pygame.Surface, cards: list[int]):
 
 def draw_human_hand(screen: pygame.Surface, human_cards: list[int]) -> list[Union[RectType, Rect]]:
     card_rects = []
+    is_over_card = 0
     for i, card in enumerate(human_cards):
         x = UIConstants.width - UIConstants.padding - UIConstants.card_width - i * (
                 UIConstants.card_width + UIConstants.space_between_cards)
         y = UIConstants.height - UIConstants.padding - UIConstants.card_height
-        card_image = load_card_image(card)
-        card_image = pygame.transform.scale(card_image, UIConstants.card_size)
+        card_image = load_card_image(card).copy()
+        card_rect = card_image.get_rect(topleft=(x, y))
+        if card_rect.collidepoint(pygame.mouse.get_pos()):
+            card_image.fill((255, 255, 128, 192), special_flags=pygame.BLEND_RGBA_MULT)
+            is_over_card += 1
+
         screen.blit(card_image, (x, y))
-        card_rects.append(card_image.get_rect(topleft=(x, y)))
+        card_rects.append(card_rect)
+
+    if is_over_card > 0:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     return card_rects
 
@@ -93,8 +104,8 @@ def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
     pygame.draw.rect(screen, UIConstants.background_color, (0, 0, screen.get_width(), screen.get_height()))
 
     font = pygame.font.Font(None, 60)
-
-    text = font.render(f'Player {player_won} won with {points} points!',
+    player_won = "You" if player_won == UIConstants.human_player else "AI"
+    text = font.render(f'{player_won} won with {points} points!',
                        True,
                        UIConstants.text_color)
     text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
@@ -110,14 +121,15 @@ if __name__ == "__main__":
     card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
     while True:
         delay = 0.
+        is_over_card = 0
         card_clicked = None
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or event.type == pygame.QUIT:
                 sys.exit()
 
-            mouse_pos = pygame.mouse.get_pos()
             for i, card_rect in enumerate(card_rects):
-                if card_rect.collidepoint(mouse_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+                if card_rect.collidepoint(
+                        pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     card_clicked = controller.get_player_cards(UIConstants.human_player)[i]
 
         if card_clicked is not None:
