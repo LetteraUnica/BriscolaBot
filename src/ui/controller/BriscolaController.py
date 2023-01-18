@@ -69,7 +69,7 @@ class BriscolaController:
         player_policy = NNAgent(self.briscola_env.observation_space(self.ai_player)["observation"].shape,
                                 self.briscola_env.action_space(self.ai_player).n)
 
-        player_policy.load_state_dict(torch.load("resources/agent.pt"))
+        player_policy.load_state_dict(torch.load("src/ui/resources/agent.pt"))
         player_policy.eval()
 
         return player_policy

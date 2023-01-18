@@ -1,11 +1,9 @@
-import os
 import sys
 from functools import cache
 from time import sleep
 from typing import Optional, Union
 
 import pygame
-import torch
 from pygame.rect import Rect, RectType
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
@@ -17,12 +15,12 @@ from src.ui.controller.BriscolaController import BriscolaController
 @cache
 def get_card_path(card: Optional[int]) -> str:
     if card is None:
-        return f"resources/briscola_cards/back.png"
+        return "src/ui/resources/briscola_cards/back.png"
     if card == Constants.null_card_number:
-        return f"resources/briscola_cards/empty.png"
+        return "src/ui/resources/briscola_cards/empty.png"
     seed, rank = get_seed(card), get_rank(card)
     card_string = f"{rank + 1}_{UIConstants.seed_to_string[seed]}"
-    return f"resources/briscola_cards/{card_string}.png"
+    return f"src/ui/resources/briscola_cards/{card_string}.png"
 
 
 @cache
@@ -38,7 +36,7 @@ def draw_card(screen: pygame.Surface, card: Optional[int], location: tuple[int, 
 
 
 def draw_deck(screen: pygame.Surface):
-    deck_image = pygame.image.load("resources/deck.png")
+    deck_image = pygame.image.load("src/ui/resources/deck.png")
     location = (UIConstants.padding, (UIConstants.height - UIConstants.card_height) // 2)
     screen.blit(deck_image, location)
 
