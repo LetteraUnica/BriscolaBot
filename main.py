@@ -1,9 +1,11 @@
+import os
 import sys
 from functools import cache
 from time import sleep
 from typing import Optional, Union
 
 import pygame
+import torch
 from pygame.rect import Rect, RectType
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
