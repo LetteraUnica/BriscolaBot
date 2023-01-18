@@ -6,7 +6,6 @@ from typing import Optional, Union
 import pygame
 from pygame.rect import Rect, RectType
 
-from src.agents.NNAgent import NNAgent
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank
 from src.ui.UIConstants import UIConstants

@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import ndarray
-from scipy.special import softmax, expit, logit
+from scipy.special import softmax, logit
 
 from src.agents import Agent
 

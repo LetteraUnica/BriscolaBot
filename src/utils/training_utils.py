@@ -1,9 +1,7 @@
-from typing import Callable
-
 import numpy as np
 import torch
 from pettingzoo import AECEnv
-from torch import Tensor, nn
+from torch import Tensor
 
 from src.agents import Agent
 from src.vectorizers import VectorizedEnv
