@@ -121,8 +121,13 @@ def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
     pygame.draw.rect(screen, UIConstants.background_color, (0, 0, screen.get_width(), screen.get_height()))
 
     font = pygame.font.Font(None, UIConstants.big_font_size)
-    player_won = "You" if player_won == UIConstants.human_player else "AI"
-    text = font.render(f'{player_won} won with {points} points!',
+    if player_won is None:
+        win_text = "It's a draw!"
+    else:
+        player_won = "You" if player_won == UIConstants.human_player else "AI"
+        win_text = f'{player_won} won with {points} points!'
+
+    text = font.render(win_text,
                        True,
                        UIConstants.text_color)
     text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
