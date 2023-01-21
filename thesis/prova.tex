@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper]{report}
+
+\usepackage{csquotes}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[11pt]{moresize}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{scrextend}
+\usepackage{wrapfig}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\usepackage[export]{adjustbox}
+\usepackage[backend=bibtex,bibstyle=ieee,citestyle=numeric-comp]{biblatex}
+\usepackage{svg}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\vettorec}[1]{\textrm{#1}}
+\newcommand{\pscal}[2]{\langle \vettore{#1},\vettore{#2}\rangle}
+
+\theoremstyle{definition}
+\newtheorem{definizione}{Definizione}
+
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}
+
+\theoremstyle{plain}
+\newtheorem{esempio}{Esempio}
+
+\font\myfont=cmr12 at 40pt
+
+
+\date{{\LARGE 2023}}
+
+
+\title{{\myfont Briscola Bot}}
+
+\author{{\Huge }\\ \\ \\
+		Asdsa\\}
+
+\addbibresource{bibliography.bib}
+
+
+\def\blankpage{%
+      \clearpage%
+      %\thispagestyle{empty}%
+      %\addtocounter{page}{-1}%
+      \null%
+      \clearpage}
+
+\begin{document}
+	\maketitle
+	\input{chapters/facciata.tex}
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \null%
+    \clearpage
+	%\input{chapters/ringraziamenti.tex}
+	\blankpage
+	\tableofcontents
+	
+	\chapter*{Introduction}
+ 	%\input{chapters/introduction.tex}
+    \blankpage
+    \printbibliography
+
+\end{document}
