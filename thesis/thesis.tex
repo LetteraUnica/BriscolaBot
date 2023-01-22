@@ -15,7 +15,12 @@
 \usepackage[font=small,labelfont=bf,tableposition=top]{caption}
 \usepackage[export]{adjustbox}
 \usepackage[backend=bibtex,bibstyle=ieee,citestyle=numeric-comp]{biblatex}
-\usepackage{svg}
+\usepackage{float}
+\usepackage{svg} % Include svg images
+\svgsetup{inkscapelatex=false} % Avoid latex to overwrite the font
+
+%\usepackage[sc]{mathpazo} % Use the Palatino font
+%\linespread{1.05} % Line spacing - Palatino needs more space between lines
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \newcommand{\vettorec}[1]{\textrm{#1}}
@@ -32,18 +37,9 @@
 
 \font\myfont=cmr12 at 40pt
 
-
-\date{{\LARGE 2023}}
-
-
-\title{{\myfont Briscola Bot}}
-
-\author{{\Huge }\\ \\ \\
-		Asdsa\\}
-
 \addbibresource{bibliography.bib}
 
-
+ 
 \def\blankpage{%
       \clearpage%
       %\thispagestyle{empty}%
@@ -52,18 +48,22 @@
       \clearpage}
 
 \begin{document}
-	\maketitle
 	\input{chapters/facciata.tex}
     \thispagestyle{empty}%
     \addtocounter{page}{-1}%
     \null%
     \clearpage
-	%\input{chapters/ringraziamenti.tex}
+	\input{chapters/abstract.tex}
+    \blankpage
+	\input{chapters/ringraziamenti.tex}
 	\blankpage
+
 	\tableofcontents
-	
-	\chapter*{Introduction}
- 	%\input{chapters/introduction.tex}
+ 	\input{chapters/introduction.tex}
+    \blankpage
+    \input{chapters/background/background.tex}
+    \input{chapters/background/reinforcement_learning.tex}
+
     \blankpage
     \printbibliography
 

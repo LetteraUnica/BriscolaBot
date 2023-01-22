@@ -1,0 +1,40 @@
+\chapter{Background}
+When an human first plays a game, let it be chess, checkers, poker, minecraft, cs:go or any other game, it is not given any instructions on how to play. It is not told which moves are good and which are bad, maybe it doesn't even know the rules of the game. By interacting and playing the game, losing to some opponents and starting to beat others, the player gradually learns what moves are best in which situation, and starts to understand the dynamics of the game. During all of this the player doesn't have any external feedback telling him which actions to perform in a given situation, but has to learn it by itself, by performing the action and seeing the outcome. Learning from interaction is a foundational idea underlying nearly all theories of learning and intelligence \cite{sutton-barto}.
+
+In this chapter we provide an overview of reinforcement learning. First of all we explore markov decision processes (MPDs) that allow us to define an environment in mathematical terms, ... Our dissertion of reinforcement learning is based on the book \cite{sutton-barto}..
+
+\section{Reinforcement Learning}
+Reinforcement learning is the field of machine learning that tries to maximize a numerical reward signal. The agent is not said which actions to take, but instead must discover the actions that lead to the highest reward by trying them. Furthermore, actions do not only influence the immediate future reward but also the next situation and consequently subsequent rewards, so the agent must learn to balance immediate and future rewards.\\\\
+Reinforcement learning differs from supervised learning because there is no external supervisor, which tells the agent which actions to perform in a given situation, instead the agent must discover the actions that lead to the highest reward by trying them. 
+Reinforcement learning is also different from unsupervised learning, because even though both approaches do not need labels to learn from, their goal is different. In unsupervised learning the goal is to find structure in the data, while in reinforcement learning the goal is to maximize a reward signal.\\\\
+One important aspect of reinforcement learning is the exploration-exploitation trade-off, which is not present in supervised or unsupervised learning. The agent must weigh the benefits of exploring new actions against the benefits of utilizing the best actions it has already discovered. A focus on exploration alone may lead to the discovery of the best actions, but with infrequent use, while a focus on exploitation alone may prevent the discovery of potentially better actions.
+
+\section{Markov Decision Processes}
+
+We can formalize the problem of learning from interaction to achieve a goal with Markov Decision Processes (MDPs). In the MPD framework the learner is called the agent, and the thing it interacts with is called the environment. The agent continually interacts with the environment by performing actions, on each action the environment changes state, and presents a new situation to the agent. The environment is also responsible to give the reward signal the agent must maximize.\\\\
+More specifically, the agent and environment interact in discrete time steps ($t=0, 1, 2 \dots$). At each time step $t$ the agent receives an observation of the environment's state $S_t \in S$ and based on that chooses an action $A_t \in A$. In the next time step $t+1$ the agent receives from the environment a numerical reward $R_{t+1} \in R \in \mathbb{R}$ and a new observation $S_{t+1} \in S$ and so on. This generates a sequence of observations, actions and rewards, which we call trajectory: $S_0, A_0, R_1, S_1, A_1, R_2, \dots$.
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.5\textwidth]{images/mdp.svg}
+    \caption{Illustration of the agent-environment interaction in a Markov Decision Process}
+    \label{fig:mdp}
+\end{figure}
+\clearpage
+In finite MDPs the set of states $S$, actions $A$ and rewards $R$ are finite, so the distribution of next state and reward, given the current state and action is well defined. Furthermore, the distribution of the random variables $R_t$ and $S_t$ follows the Markov property, dependsing only on the previous state and action, $P(S_{t+1|S_t}) = P(S_{t+1|S_t, S_{t-1}, \dots, S_0})$.\\\\
+We can formalize mathematically the MDP with the following notation:
+\begin{itemize}
+    \item $S$ is the set of states
+    \item $A$ is the set of actions
+    \item $R$ is the set of rewards
+    \item $p(s', r | s, a)$ is the dynamics function, which describes the distribution of the next state $s'$ and reward $r$, given the current state $s$ and action $a$
+    \item $\gamma \in [0, 1]$ is the discount factor, which determines how much importance the agent gives to future rewards
+\end{itemize}
+The dynamics function $p$ is defined as:
+\begin{equation}
+    p(s', r | s, a) = \mathbb{P}[S_{t+1} = s', R_{t+1} = r | S_t = s, A_t = a]
+    \label{dynamics-function}
+\end{equation}
+
+\subsection{Reward}
+
+
