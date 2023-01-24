@@ -15,26 +15,136 @@ We can formalize the problem of learning from interaction to achieve a goal with
 More specifically, the agent and environment interact in discrete time steps ($t=0, 1, 2 \dots$). At each time step $t$ the agent receives an observation of the environment's state $S_t \in S$ and based on that chooses an action $A_t \in A$. In the next time step $t+1$ the agent receives from the environment a numerical reward $R_{t+1} \in R \in \mathbb{R}$ and a new observation $S_{t+1} \in S$ and so on. This generates a sequence of observations, actions and rewards, which we call trajectory: $S_0, A_0, R_1, S_1, A_1, R_2, \dots$.
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.5\textwidth]{images/mdp.svg}
+    \includesvg[width=0.6\textwidth]{images/mdp.svg}
     \caption{Illustration of the agent-environment interaction in a Markov Decision Process}
     \label{fig:mdp}
 \end{figure}
 \clearpage
-In finite MDPs the set of states $S$, actions $A$ and rewards $R$ are finite, so the distribution of next state and reward, given the current state and action is well defined. Furthermore, the distribution of the random variables $R_t$ and $S_t$ follows the Markov property, dependsing only on the previous state and action, $P(S_{t+1|S_t}) = P(S_{t+1|S_t, S_{t-1}, \dots, S_0})$.\\\\
-We can formalize mathematically the MDP with the following notation:
+In finite MDPs the set of states $S$, actions $A$ and rewards $R$ are finite, so the distribution of next state and reward, given the current state and action is well defined. Furthermore, the distribution of the random variables $R_t$ and $S_t$ follows the Markov property, depending only on the previous state and action, $P(S_{t+1}|S_t) = P(S_{t+1}|S_t, S_{t-1}, \dots, S_0)$.\\\\
+We can formalize mathematically an MDP using the following notation:
 \begin{itemize}
     \item $S$ is the set of states
     \item $A$ is the set of actions
     \item $R$ is the set of rewards
-    \item $p(s', r | s, a)$ is the dynamics function, which describes the distribution of the next state $s'$ and reward $r$, given the current state $s$ and action $a$
+    \item $p(s', r | s, a)$ is the dynamics function, which describes the distribution of the next state $s'$ and reward $r$, given the current state $s$ and action $a$, defined as:
+    \begin{equation}
+        p(s', r | s, a) = \mathds{P}[S_{t+1} = s', R_{t+1} = r | S_t = s, A_t = a]
+        \label{dynamics-function}
+    \end{equation}
     \item $\gamma \in [0, 1]$ is the discount factor, which determines how much importance the agent gives to future rewards
 \end{itemize}
-The dynamics function $p$ is defined as:
-\begin{equation}
-    p(s', r | s, a) = \mathbb{P}[S_{t+1} = s', R_{t+1} = r | S_t = s, A_t = a]
-    \label{dynamics-function}
-\end{equation}
 
 \subsection{Reward}
+The goal of the agent is formalized via a reward signal, given from the environment to the agent. At each time step the reward is a single number $R_t \in \mathbb{R}$. The agent goal is to maximize the total reward it receives over time.\\
+For example if we want the agent to play a game, the reward signal can be the number of points the agent has scored. If we want the agent to learn to walk, the reward signal can be the distance the agent has traveled.\\
+The reward signal is not a way of telling the agent how to do, if we were to do that the agent will accomplish side tasks without ever completing the main task that we want to be solved. For example in a racing game we might be tempted to give a reward whenever the car moves forward, but this will lead the agent to move forward and backward in a loop, without ever finishing the race. In fact, in this case finishing the race is the worst thing that could happen, because then the agent will stop receiving the reward signal.\\
+The reward signal thus specifies what we want the agent to do, not how to do it.
 
+\subsection{Episodic and Continuing Tasks}
+We can divide the kinds of problems that reinforcement learning deals with in two classes: episodic problems and continuing ones, as we will see both of them can be well formalized with MDPs.\\
+In episodic tasks the agent interacts with the environment for a finite number of time steps $T$, and then it reaches a terminal state, ending the episode. Examples of episodic tasks is the game of chess, as the episode ends when a player wins or a draw is made.\\
+In continuing tasks, on the other hand, there is no clear notion of episode, as the agent interacts with the environment continually, potentially for an infinite number of time steps.\\
+We can formalize both problems with MDPs, by defining the terminal state. The terminal state is an absorbing state and corresponds to the end of the episode. When the agent reaches the terminal state it can no longer escape it and all future rewards are zero.\\
 
+\begin{figure}
+    \centering
+    \includesvg[width=0.6\textwidth]{images/episodic-continuing.svg}
+    \caption{Empty circles represen the states, while solid circles the actions state-action pairs. The numbers indicate the reward the agent receives if it goes through the corresponding transition. Left: Illustration of an episodic task, the terminal state $s_T$ is represented with a square. If the agent reaches the terminal state it can no longer receive any reward. Right: Illustration of a continuing task, when the agent reaches $s_2$ it comes back to $s_1$, receiving a reward of $r=1$ in the process, in this MPD the expected return with $\gamma = 1$ would be infinite as the sequence of rewards after the first state is always $1$.}
+    \label{fig:episodic-continuing}
+\end{figure}
+
+\subsection{Goal and Return}
+In reinforcement learning we formalize the goal of an agent as the maximization of the expected return $G_t$. The expected return is the sum of all rewards the agent receives in the future, starting from a given time step $t$:
+
+\begin{equation}
+    G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
+    \label{return}
+\end{equation}
+
+$\gamma \in [0, 1]$ is the discount factor and is used for two main reasons:
+\begin{enumerate}
+    \item $\gamma$ allows to tune how much importance the agent gives to future rewards, so we can make the agent more or less patient. If $\gamma = 0$ the agent will only consider the immediate reward $R_{t+1}$, while if $\gamma = 1$ the agent will consider all future rewards with the same importance.
+    \item Allows the return to be used also in continuing tasks, because we can set $\gamma < 1$ and keep the sum from diverging.
+\end{enumerate}
+Returns of subsequent time steps are related to each other in an important way:
+\begin{equation}
+    G_t = R_{t+1} + \gamma G_{t+1}
+    \label{return-recursive}
+\end{equation}
+
+\subsection{Policy and value functions}
+A policy $\pi$ is a mapping from states to actions, which specifies what action the agent should take in a given state. The policy is formally defined as the probability of taking action $a$ in state $s$
+\begin{equation}
+    \pi(a | s) = \mathds{P}[A_t = a | S_t = s]
+    \label{policy}
+\end{equation}
+Given a policy we can define a value function $v_{\pi}(s)$ associated to the policy, which gives us a measure of how good it is for the agent to be in a given state when following policy $\pi$. The value function is defined mathematically as the expected return starting from a state $s$ and then following policy $\pi$:
+\begin{equation}
+    v_{\pi}(s) = \mathds{E_{\pi}}[G_t | S_t = s] = \mathds{E_{\pi}}[\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} | S_t = s]
+    \label{value-function}
+\end{equation}
+We denote with $v_{\pi}(s)$ the value function of policy $\pi$.\\\\
+In a similar manner we can define the value of selecting an action $a$ in state $s$ under policy $\pi$, denoted $q_{\pi}(s, a)$, as the expected return starting from $s$, taking the action $a$ and then following policy $\pi$:
+\begin{equation}
+    q_{\pi}(s, a) = \mathds{E_{\pi}}[G_t | S_t = s, A_t = a] = \mathds{E_{\pi}}[\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} | S_t = s, A_t = a]
+    \label{action-value-function}
+\end{equation}
+We call $q_{\pi}(s, a)$ the action-value function of policy $\pi$.\\\\
+In practice it is also convenient to define the advantage, which is the difference between the value of taking action $a$ in state $s$ and the value of the state:
+\begin{equation}
+    A(s, a) = q_{\pi}(s, a) - v_{\pi}(s)
+    \label{advantage}
+\end{equation}
+The advantage is a measure of how much better it is to take action $a$ in state $s$.\\
+
+\subsection{Bellman Equation}
+A fundamental property of the value function is that it satisfies a recursive relationship similar to the one of the return \ref{return-recursive}:
+\begin{equation}
+    \begin{split}
+        v_{\pi}(s) & = \mathds{E_{\pi}}[G_t | S_t = s] \\
+        & = \mathds{E_{\pi}}[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
+        & = \sum_a \pi(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))
+    \end{split}
+    \label{bellman-equation}
+\end{equation}
+We call equation \ref{bellman-equation} the Bellman equation for $v_{\pi}$. The Bellman equation expresses the relationship between the value of current state $s$ and the value of successive states $s'$. It tells us that the value of each state must equal the value of the next state plus the reward expected along the way. The Bellman equation forms the basis to compute or approximate $v_{\pi}$ which we will see in thenext  section.\\\\
+It is also possible to define the Bellman equation for the action-value function:
+\begin{equation}
+    \begin{split}
+        q_{\pi}(s, a) & = \mathds{E}[G_t | S_t = s, A_t = a] \\
+        & = \mathds{E}[R_{t+1} + \gamma G_{t+1} | S_t = s, A_t = a] \\
+        & = \sum_{s', r} p(s', r | s, a) (r + \gamma v(s')) \\
+        & = \sum_{s', r} p(s', r | s, a) (r + \gamma \sum_{a'} \pi(a' | s') q_{\pi}(s', a'))
+    \end{split}
+    \label{bellman-equation-action-value}
+\end{equation}
+Where we used the relationship $v_{\pi}(s) = \sum_a \pi(a | s) q_{\pi}(s, a)$ between the value function and action-value function.\\\\
+
+\subsection{Optimal policy and value function}
+Solving a reinforcement learning problem means finding a policy that achieves a high return. To accomplish this we first need to define an ordering on the policies. We define that policy $\pi$ is better than policy $\pi'$ if the expected return is higher for $\pi$ than for $\pi'$.
+\begin{equation}
+    \pi \geq \pi' \iff v_{\pi}(s) \geq v_{\pi'}(s) \quad \forall s \in S
+    \label{policy-ordering}
+\end{equation}
+This way we can define the optimal policy as the policy that is at least better or equal to all other policies.
+\begin{equation}
+    \pi^* \geq \pi' \quad \forall \pi'
+    \label{optimal-policy}
+\end{equation}
+We can also define the optimal value function as the value function corresponding to the optimal policy, which is the value function that achieves the maximum return from state $s$.
+\begin{equation}
+    v_* = v_{\pi^*} = \max_{\pi} v_{\pi}
+    \label{optimal-value-function}
+\end{equation}
+We can also define the optimal value function in a different way, by using the definition of value function directly \ref{value-function}: $v_* = v_{\pi^*} = \mathds{E_{\pi^*}}[G_t | S_t = s]$. We can then use the Bellman equation \ref{bellman-equation} to write the Bellman equation for the optimal value function:
+\begin{equation}
+    \begin{split}
+        v_{*}(s) & = v_{\pi^*} = \mathds{E_{\pi^*}}[G_t | S_t = s] \\
+        & = \mathds{E_{\pi^*}}[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
+        & = \sum_a \pi^*(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s')) \\
+        & = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))
+    \end{split}
+    \label{bellman-optimality-equation}
+\end{equation}
+
+Where in the last step we used 
