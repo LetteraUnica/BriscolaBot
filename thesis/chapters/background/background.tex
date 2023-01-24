@@ -42,9 +42,9 @@ The reward signal thus specifies what we want the agent to do, not how to do it.
 
 \subsection{Episodic and Continuing Tasks}
 We can divide the kinds of problems that reinforcement learning deals with in two classes: episodic problems and continuing ones, as we will see both of them can be well formalized with MDPs.\\
-In episodic tasks the agent interacts with the environment for a finite number of time steps $T$, and then it reaches a terminal state, ending the episode. Examples of episodic tasks is the game of chess, as the episode ends when a player wins or a draw is made.\\
+In episodic tasks the agent interacts with the environment for a finite (yet random) number of time steps $T$, and then it reaches a terminal state, ending the episode. Examples of episodic tasks is the game of chess, as the episode ends when a player wins or a draw is made.\\
 In continuing tasks, on the other hand, there is no clear notion of episode, as the agent interacts with the environment continually, potentially for an infinite number of time steps.\\
-We can formalize both problems with MDPs, by defining the terminal state. The terminal state is an absorbing state and corresponds to the end of the episode. When the agent reaches the terminal state it can no longer escape it and all future rewards are zero.\\
+We can formalize both problems with MDPs, by defining the concept of terminal state: a terminal state is an absorbing state and corresponds to the end of the episode, when the agent reaches the terminal state it can no longer escape it and all future rewards are zero.\\
 
 \begin{figure}
     \centering
@@ -121,7 +121,7 @@ It is also possible to define the Bellman equation for the action-value function
 Where we used the relationship $v_{\pi}(s) = \sum_a \pi(a | s) q_{\pi}(s, a)$ between the value function and action-value function.\\\\
 
 \subsection{Optimal policy and value function}
-Solving a reinforcement learning problem means finding a policy that achieves a high return. To accomplish this we first need to define an ordering on the policies. We define that policy $\pi$ is better than policy $\pi'$ if the expected return is higher for $\pi$ than for $\pi'$.
+Solving a reinforcement learning problem means finding a policy that achieves a high return. To accomplish this we first need to define an ordering over policies. We define that policy $\pi$ is better than policy $\pi'$ if the expected return is higher for $\pi$ than for $\pi'$.
 \begin{equation}
     \pi \geq \pi' \iff v_{\pi}(s) \geq v_{\pi'}(s) \quad \forall s \in S
     \label{policy-ordering}
@@ -131,20 +131,37 @@ This way we can define the optimal policy as the policy that is at least better 
     \pi^* \geq \pi' \quad \forall \pi'
     \label{optimal-policy}
 \end{equation}
-We can also define the optimal value function as the value function corresponding to the optimal policy, which is the value function that achieves the maximum return from state $s$.
+Although there may be more than one optimal policy, all of them will have the same value-function $v_*$, so we can denote all the optimal policies with $\pi^*$.
+We define the optimal state-value function $v_*$ as:
 \begin{equation}
-    v_* = v_{\pi^*} = \max_{\pi} v_{\pi}
+    v_*(s) = \max_{\pi} v_{\pi}(s) \quad \forall s \in S
     \label{optimal-value-function}
 \end{equation}
-We can also define the optimal value function in a different way, by using the definition of value function directly \ref{value-function}: $v_* = v_{\pi^*} = \mathds{E_{\pi^*}}[G_t | S_t = s]$. We can then use the Bellman equation \ref{bellman-equation} to write the Bellman equation for the optimal value function:
+Which is the value function that achieves the maximum return from all states $s$. We can also define the optimal action-value function $q_*$ as:
+\begin{equation}
+    q_*(s, a) = \max_{\pi} q_{\pi}(s, a) \quad \forall s \in S, \forall a \in A
+    \label{optimal-action-value-function}
+\end{equation}
+This function gives the expected return for taking action $a$ in state $s$ and then following policy $\pi^*$.\\\\
+Another property of the optimal state-value function is that it satisfies a special form of the Bellman equation \ref{bellman-equation}, called the Bellman optimality equation:
 \begin{equation}
     \begin{split}
-        v_{*}(s) & = v_{\pi^*} = \mathds{E_{\pi^*}}[G_t | S_t = s] \\
-        & = \mathds{E_{\pi^*}}[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
-        & = \sum_a \pi^*(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s')) \\
-        & = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))
+        v_{*}(s) & = \max_a q_*(s, a) \\
+        & = \max_a \mathds{E_{\pi^*}}[G_t | S_t = s, A_t = a] \\
+        & = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_*(s'))
     \end{split}
     \label{bellman-optimality-equation}
 \end{equation}
+Note that in the final statement we didn's specify any policy, this is because we assume to be following an optimal policy, which is the one that always selects the best action $a_* = \arg \max_a' q_*(s, a') \; \forall s \in S$.
+Analogously, we can define the Bellman optimality equation for the action-value function:
+\begin{equation}
+    \begin{split}
+        q_{*}(s, a) & = \mathds{E_{\pi^*}}[G_t | S_t = s, A_t = a] \\
+        & = \sum_{s', r} p(s', r | s, a) (r + \gamma \max_{a'} q_*(s', a'))
+    \end{split}
+    \label{bellman-optimality-equation-action-value}
+\end{equation}
+Intuitively, the Bellman optimality equation expresses the fact that the value of a state under an optimal policy must equal the expected return for the best action from that state.\\
+In the next sections we will see how to solve the Bellman optimality equation both when we have a model of the environment \ref{dynamics-function} and when we don't.
 
-Where in the last step we used 
+\section{Dynamic Programming}
