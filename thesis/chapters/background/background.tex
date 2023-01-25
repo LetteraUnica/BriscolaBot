@@ -107,7 +107,7 @@ A fundamental property of the value function is that it satisfies a recursive re
     \end{split}
     \label{bellman-equation}
 \end{equation}
-We call equation \ref{bellman-equation} the Bellman equation for $v_{\pi}$. The Bellman equation expresses the relationship between the value of current state $s$ and the value of successive states $s'$. It tells us that the value of each state must equal the value of the next state plus the reward expected along the way. The Bellman equation forms the basis to compute or approximate $v_{\pi}$ which we will see in thenext  section.\\\\
+We call equation \ref{bellman-equation} the Bellman equation for $v_{\pi}$. The Bellman equation expresses the relationship between the value of current state $s$ and the value of successive states $s'$. It tells us that the value of each state must equal the value of the next state plus the reward expected along the way. The Bellman equation forms the basis to compute or approximate $v_{\pi}$ which we will see in the next  section.\\\\
 It is also possible to define the Bellman equation for the action-value function:
 \begin{equation}
     \begin{split}
@@ -165,3 +165,88 @@ Intuitively, the Bellman optimality equation expresses the fact that the value o
 In the next sections we will see how to solve the Bellman optimality equation both when we have a model of the environment \ref{dynamics-function} and when we don't.
 
 \section{Dynamic Programming}
+Dynamic programming is a tecnique that allows us to solve the Bellman optimality equation \ref{bellman-optimality-equation}, finding the optimal policy $\pi_*$ and value function $v_*$ given a perfect model of the environment, that is, we completely know the dynamics function $p(s', r | s, a)$.
+We can divide the problem of finding a solution to the Bellman optimality equation into two subproblems:
+\begin{enumerate}
+    \item \textbf{Policy evaluation}: Given a policy $\pi$, find its value function $v_{\pi}$.
+    \item \textbf{Policy improvement}: Given a value function $v_{\pi}$, find a better policy $\pi'$.
+\end{enumerate}
+
+\subsection{Policy evaluation}
+A simple way to evaluate a policy $\pi$ would be to solve the linear system of equations described by the Bellman equation \ref{bellman-equation}. This could be done with any linear system solution method available in the literature, however, in reinforcement learning iterative solution methods are most suitable.
+\begin{algorithm}[H]
+    \caption{Policy evaluation}
+    \label{alg:iterative-policy-evaluation}
+    \begin{algorithmic}[1]
+        \Require A policy $\pi$, a model $p$, a discount factor $\gamma$, a threshold $\theta$
+        \State Initialize a candidate value function $\hat{v}_{\pi}$
+        \While{True}
+            \State $\hat{v}'_{\pi} = \hat{v}_{\pi}$
+            \For{$s \in S$}
+                \State $\hat{v}'_{\pi}(s) = \sum_a \pi(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma \hat{v}_{\pi}(s'))$
+            \EndFor
+            \If{$| \hat{v}'_{\pi}(s) - \hat{v}_{\pi}(s) | < \theta$}
+                \State \textbf{return} $\hat{v}_{\pi}$
+            \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+Algorithm \ref{alg:iterative-policy-evaluation} is called the itearive policy evaluation algorithm and is guaranteed to always converge to the true value function $v_{\pi}$ with an error below the threshold $\theta$ if $\gamma < 1$, or if $\gamma = 1$ only if termination is guaranteed from all states under the policy $\pi$.\\
+This can be proven mathematically by noting that the operator $B_{\pi}(v_{\pi}) = \sum_a \pi(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))$ is contracting, which means that the solution is both unique and is reached no matter how we initialize the value function $\hat{v}_{\pi}$.\\\\
+In algorithm \ref{alg:iterative-policy-evaluation} we used an additional array to store the updated value function $\hat{v}'_{\pi}$, however, this is not required, as the algorithm will converge regardless of how we perform the updates, that is, we could have used only one array $\hat{v}_{\pi}$ and performed the update on line $5$ in-place:\\
+$\hat{v}_{\pi}(s) = \sum_a \pi(a | s) \sum_{s', r} p(s', r | s, a) (r + \gamma \hat{v}_{\pi}(s'))$\\
+In practice, the in-place algorithm usually converges faster than the two-array version because it uses updated values as soon as they are available.
+
+\subsection{Policy improvement}
+Our reason for computing the value function for a policy is to help find better policies. A simple improved version of $\pi$ is a policy that in state $s'$ takes the action that maximizes $q_{\pi}(s', a)$. This policy will be equal to $\pi$ in all states $s \neq s'$ but will be better in state $s'$, so $\pi' \geq \pi$.\\
+We can take this idea further, by defining $\pi'$ as the policy that takes the greedy action with respect to $q_{\pi}(s, a)$ in all states, with ties broken evenly. This policy is called the greedy policy and is defined as:
+\begin{equation}
+    \pi'(a | s) = \arg \max_a q_{\pi}(s, a) = \arg \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))
+    \label{greedy-policy}
+\end{equation}
+The greedy policy always takes the action that looks best in the short term with just one step lookahead, according to $v_{\pi}$. It can be shown that the greedy policy is always better or equal to $\pi$ due to the policy improvement theorem, demonstrated on page 78 of the Sutton and Barto's book \cite{sutton-barto}.\\
+
+\subsection{Policy iteration}
+A simple way to find the optimal policy is to iterate the policy evaluation and policy improvement steps until the policy doesn't change anymore. This process is guaranteed to converge to the optimal policy and value function with the same conditions that apply to the policy evaluation algorithm \ref{alg:iterative-policy-evaluation}, that is: convergence is guaranteed to the true value function $v_{\pi}$ with an error below the threshold $\theta$ if $\gamma < 1$, or if $\gamma = 1$ only if the task is episodic.\\
+\begin{algorithm}[H]
+    \caption{Policy iteration}
+    \label{alg:policy-iteration}
+    \begin{algorithmic}[1]
+        \Require A model $p$, a discount factor $\gamma$, a threshold $\theta$
+        \State Initialize a policy $\pi$
+        \While{True}
+            \State $v_{\pi} = \mathrm{Policy \; evaluation} (\pi, p, \gamma, \theta)$ \Comment{Algorithm \ref{alg:iterative-policy-evaluation}}
+            \State $\pi' = \arg \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))$ \Comment{Policy improvement}
+            \If{$\pi' = \pi$}
+                \State \textbf{return} $\pi, v_{\pi}$
+            \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+Algorithm \ref{alg:policy-iteration} is called the policy iteration algorithm. The algorithm iterates the policy evaluation and policy improvement steps until the policy doesn't change anymore.
+
+\subsection{Value iteration}
+The drawback of the policy iteration algorithm is that it requires an entire policy evaluation for each policy improvement step, requiring multiple sweeps over the state space. In practice, however, we can stop  before policy evalulation finished without losing any of the convergence properties of policy iteration \ref{alg:policy-iteration}. One important special case is when policy evaluation is stopped after just one sweep, using the update:
+\begin{equation}
+    v_{k+1}(s) = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_k(s'))
+    \label{value-iteration-update}
+\end{equation}
+This update the value iteration update and combines one pass of policy evaluation with policy improvement into one, requiring only 1 sweep over the state space. The update \ref{value-iteration-update} is similar to the policy evaluation update \ref{bellman-equation} except that we are using the maximum instead of the expectation.
+\begin{algorithm}[H]
+    \caption{Value iteration}
+    \label{alg:value-iteration}
+    \begin{algorithmic}[1]
+        \Require A model $p$, a discount factor $\gamma$, a threshold $\theta$
+        \State Initialize a value function $v_{0}$
+        \While{True}
+            \State $v_{k+1} = v_k$
+            \For{$s \in S$}
+                \State $v_{k+1}(s) = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_k(s'))$
+            \EndFor
+            \If{$| v_{k+1}(s) - v_k(s) | < \theta$}
+                \State \textbf{return} $v_{k+1}$
+            \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+Algorithm \ref{alg:value-iteration} is called the value iteration algorithm and usually converges faster than performing policy evaluation \ref{alg:iterative-policy-evaluation} at each step. Furthermore, like the policy evaluation algorithm \ref{alg:iterative-policy-evaluation}, this algorithm converges even if we perform all updates in place, without keeping in memory both $v_{k+1}$ and $v_k$, thus reducing memory requirements, on top of that .
