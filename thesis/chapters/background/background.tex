@@ -1,7 +1,6 @@
 \chapter{Background}
-When an human first plays a game, let it be chess, checkers, poker, minecraft, cs:go or any other game, it is not given any instructions on how to play. It is not told which moves are good and which are bad, maybe it doesn't even know the rules of the game. By interacting and playing the game, losing to some opponents and starting to beat others, the player gradually learns what moves are best in which situation, and starts to understand the dynamics of the game. During all of this the player doesn't have any external feedback telling him which actions to perform in a given situation, but has to learn it by itself, by performing the action and seeing the outcome. Learning from interaction is a foundational idea underlying nearly all theories of learning and intelligence \cite{sutton-barto}.
-
-In this chapter we provide an overview of reinforcement learning. First of all we explore markov decision processes (MPDs) that allow us to define an environment in mathematical terms, ... Our dissertion of reinforcement learning is based on the book \cite{sutton-barto}..
+When a human first plays a game, let it be chess, poker, Minecraft, CS:GO or any other game, it is not given any instructions on how to play. It is not told which moves are good and which are bad, maybe it doesn't even know the rules of the game. By interacting and playing the game, losing to some opponents and starting to beat others, the player gradually learns what moves are best in which situation and starts to understand the dynamics of the game. During all of this the player doesn't have any external feedback telling him which actions to perform in a given situation, but has to learn it by itself, by performing an action and experiencing the outcome. Learning from interaction is a foundational idea underlying nearly all theories of learning and intelligence \cite{sutton-barto}.\\\\
+In this chapter we provide an overview of reinforcement learning. First we will discuss Markov Decision Processes (MDPs) that allow us to define an environment (for now we can think of an environment as a game) in mathematical terms, then we will discuss Dynamic Programming, that allows to solve exactly the reinforcement learning problem in case we know everything about the environment. Finally, we will see model-free methods, that allow us to learn even if we know nothing about the environment, these methods learn by interacting directly with the environment, obtaining experience and exploiting it to find the best actions to perform in any situation. This chapter is based on the first part of the Sutton and Barto book \cite{sutton-barto}
 
 \section{Reinforcement Learning}
 Reinforcement learning is the field of machine learning that tries to maximize a numerical reward signal. The agent is not said which actions to take, but instead must discover the actions that lead to the highest reward by trying them. Furthermore, actions do not only influence the immediate future reward but also the next situation and consequently subsequent rewards, so the agent must learn to balance immediate and future rewards.\\\\
@@ -10,16 +9,14 @@ Reinforcement learning is also different from unsupervised learning, because eve
 One important aspect of reinforcement learning is the exploration-exploitation trade-off, which is not present in supervised or unsupervised learning. The agent must weigh the benefits of exploring new actions against the benefits of utilizing the best actions it has already discovered. A focus on exploration alone may lead to the discovery of the best actions, but with infrequent use, while a focus on exploitation alone may prevent the discovery of potentially better actions.
 
 \section{Markov Decision Processes}
-
-We can formalize the problem of learning from interaction to achieve a goal with Markov Decision Processes (MDPs). In the MPD framework the learner is called the agent, and the thing it interacts with is called the environment. The agent continually interacts with the environment by performing actions, on each action the environment changes state, and presents a new situation to the agent. The environment is also responsible to give the reward signal the agent must maximize.\\\\
-More specifically, the agent and environment interact in discrete time steps ($t=0, 1, 2 \dots$). At each time step $t$ the agent receives an observation of the environment's state $S_t \in S$ and based on that chooses an action $A_t \in A$. In the next time step $t+1$ the agent receives from the environment a numerical reward $R_{t+1} \in R \in \mathbb{R}$ and a new observation $S_{t+1} \in S$ and so on. This generates a sequence of observations, actions and rewards, which we call trajectory: $S_0, A_0, R_1, S_1, A_1, R_2, \dots$.
+We can formalize the problem of learning from interaction to achieve a goal with Markov Decision Processes (MDPs). In the MPD framework the learner is called the agent, and the thing it interacts with is called the environment. The agent continually interacts with the environment by performing actions, on each action the environment changes state, and presents a new situation to the agent. The environment is also responsible to give the reward signal the agent must maximize \ref{fig:mdp}.
 \begin{figure}[H]
     \centering
     \includesvg[width=0.6\textwidth]{images/mdp.svg}
     \caption{Illustration of the agent-environment interaction in a Markov Decision Process}
     \label{fig:mdp}
 \end{figure}
-\clearpage
+More specifically, the agent and environment interact in discrete time steps ($t=0, 1, 2 \dots$). At each time step $t$ the agent receives an observation of the environment's state $S_t \in S$ and based on that chooses an action $A_t \in A$. In the next time step $t+1$ the agent receives from the environment a numerical reward $R_{t+1} \in R \in \mathbb{R}$ and a new observation $S_{t+1} \in S$ and so on. This generates a sequence of observations, actions and rewards, which we call trajectory: $S_0, A_0, R_1, S_1, A_1, R_2, \dots$.\\\\
 In finite MDPs the set of states $S$, actions $A$ and rewards $R$ are finite, so the distribution of next state and reward, given the current state and action is well defined. Furthermore, the distribution of the random variables $R_t$ and $S_t$ follows the Markov property, depending only on the previous state and action, $P(S_{t+1}|S_t) = P(S_{t+1}|S_t, S_{t-1}, \dots, S_0)$.\\\\
 We can formalize mathematically an MDP using the following notation:
 \begin{itemize}
@@ -41,17 +38,17 @@ The reward signal is not a way of telling the agent how to do, if we were to do 
 The reward signal thus specifies what we want the agent to do, not how to do it.
 
 \subsection{Episodic and Continuing Tasks}
-We can divide the kinds of problems that reinforcement learning deals with in two classes: episodic problems and continuing ones, as we will see both of them can be well formalized with MDPs.\\
+We can divide the kinds of problems that reinforcement learning deals with in two classes: episodic problems and continuing ones, which can be both formalized with MDPs \ref{fig:episodic-continuing}.
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.6\textwidth]{images/episodic-continuing.svg}
+    \caption{Empty circles represent the states, while solid circles the actions state-action pairs. The numbers indicate the reward the agent receives if it goes through the corresponding transition. Left: Illustration of an episodic task, the terminal state $s_T$ is represented with a square. If the agent reaches the terminal state it can no longer receive any reward. Right: Illustration of a continuing task, when the agent reaches $s_2$ it comes back to $s_1$, receiving a reward of $r=1$ in the process, in this MPD the expected return with $\gamma = 1$ would be infinite as the sequence of rewards after the first state is always $1$.}
+    \label{fig:episodic-continuing}
+\end{figure}
 In episodic tasks the agent interacts with the environment for a finite (yet random) number of time steps $T$, and then it reaches a terminal state, ending the episode. Examples of episodic tasks is the game of chess, as the episode ends when a player wins or a draw is made.\\
 In continuing tasks, on the other hand, there is no clear notion of episode, as the agent interacts with the environment continually, potentially for an infinite number of time steps.\\
 We can formalize both problems with MDPs, by defining the concept of terminal state: a terminal state is an absorbing state and corresponds to the end of the episode, when the agent reaches the terminal state it can no longer escape it and all future rewards are zero.\\
 
-\begin{figure}
-    \centering
-    \includesvg[width=0.6\textwidth]{images/episodic-continuing.svg}
-    \caption{Empty circles represen the states, while solid circles the actions state-action pairs. The numbers indicate the reward the agent receives if it goes through the corresponding transition. Left: Illustration of an episodic task, the terminal state $s_T$ is represented with a square. If the agent reaches the terminal state it can no longer receive any reward. Right: Illustration of a continuing task, when the agent reaches $s_2$ it comes back to $s_1$, receiving a reward of $r=1$ in the process, in this MPD the expected return with $\gamma = 1$ would be infinite as the sequence of rewards after the first state is always $1$.}
-    \label{fig:episodic-continuing}
-\end{figure}
 
 \subsection{Goal and Return}
 In reinforcement learning we formalize the goal of an agent as the maximization of the expected return $G_t$, where the return, denoted $G$ is the sum of all discounted rewards the agent receives in the future, starting from a given time step $t$:
@@ -61,7 +58,7 @@ In reinforcement learning we formalize the goal of an agent as the maximization 
 \end{equation}
 Where $\gamma \in [0, 1]$ is the discount factor and is used for two main reasons:
 \begin{enumerate}
-    \item $\gamma$ allows to tune how much importance the agent gives to future rewards, so we can make the agent more or less patient. If $\gamma = 0$ the agent will only consider the immediate reward $R_{t+1}$, while if $\gamma = 1$ the agent will consider all future rewards with the same importance.
+    \item $\gamma$ allows tuning how much importance the agent gives to future rewards, so we can make the agent more or less patient. If $\gamma = 0$ the agent will only consider the immediate reward $R_{t+1}$, while if $\gamma = 1$ the agent will consider all future rewards with the same importance.
     \item Allows the return to be used also in continuing tasks, because we can set $\gamma < 1$ and keep the sum from diverging.
 \end{enumerate}
 Returns of subsequent time steps are related to each other in an important way:
@@ -82,13 +79,13 @@ Given a policy we can define a value function $v_{\pi}(s)$ associated to the pol
     \label{value-function}
 \end{equation}
 We denote with $v_{\pi}(s)$ the value function of policy $\pi$.\\\\
-In a similar manner we can define the value of selecting an action $a$ in state $s$ under policy $\pi$, denoted $q_{\pi}(s, a)$, as the expected return starting from $s$, taking the action $a$ and then following policy $\pi$:
+Similarly, we can define the value of selecting an action $a$ in state $s$ under policy $\pi$, denoted $q_{\pi}(s, a)$, as the expected return starting from $s$, taking the action $a$ and then following policy $\pi$:
 \begin{equation}
     q_{\pi}(s, a) = \mathds{E_{\pi}}[G_t | S_t = s, A_t = a] = \mathds{E_{\pi}}[\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} | S_t = s, A_t = a]
     \label{action-value-function}
 \end{equation}
 We call $q_{\pi}(s, a)$ the action-value function of policy $\pi$.\\\\
-In practice it is also convenient to define the advantage, which is the difference between the value of taking action $a$ in state $s$ and the value of the state:
+In practice, it is also convenient to define the advantage, which is the difference between the value of taking action $a$ in state $s$ and the value of the state:
 \begin{equation}
     A(s, a) = q_{\pi}(s, a) - v_{\pi}(s)
     \label{advantage}
@@ -150,7 +147,7 @@ Another property of the optimal state-value function is that it satisfies a spec
     \end{split}
     \label{bellman-optimality-equation}
 \end{equation}
-Note that in the final statement we didn's specify any policy, this is because we assume to be following an optimal policy, which is the one that always selects the best action $a_* = \arg \max_a' q_*(s, a') \; \forall s \in S$.
+Note that in the final statement we didn't specify any policy, this is because we assume to be following an optimal policy, which is the one that always selects the best action $a_* = \arg \max_a' q_*(s, a') \; \forall s \in S$.
 Analogously, we can define the Bellman optimality equation for the action-value function:
 \begin{equation}
     \begin{split}
@@ -163,11 +160,11 @@ Intuitively, the Bellman optimality equation expresses the fact that the value o
 In the next sections we will see how to solve the Bellman optimality equation both when we have a model of the environment \ref{dynamics-function} and when we don't.
 
 \section{Dynamic Programming}
-Dynamic programming is a tecnique that allows us to solve the Bellman optimality equation \ref{bellman-optimality-equation}, finding the optimal policy $\pi_*$ and value function $v_*$ given a perfect model of the environment, that is, we completely know the dynamics function $p(s', r | s, a)$.
-We can divide the problem of finding a solution to the Bellman optimality equation into two subproblems:
+Dynamic programming is a technique that allows us to solve the Bellman optimality equation \ref{bellman-optimality-equation}, finding the optimal policy $\pi_*$ and value function $v_*$ given a perfect model of the environment, that is, we completely know the dynamics function $p(s', r | s, a)$.
+We can split the problem of finding a solution to the Bellman optimality equation into two subproblems:
 \begin{enumerate}
     \item \textbf{Policy evaluation}: Given a policy $\pi$, find its value function $v_{\pi}$.
-    \item \textbf{Policy improvement}: Given a value function $v_{\pi}$, find a better policy $\pi'$.
+    \item \textbf{Policy improvement}: Given the value function $v_{\pi}$, find a better policy $\pi'$.
 \end{enumerate}
 
 \subsection{Policy evaluation}
@@ -202,10 +199,10 @@ We can take this idea further, by defining $\pi'$ as the policy that takes the g
     \pi'(a | s) = \arg \max_a q_{\pi}(s, a) = \arg \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_{\pi}(s'))
     \label{greedy-policy}
 \end{equation}
-The greedy policy always takes the action that looks best in the short term with just one step lookahead, according to $v_{\pi}$. It can be shown that the greedy policy is always better or equal to $\pi$ due to the policy improvement theorem, demonstrated on page 78 of the Sutton and Barto's book \cite{sutton-barto}.\\
+The greedy policy always takes the action that looks best in the short term with just one step lookahead, according to $v_{\pi}$. It can be shown that the greedy policy is always better or equal to $\pi$ due to the policy improvement theorem, demonstrated on page 78 of the Sutton and Barto's book \cite{sutton-barto}.
 
 \subsection{Policy iteration}
-A simple way to find the optimal policy is to iterate the policy evaluation and policy improvement steps until the policy doesn't change anymore. This process is guaranteed to converge to the optimal policy and value function with the same conditions that apply to the policy evaluation algorithm \ref{alg:policy-evaluation}, that is: convergence is guaranteed to the true value function $v_{\pi}$ with an error below the threshold $\theta$ if $\gamma < 1$, or if $\gamma = 1$ only if the task is episodic.\\
+A simple way to find the optimal policy is to iterate the policy evaluation and policy improvement steps until the policy doesn't change anymore. This process is guaranteed to converge to the optimal policy and value function with the same conditions that apply to the policy evaluation algorithm \ref{alg:policy-evaluation}, that is: convergence is guaranteed to the true value function $v_{\pi}$ with an error below the threshold $\theta$ if $\gamma < 1$, or if $\gamma = 1$ only if the task is episodic.
 \begin{algorithm}[H]
     \caption{Policy iteration}
     \label{alg:policy-iteration}
@@ -224,7 +221,7 @@ A simple way to find the optimal policy is to iterate the policy evaluation and 
 Algorithm \ref{alg:policy-iteration} is called the policy iteration algorithm. The algorithm iterates the policy evaluation and policy improvement steps until the policy doesn't change anymore.
 
 \subsection{Value iteration}
-The drawback of the policy iteration algorithm \ref{alg:policy-iteration} is that it requires an entire policy evaluation for each policy improvement step, requiring multiple sweeps over the state space. In practice, however, we can stop before policy evalulation finished without losing any of the convergence properties of policy iteration \ref{alg:policy-iteration}. One important special case is when policy evaluation is stopped after just one sweep, using the update:
+The drawback of the policy iteration algorithm \ref{alg:policy-iteration} is that it requires an entire policy evaluation for each policy improvement step, requiring multiple sweeps over the state space. In practice, however, we can stop before policy evaluation finished without losing any of the convergence properties of policy iteration \ref{alg:policy-iteration}. One important special case is when policy evaluation is stopped after just one sweep, using the update:
 \begin{equation}
     v_{k+1}(s) = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_k(s'))
     \label{value-iteration-update}
@@ -270,12 +267,12 @@ Another way to see the process is in terms of two different goals, the two conve
 Monte Carlo methods are a class of algorithms that learn directly from experience, without the need for a model of the environment. The main idea is to estimate the value function $v_{\pi}$ by averaging the returns $G_t$ following each state. These methods can only be applied to episodic tasks because we update the value function using $G_t$, which is only available after an episode has finished.\\
 As with dynamic programming we can split the problem of finding the optimal policy into two parts.
 \begin{enumerate}
-    \item Monte carlo prediction: estimate the value function $v_{\pi}$ corresponding to a given policy $\pi$
-    \item Monte carlo control: find the optimal policy $\pi^*$
+    \item Monte Carlo prediction: estimate the value function $v_{\pi}$ corresponding to a given policy $\pi$
+    \item Monte Carlo control: find the optimal policy $\pi^*$
 \end{enumerate}
 
 \subsection{Monte Carlo prediction}
-Suppose we have a policy $\pi$ and we want to estimate the value function $v_{\pi}$ given a set of episodes obtained by following policy $\pi$ and passing through state $s$ at time $t$. We call each occurrence of state $s$ in an episode a visit to $s$. Of course, $s$ may be visited multiple times in the same episode, so we can call the first time $s$ is visited in an episode the first visit to $s$. We can then identify two main methods to perform monte carlo policy evaluation:
+Suppose we have a policy $\pi$, and we want to estimate the value function $v_{\pi}$ given a set of episodes obtained by following policy $\pi$, and passing through state $s$ at time $t$. We call each occurrence of state $s$ in an episode a visit to $s$. Of course, $s$ may be visited multiple times in the same episode, so we can call the first time $s$ is visited in an episode the first visit to $s$. We can then identify two main methods to perform Monte Carlo policy evaluation:
 \begin{enumerate}
     \item First-visit MC method: estimate $v_{\pi}(s)$ as the average of the returns following first visits to $s$.
     \item Every-visit MC method: estimate $v_{\pi}(s)$ as the average of the returns following all visits to $s$.
@@ -301,10 +298,10 @@ The policy improvement step, on the other hand, is performed by greedily selecti
     \pi'(s) = \arg \max_a q_{\pi}(s, a)
     \label{mc-policy-improvement}
 \end{equation}
-A major problem with this approach is the exploring starts assumption, because, if we are not given a model of the environment, we cannot know all state-action pairs beforehand, and even if we did, we would still need to generate a large number of episodes to ensure that all state-action pairs are visited. Without exploring starts, the only general way to ensure that all actions are selected infinitely often is for the agent to continue to select them. This can be done in two ways:
+A major problem with this approach is the exploring starts assumption, because, if we are not given a model of the environment, we cannot know all state-action pairs beforehand, and even if we did, we would still need to generate many episodes to ensure that all state-action pairs are visited. Without exploring starts, the only general way to ensure that all actions are selected infinitely often is for the agent to continue to select them. This can be done in two ways:
 \begin{enumerate}
-    \item We can use a different policy to generate the episodes, a behavioural policy, different than the one we are trying to improve, the target policy. This is called off-policy learning.
-    \item We can avoid making the policy completely greedy like in equation \ref{mc-policy-improvement} and instead use a $\epsilon$-soft policy, which is a policy that is not completely greedy, but gives at least probability $\epsilon / |A|$ to each action. An example of such policy is the $\epsilon$-greedy policy, defined as follows:
+    \item We can use a different policy to generate the episodes, a behavioral policy, different from the one we are trying to improve, the target policy. This is called off-policy learning.
+    \item We can avoid making the policy completely greedy like in equation \ref{mc-policy-improvement} and instead use an $\epsilon$-soft policy, which is a policy that is not completely greedy, but gives at least probability $\epsilon / |A|$ to each action. An example of such policy is the $\epsilon$-greedy policy, defined as follows:
     \begin{equation}
         \pi(a|s) = \begin{cases}
             1 - \epsilon + \frac{\epsilon}{|A|} & \text{if } a = \mathrm{argmax}_{a'} q_{\pi}(s, a') \\
@@ -315,7 +312,7 @@ A major problem with this approach is the exploring starts assumption, because, 
 \end{enumerate}
 
 \section{Temporal-Difference learning}
-Temporal-difference learning, also called TD-Learning, is a class of algorithms that combine both Monte Carlo and dynamic programming ideas. Like Monte Carlo, TD-learning methods learn directly from experience, not requiring a model of the environment, and like DP it updates estimates using already learned estimates, using a tecnique known as bootstrapping. This allows TD methods to be also applied to continuing tasks because they can update the value of a state as soon as new information is available.\\
+Temporal-difference learning, also called TD-Learning, is a class of algorithms that combine both Monte Carlo and dynamic programming ideas. Like Monte Carlo, TD-learning methods learn directly from experience, not requiring a model of the environment, and like DP it updates estimates using already learned estimates, using a technique known as bootstrapping. This allows TD methods to be also applied to continuing tasks because they can update the value of a state as soon as new information is available.\\
 Like we did with Monte Carlo methods, we first focus on the prediction problem, then the control one.
 
 \subsection{TD prediction}
@@ -339,13 +336,13 @@ Finally, the quantity in parentheses $\delta = R_t + V(S_t) - V(S_{t+1})$ is kno
 In TD control we need to estimate the action-value function $q_{\pi}(s, a)$, rather than a state-value function. There are three main methods to do so, Sarsa, Expected Sarsa and Q-learning.
 
 \subsubsection{Sarsa}
-Sarsa is the simplest of the three, it is a on-policy TD control method that uses the following update rule to estimate the action-value function:
+Sarsa is the simplest of the three, it is an on-policy TD control method that uses the following update rule to estimate the action-value function:
 \begin{equation}
     Q(S_t, A_t) = Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t))
     \label{Sarsa-update}
 \end{equation}
 The method is called Sarsa because in state $S_t$ it selects action $A_t$, then observes reward $R_{t+1}$ and next state $S_{t+1}$, finally it selects the next action $A_{t+1}$.\\
-In Sarsa $Q(S_{t+1}, A_{t+1})$ is a sample of the value of the next state $V(S_{t+1})$, because the next action $A_{t+1}$ is selected according to the policy $\pi$.
+In Sarsa $Q(S_{t+1}, A_{t+1})$ is a sample of the value of the next state $V(S_{t+1})$, because the next action $A_{t+1}$ is selected according to policy $\pi$.
 \begin{equation*}
     \begin{split}
         v_{\pi}(s') & = \sum_a{q(s', a) \pi(a | s')} \\
@@ -354,7 +351,7 @@ In Sarsa $Q(S_{t+1}, A_{t+1})$ is a sample of the value of the next state $V(S_{
 \end{equation*}
 
 \subsubsection{Expected Sarsa}
-Expected Sarsa, doesn't use a sample to estimate the value of the next state like Sarsa, but uses directly the expected value $V(S_{t+1})$. The update rule of expected Sarsa is thus the following.
+Expected Sarsa, estimates the value of the next state by using directly its expected value $V(S_{t+1})$. The update rule of expected Sarsa is thus the following.
 \begin{equation}
     \begin{split}
         Q(S_t, A_t) & = Q(S_t, A_t) + \alpha (R_{t+1} + \gamma V(S_{t+1}) - Q(S_t, A_t)) \\
@@ -362,7 +359,7 @@ Expected Sarsa, doesn't use a sample to estimate the value of the next state lik
     \end{split}
     \label{expected-Sarsa-update}
 \end{equation}
-This update reduces the variance of the value estimate, but it also increases its computational cost, because we need to compute the value of the next state $V(S_{t+1}) = \sum_a{Q(S_{t+1}, a) \pi(a | S_{t+1})}$, which, in case the number of actions is very high, can be quite costly.
+This update reduces the variance of the value estimate, but it also increases its computational cost, because to compute the value of the next state we must sum over all actions, $V(S_{t+1}) = \sum_a{Q(S_{t+1}, a) \pi(a | S_{t+1})}$, which can be quite costly when the number of actions is high.
 
 \subsubsection{Q-learning}
 Q-learning is an off-policy TD control method, that uses the following update rule to estimate the action-value function:
@@ -370,4 +367,4 @@ Q-learning is an off-policy TD control method, that uses the following update ru
     Q(S_t, A_t) = Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_a{Q(S_{t+1}, a)} - Q(S_t, A_t))
     \label{Q-learning-update}
 \end{equation}
-Q-learning assumes that the next action $A_{t+1}$ is selected according to a greedy policy with respect to the action-value function $Q(S_{t+1}, a)$. In this algorithm, the learned action-value function directly approximates the optimal action-value function $q_*$, independently of the policy being followed. However, the policy $\pi$ still has an important effect because it determines which state-action pairs are visited and is called the behavioural policy. 
+Q-learning assumes that the next action $A_{t+1}$ is selected according to a greedy policy with respect to the action-value function $Q(S_{t+1}, a)$. In this algorithm, the learned action-value function directly approximates the optimal action-value function $q_*$, independently of the policy being followed. However, the policy $\pi$ still has an important effect because it determines which state-action pairs are visited and is thus called the behavioral policy. 
