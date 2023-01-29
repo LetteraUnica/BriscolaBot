@@ -1,0 +1,110 @@
+\chapter{Policy Gradient Methods}
+So far we focused on action-value methods, those methods learned the action-value function $q$ and used it to derive a policy. In this chapter, we will focus instead on methods that learn the policy directly, without consulting a value, or action-value function. The value function still has an important role as it's often used to learn the policy, however, it is not required for action selection. This class of methods is called policy gradient methods.\\\\
+Even though policy gradient methods can be used without function approximation, we will focus on the case where function approximation is used. In this case, the policy is represented as a function of the state $s$ and a vector of parameters $\vect{\theta}$, i.e. $\pi(a|s; \vect{\theta})$.\\\\
+We start by proving some background on function approximation, which will be useful to understand the policy gradient. Then we will see the policy gradient theorem for the case of discrete action spaces. Finally, we explore more recent methods that are used in practice, such as TRPO and PPO.\\\\
+
+\section{Function Approximation}
+The methods discussed so far represent the action-value function $q(s, a)$ as a table and are thus called tabular methods. These methods have been shown to converge to an optimal policy under certain conditions, such as proper selection of the step-size $\alpha$ and the policy $\epsilon$ parameter. However, these methods can be impractical to use in certain scenarios, such as when the state space is extremely large (e.g. in the game of chess or Briscola) or when the state space is continuous. In these cases, function approximation must be used to represent the value function, action-value function, and policy.\\\\
+Consider the problem of finding the value function corresponding to a policy $\pi$, thus far we implemented the update rule for the value function by moving $v(s)$ closer to the return $G_t$ which represents the target:
+\begin{equation}
+    v(s) = v(s) + \alpha (G_t - v(s))
+    \label{eq:tabular-update}
+\end{equation}
+With function approximation, the idea is the same, moving the output closer to the target. But instead of moving the value of the table entry directly, we need to change the parameter vector $\vect{w}$.\\\\
+In theory, we could use any method from the supervised learning literature to perform function approximation, however in practice neural networks are most commonly used, so we will focus on them here.\\
+The way we usually find the best parameter vector in neural nets is by minimizing a loss function. The loss function measures how far the output of the function is from the target. A natural loss function for learning the value is the \textit{mean squared error loss} denoted as $\mathrm{MSE}$:
+\begin{equation}
+    \mathrm{MSE} = \frac{1}{2}(G_t - \hat{v}(S_t; \vect{w}))^2
+    \label{eq:mse}
+\end{equation}
+where $G_t$ is the return, which represents the target and $\hat{v}(s; \vect{w})$ is the output of the function, which represents the prediction.\\\\
+We can find the best parameter vector $\vect{w}$ in a number of ways, in neural nets the most commonly used is gradient descent, that is, we update the weights in the negative direction of the gradient. To do this we need the gradient of the loss function with respect to the parameter vector $\vect{w}$, which can be computed as follows:
+\begin{equation}
+    \nabla_{w} \mathrm{MSE} = \left( \hat{v}(S_t; \vect{w}) - G_t \right) \nabla_w \hat{v}(S_t; \vect{w})
+    \label{eq:mse-gradient}
+\end{equation}
+Where $\nabla_w \hat{v}(s; \vect{w})$ is the gradient of the output of the function with respect to the parameter vector $\vect{w}$ and can be quickly found with automatic differentiation techniques.\\\\
+In the derivation of the gradient \eqref{eq:mse-gradient} we assumed $\nabla_w G_t = 0$, this is true for the case of Monte Carlo methods, where $G_t = R_{t+1} + \gamma R_{t+2} + \dots + R_T$, but not for TD methods, where $G_t = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$. In this case the gradient is not a true-gradient but a semi-gradient, because we left out the $\nabla_w G_t = \gamma \nabla_w \hat{v}(S_{t+1}; \vect{w})$ term. However, it can be shown that semi-gradient methods have better convergence properties than true-gradient ones, in particular true-gradient methods even in the tabular case without function approximation  won't converge to the value function $v_{\pi}$ in stochastic environments, that represent the majority of RL tasks. The interested reader can find an example of this behavior in chapter 11.5 of the Sutton and Barto book \cite{sutton-barto}.\\\\
+
+\subsection{Policy Approximation}
+In policy gradient methods, the policy can be parameterized in any way, as long as it is differentiable with respect to the parameter vector $\vect{\theta}$. Approximating the policy directly has many advantages over approximating the action-value function:
+\begin{itemize}
+    \item The approximate policy can approach a deterministic policy, whereas with $\epsilon$-greedy action selection the policy always has a probability of selecting a random action.
+    \item It enables the selection of actions with arbitrary probabilities, for example, in imperfect information games performing always the same action is not optimal, because the opponent can learn the player's strategy and exploit it. Think for example the game of poker, the best strategy isn't to always bluff or always check, but to do a mix of both so that the opponent can't predict the agent behavior.
+    \item The action probabilities change smoothly with the parameter vector $\vect{\theta}$, whereas with $\epsilon$-greedy action selection the probability can change dramatically for a small change in $\vect{\theta}$.
+    \item Stronger convergence guarantees are available for policy-gradient methods.
+    \item 
+\end{itemize}
+
+\section{Policy Gradient Theorem}
+To understand the policy gradient theorem, we need to first define a performance measure of a policy $\pi$ with respect to a parameter vector $\vect{\theta}$:
+\begin{equation}
+    J(\vect{\theta}) = v_{\pi_{\theta}}(s_0) = \sum_a \pi_{\theta}(a|s_0) q_{\pi_{\theta}}(s_0, a)
+    \label{eq:performance-measure}
+\end{equation}
+Where $v_{\pi_{\theta}}$ represents the true value function for the policy $\pi_{\theta}$, determined by the parameter vector $\vect{\theta}$.\\\\
+The problem with equation \ref{eq:performance-measure} is that its gradient depends also on the gradient of the action-value function $q_{\pi_{\theta}}$, because, as the policy changes also the action-value function changes. Fortunately its gradient can still be computed using the policy gradient theorem:
+\begin{equation}
+    \begin{split}
+        \nabla_\theta J(\vect{\theta}) & \propto \sum_s \mu(s) \sum_a q_{\pi}(s, a) \nabla_{\theta}\pi_{\theta}(a|S_t)\\
+        & = \mathbb{E}_{\pi_{\theta}} \bigg[\sum_a q_{\pi}(S_t, a) \nabla_{\theta}\pi_{\theta}(a|S_t) \bigg]
+    \end{split}
+    \label{eq:policy-gradient-theorem}
+\end{equation}
+Where $\mu(s)$ is the state distribution, which is unknown, but can be approximated by the empirical distribution of the states visited during the policy evaluation. The policy gradient theorem allows to estimate the gradient of the performance measure with respect to the policy parameter in a way that does not involve the derivative of the state distribution.
+The policy gradient theorem gives an exact expression proportional to the gradient; all that is needed is some way of sampling
+whose expectation equals or approximates this expression.\\
+We can further simplify expression \eqref{eq:policy-gradient-theorem} by multiplying and dividing by $\pi_{\theta}(a|S_t)$:
+\begin{equation}
+    \mathbb{E}_{\pi_{\theta}} \bigg[\sum_a q_{\pi}(S_t, a) \nabla_{\theta}\pi_{\theta}(a|S_t) \bigg] = \mathbb{E}_{\pi_{\theta}} \bigg[q_{\pi}(S_t, A_t) \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)} \bigg]
+    \label{eq:single-action-policy-gradient}
+\end{equation}
+In the last expression we removed the sum over the actions, this the most commonly used form of the policy gradient theorem and allows the computation of the policy gradient even with continuous action spaces.
+
+\section{REINFORCE}
+REINFORCE estimates the action-value function $q_{\pi_{\theta}}(s, a)$ of the policy gradient (\ref{eq:single-action-policy-gradient}) using Monte Carlo to estimate $q_{\pi}(S_t, A_t)$.
+\begin{equation}
+    q_{\pi}(S_t, A_t) = \sum_{t'=t}^T \gamma^{t'-t} R_{t' + 1} = G_t
+\end{equation}
+Thus the update rule for the policy parameter vector $\vect{\theta}$ is:
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha G_t \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)}
+    \label{eq:reinforce-update}
+\end{equation}
+The update increases the probability of actions proportional to the return and inversely proportional to the probability of the action. This makes sense because we move towards actions that lead to a higher return and perform a bigger update for actions with a lower probability, which are selected and hence updated less often.
+
+\subsection{REINFORCE with Baseline}
+The policy gradient theorem \eqref{eq:policy-gradient-theorem} can be generalized by adding a baseline function $b(s)$ to the action-value function without loss of generality:
+\begin{equation}
+    \begin{split}
+        & \sum_s \mu(s) \sum_a (q_{\pi}(s, a) - b(s)) \nabla_{\theta}\pi_{\theta}(a|S_t) = \\
+        & = \sum_s \mu(s) \sum_a (q_{\pi}(s, a)) \nabla_{\theta}\pi_{\theta}(a|S_t) - \sum_s \mu(s) b(s) \sum_a \nabla_{\theta}\pi_{\theta}(a|S_t)\\
+        & = \nabla_{\theta} J(\vect{\theta}) - \sum_s \mu(s) b(s) \nabla_{\theta} \sum_a \pi_{\theta}(a|s)\\
+        & = \nabla_{\theta} J(\vect{\theta})
+    \end{split}
+    \label{eq:policy-gradient-theorem-generalized}
+\end{equation}
+Where in the last step we used the fact that $\nabla_{\theta} \sum_a \pi_{\theta}(a|s) = 0$. The baseline function $b(s)$ can be any function of the state $s$ and is used to reduce the variance of the gradient estimator.\\
+One natural choice for the baseline function is the value function $v_{\pi_{\theta}}(s)$, which gives the REINFORCE with baseline update:
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha (G_t - b(S_t)) \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)}
+    \label{eq:reinforce-with-baseline-update}
+\end{equation}
+Where $\hat{v}_{\pi_{\theta}}(S_t)$ is an estimate of the value function $v_{\pi_{\theta}}(S_t)$, which is estimated with Monte Carlo.
+
+\section{Actor-Critic Methods}
+Actor-Critic methods merge policy gradient and temporal difference methods. The policy gradient is used to update the policy parameter vector $\vect{\theta}$ and TD-learning is used to update the value function $v_{\pi_{\theta}}(s)$. This introduces a bias in the policy gradient update, however it also reduces variance and hence accelerates learning.\\
+One-step actor-critic methods updates the policy as following:
+\begin{equation}
+    \theta_{t+1} = \theta_t + \alpha (R_{t+1} + \gamma \hat{v}_{\pi_{\theta}}(S_{t+1}; \vect{w}) - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)}
+    \label{eq:one-step-actor-critic-update}
+\end{equation}
+Which is similar to the REINFORCE with baseline update \eqref{eq:reinforce-with-baseline-update}, but uses the one-step TD target $G_{t:t+1} = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$ instead of the full return $G_t$.\\
+At the same time the value function is updated using the TD error:
+\begin{equation}
+    \vect{w}_{t+1} = \vect{w}_t + \alpha (R_{t+1} + \gamma \hat{v}_{\pi_{\theta}}(S_{t+1}; \vect{w}) - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \nabla_{\vect{w}} \hat{v}_{\pi_{\theta}}(S_t; \vect{w})
+    \label{eq:one-step-actor-critic-value-function-update}
+\end{equation}
+These methods are called actor-critic methods because the policy is called the actor and the value function is called the critic. The critic learns the value function and the actor, given the value function, learns the policy.
+
+\section{Trust Region Policy Optimization}
