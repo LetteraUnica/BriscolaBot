@@ -51,12 +51,12 @@ We can formalize both problems with MDPs, by defining the concept of terminal st
 
 
 \subsection{Goal and Return}
-In reinforcement learning we formalize the goal of an agent as the maximization of the expected return $G_t$, where the return, denoted $G$ is the sum of all discounted rewards the agent receives in the future, starting from a given time step $t$:
+In reinforcement learning we formalize the goal of an agent as the maximization of the expected return $\mathbb{E}[G_t]$, where the return, denoted as $G_t$ is the sum of all discounted rewards the agent receives in the future, starting from a given time step $t$:
 \begin{equation}
     G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
     \label{return}
 \end{equation}
-Where $\gamma \in [0, 1]$ is the discount factor and is used for two main reasons:
+$\gamma \in [0, 1]$ is the discount factor and is used for two main reasons:
 \begin{enumerate}
     \item $\gamma$ allows tuning how much importance the agent gives to future rewards, so we can make the agent more or less patient. If $\gamma = 0$ the agent will only consider the immediate reward $R_{t+1}$, while if $\gamma = 1$ the agent will consider all future rewards with the same importance.
     \item Allows the return to be used also in continuing tasks, because we can set $\gamma < 1$ and keep the sum from diverging.
@@ -66,6 +66,7 @@ Returns of subsequent time steps are related to each other in an important way:
     G_t = R_{t+1} + \gamma G_{t+1}
     \label{return-recursive}
 \end{equation}
+Equation \eqref{return-recursive} is also called the one-step return.
 
 \subsection{Policy and value functions}
 A policy $\pi$ is a mapping from states to actions, which specifies what action the agent should take in a given state. The policy is formally defined as the probability of taking action $a$ in state $s$
@@ -90,10 +91,10 @@ In practice, it is also convenient to define the advantage, which is the differe
     A(s, a) = q_{\pi}(s, a) - v_{\pi}(s)
     \label{advantage}
 \end{equation}
-The advantage is a measure of how much better it is to take action $a$ in state $s$.\\
+The advantage is a measure of how much better it is to take action $a$ in state $s$, with respect to the other possible actions in state $s$.\\
 
 \subsection{Bellman Equation}
-A fundamental property of the value function is that it satisfies a recursive relationship similar to the one of the return \ref{return-recursive}:
+A fundamental property of the value function is that it satisfies a recursive relationship similar to the one of the return \eqref{return-recursive}:
 \begin{equation}
     \begin{split}
         v_{\pi}(s) & = \mathds{E_{\pi}}[G_t | S_t = s] \\
@@ -102,7 +103,7 @@ A fundamental property of the value function is that it satisfies a recursive re
     \end{split}
     \label{bellman-equation}
 \end{equation}
-We call equation \ref{bellman-equation} the Bellman equation for $v_{\pi}$. The Bellman equation expresses the relationship between the value of current state $s$ and the value of successive states $s'$. It tells us that the value of each state must equal the value of the next state plus the reward expected along the way. The Bellman equation forms the basis to compute or approximate $v_{\pi}$ which we will see in the next  section.\\\\
+We call equation \eqref{bellman-equation} the Bellman equation for $v_{\pi}$. The Bellman equation expresses the relationship between the value of current state $s$ and the value of successive states $s'$. It tells us that the value of each state must equal the value of the next state plus the reward expected along the way. The Bellman equation forms the basis to compute or approximate $v_{\pi}$ which we will see in the next  section.\\\\
 It is also possible to define the Bellman equation for the action-value function:
 \begin{equation}
     \begin{split}
@@ -113,7 +114,7 @@ It is also possible to define the Bellman equation for the action-value function
     \end{split}
     \label{bellman-equation-action-value}
 \end{equation}
-Where we used the relationship $v_{\pi}(s) = \sum_a \pi(a | s) q_{\pi}(s, a)$ between the value function and action-value function.\\\\
+Where in the last step we used the relationship $v_{\pi}(s) = \sum_a \pi(a | s) q_{\pi}(s, a)$ between the value function and action-value function.\\\\
 
 \subsection{Optimal policy and value function}
 Solving a reinforcement learning problem means finding a policy that achieves a high return. To accomplish this we first need to define an ordering over policies. We define that policy $\pi$ is better than policy $\pi'$ if the expected return is higher for $\pi$ than for $\pi'$.
@@ -138,7 +139,7 @@ Which is the value function that achieves the maximum return from all states $s$
     \label{optimal-action-value-function}
 \end{equation}
 This function gives the expected return for taking action $a$ in state $s$ and then following policy $\pi^*$.\\\\
-Another property of the optimal state-value function is that it satisfies a special form of the Bellman equation \ref{bellman-equation}, called the Bellman optimality equation:
+Another property of the optimal state-value function is that it satisfies a special form of the Bellman equation \eqref{bellman-equation}, called the Bellman optimality equation:
 \begin{equation}
     \begin{split}
         v_{*}(s) & = \max_a q_*(s, a) \\
@@ -157,10 +158,10 @@ Analogously, we can define the Bellman optimality equation for the action-value 
     \label{bellman-optimality-equation-action-value}
 \end{equation}
 Intuitively, the Bellman optimality equation expresses the fact that the value of a state under an optimal policy must equal the expected return for the best action from that state.\\
-In the next sections we will see how to solve the Bellman optimality equation both when we have a model of the environment \ref{dynamics-function} and when we don't.
+In the next sections we will see how to solve the Bellman optimality equation both when we have a model of the environment \eqref{dynamics-function} and when we don't.
 
 \section{Dynamic Programming}
-Dynamic programming is a technique that allows us to solve the Bellman optimality equation \ref{bellman-optimality-equation}, finding the optimal policy $\pi_*$ and value function $v_*$ given a perfect model of the environment, that is, we completely know the dynamics function $p(s', r | s, a)$.
+Dynamic programming is a technique that allows us to solve the Bellman optimality equation \eqref{bellman-optimality-equation}, finding the optimal policy $\pi_*$ and value function $v_*$ given a perfect model of the environment, that is, we completely know the dynamics function $p(s', r | s, a)$.
 We can split the problem of finding a solution to the Bellman optimality equation into two subproblems:
 \begin{enumerate}
     \item \textbf{Policy evaluation}: Given a policy $\pi$, find its value function $v_{\pi}$.
@@ -168,7 +169,7 @@ We can split the problem of finding a solution to the Bellman optimality equatio
 \end{enumerate}
 
 \subsection{Policy evaluation}
-A simple way to evaluate a policy $\pi$ would be to solve the linear system of equations described by the Bellman equation \ref{bellman-equation}. This could be done with any linear system solution method available in the literature, however, in reinforcement learning iterative solution methods are most suitable.
+A simple way to evaluate a policy $\pi$ would be to solve the linear system of equations described by the Bellman equation \eqref{bellman-equation}. This could be done with any linear system solution method available in the literature, however, in reinforcement learning iterative solution methods are most suitable.
 \begin{algorithm}[H]
     \caption{Policy evaluation}
     \label{alg:policy-evaluation}
@@ -226,7 +227,7 @@ The drawback of the policy iteration algorithm \ref{alg:policy-iteration} is tha
     v_{k+1}(s) = \max_a \sum_{s', r} p(s', r | s, a) (r + \gamma v_k(s'))
     \label{value-iteration-update}
 \end{equation}
-This update is called the value iteration update and combines one pass of policy evaluation and policy improvement into one, requiring only 1 sweep over the state space. The update \ref{value-iteration-update} is similar to the policy evaluation update \ref{bellman-equation} except that we are using the maximum instead of the expectation.
+This update is called the value iteration update and combines one pass of policy evaluation and policy improvement into one, requiring only 1 sweep over the state space. The update \eqref{value-iteration-update} is similar to the policy evaluation update \eqref{bellman-equation} except that we are using the maximum instead of the expectation.
 \begin{algorithm}[H]
     \caption{Value iteration}
     \label{alg:value-iteration}
@@ -252,15 +253,15 @@ The value iteration algorithm \ref{alg:value-iteration} has a limitation in that
     \centering
     \includesvg[width=0.3\textwidth]{images/GPI.svg}
     \caption{Generalized policy iteration loop}
-    \label{gpi}
+    \label{fig:gpi}
 \end{wrapfigure} 
-We can view both the policy iteration algorithm \ref{alg:policy-iteration} and the value iteration algorithm \ref{alg:value-iteration} as special cases of a more general process referred to as generalized policy iteration (GPI). Almost all RL algorithms are described by this process where the policy is improved towards the value function and vice-versa, as shown in figure \ref{gpi}. This loop ends only when we reach a policy that is greedy with respect to its own value function, which implies that the value function satisfies the Bellman optimality equation \ref{bellman-optimality-equation}.\\
-Another way to see the process is in terms of two different goals, the two converging lines represented in figure \ref{gpi2}. The first goal is to compute the value function of a policy $v=v_{\pi}$, which is achieved by policy evaluation. The second goal is to make the policy greedy with respect to its own value function $\pi=\mathrm{greedy}(v)$, which is achieved by policy improvement. The two goals are complementary and the process converges to the optimal value function when the two goals are achieved simultaneously.
+We can view both the policy iteration algorithm \ref{alg:policy-iteration} and the value iteration algorithm \ref{alg:value-iteration} as special cases of a more general process referred to as generalized policy iteration (GPI). Almost all RL algorithms are described by this process where the policy is improved towards the value function and vice-versa, as shown in figure \ref{fig:gpi}. This loop ends only when we reach a policy that is greedy with respect to its own value function, which implies that the value function satisfies the Bellman optimality equation \eqref{bellman-optimality-equation}.\\
+Another way to see the process is in terms of two different goals, the two converging lines represented in figure \ref{fig:gpi2}. The first goal is to compute the value function of a policy $v=v_{\pi}$, which is achieved by policy evaluation. The second goal is to make the policy greedy with respect to its own value function $\pi=\mathrm{greedy}(v)$, which is achieved by policy improvement. The two goals are complementary and the process converges to the optimal value function when the two goals are achieved simultaneously.
 \begin{figure}[H]
     \centering
     \includesvg[width=\textwidth]{images/policy-and-value-iteration-gpi.svg}
     \caption{Another way to see generalized policy iteration. Left: policy iteration with full policy evaluation at each step. Right: policy iteration with truncated policy evaluation at each step.}
-    \label{gpi2}
+    \label{fig:gpi2}
 \end{figure}
 
 \section{Monte Carlo methods}
@@ -286,14 +287,14 @@ For example, in the first visit case we estimate the value function $v_{\pi}$ as
     \end{split}
     \label{mc-prediction}
 \end{equation}
-Where $G_t^{(i)}$ is the return after visiting $s$ in the $i$-th episode, $N$ is the number of episodes and $T$ is the episode length.\\
-Both first-visit and every-visit Monte Carlo methods ultimately converge to $v_{\pi}(s)$ as the number of visits to state $s$ goes to infinity. However, they have distinct theoretical characteristics: first-visit MC samples independent, identically distributed estimates of $v_{\pi}(s)$, while this is not the case for every-visit MC. Although every-visit MC is less intuitive, it still guarantees the same level of convergence as first-visit MC.\\
+Where $G_t^{(i)}$ is the return after visiting state $s$ in the $i$-th episode, $N$ is the number of episodes and $T$ is the episode length.\\
+As the number of visits to state $s$ increases, both first-visit and every-visit Monte Carlo methods converge to $v_{\pi}(s)$. However, the two methods have different theoretical characteristics. First-visit MC provides independent and identically distributed estimates of $v_{\pi}(s)$, whereas every-visit MC does not. Despite its less straightforward nature, every-visit MC still maintains the same convergence properties as first-visit MC.\\\\
 Monte Carlo methods can be utilized to estimate the action-value function $q_{\pi}(s, a)$ as well, which is critical for control tasks. The concept of visits is redefined to apply to state-action pairs, rather than states alone. A state-action pair $(s, a)$ is considered visited if action $a$ was selected while in state $s$.
 
 \subsection{Monte Carlo control}
 In the control problem, MC methods draw from the idea of generalized policy iteration (GPI) already presented: alternating between policy evaluation and policy improvement.\\
 In the policy evaluation step we estimate the action-value function $q_{\pi}$ using the first visit or every visit MC method. However we need to ensure that all states will be visited, to accomplish this we can generate the episodes with exploring starts, that is, all episodes begin with state-action pairs randomly selected to cover all possibilities.\\
-The policy improvement step, on the other hand, is performed by greedily selecting the action that maximizes the the action-value function \ref{mc-policy-improvement}, which is the same as selecting the action that maximizes the expected return.
+The policy improvement step, on the other hand, is performed by greedily selecting the action that maximizes the the action-value function \eqref{mc-policy-improvement}, which is the same as selecting the action that maximizes the expected return.
 \begin{equation}
     \pi'(s) = \arg \max_a q_{\pi}(s, a)
     \label{mc-policy-improvement}
@@ -301,7 +302,7 @@ The policy improvement step, on the other hand, is performed by greedily selecti
 A major problem with this approach is the exploring starts assumption, because, if we are not given a model of the environment, we cannot know all state-action pairs beforehand, and even if we did, we would still need to generate many episodes to ensure that all state-action pairs are visited. Without exploring starts, the only general way to ensure that all actions are selected infinitely often is for the agent to continue to select them. This can be done in two ways:
 \begin{enumerate}
     \item We can use a different policy to generate the episodes, a behavioral policy, different from the one we are trying to improve, the target policy. This is called off-policy learning.
-    \item We can avoid making the policy completely greedy like in equation \ref{mc-policy-improvement} and instead use an $\epsilon$-soft policy, which is a policy that is not completely greedy, but gives at least probability $\epsilon / |A|$ to each action. An example of such policy is the $\epsilon$-greedy policy, defined as follows:
+    \item We can avoid making the policy completely greedy like in equation \eqref{mc-policy-improvement} and instead use an $\epsilon$-soft policy, which is a policy that is not completely greedy, but gives at least probability $\epsilon / |A|$ to each action. An example of such policy is the $\epsilon$-greedy policy, defined as follows:
     \begin{equation}
         \pi(a|s) = \begin{cases}
             1 - \epsilon + \frac{\epsilon}{|A|} & \text{if } a = \mathrm{argmax}_{a'} q_{\pi}(s, a') \\
@@ -312,11 +313,11 @@ A major problem with this approach is the exploring starts assumption, because, 
 \end{enumerate}
 
 \section{Temporal-Difference learning}
-Temporal-difference learning, also called TD-Learning, is a class of algorithms that combine both Monte Carlo and dynamic programming ideas. Like Monte Carlo, TD-learning methods learn directly from experience, not requiring a model of the environment, and like DP it updates estimates using already learned estimates, using a technique known as bootstrapping. This allows TD methods to be also applied to continuing tasks because they can update the value of a state as soon as new information is available.\\
+Temporal-difference learning, also called TD-Learning, is a class of algorithms that combine both Monte Carlo and dynamic programming ideas. Like Monte Carlo, TD-learning methods learn directly from experience, not requiring a model of the environment, and like DP it updates the value function with already learned estimates, using a technique known as bootstrapping. This allows TD methods to be also applied to continuing tasks because they can update the value of a state as soon as new information is available.\\
 Like we did with Monte Carlo methods, we first focus on the prediction problem, then the control one.
 
 \subsection{TD prediction}
-TD prediction differs from Monte Carlo prediction in that it utilizes the recursive formula of the return $G_t = R_t + \gamma G_{t+1}$ \ref{return-recursive} instead of the complete return \ref{return}. To compute the value function, however, we need the expected return. This can be constructed from the recursive formula by taking its expected value, as follows:
+TD prediction uses the one-step return, represented as $G_{t:t+1} = R_{t+1} + \gamma G_{t+1}$ (as defined in equation \eqref{return-recursive}), rather than the full return (defined in equation \eqref{return}) to estimate the value function. To obtain the expected return, which is needed to estimate the value function, we take the expected value of the recursive formula.
 \begin{equation}
     \begin{split}
         v_{\pi}(s) & = \mathds{E}_{\pi}(G_t | S_t = s) \\
@@ -324,13 +325,14 @@ TD prediction differs from Monte Carlo prediction in that it utilizes the recurs
     \end{split}
     \label{td0-expected-return}
 \end{equation}
-This expectation \ref{td0-expected-return} can be directly estimated by sampling episodes according to the policy $\pi$. The value function $v_{\pi}$ is then updated as follows:
+This expectation \eqref{td0-expected-return} can be directly estimated by sampling episodes according to the policy $\pi$. The value function $v_{\pi}$ is then updated as follows:
 \begin{equation}
     V(S_t) = V(S_t) + \alpha (R_t + V(S_t) - V(S_{t+1}))
     \label{td0-update}
 \end{equation}
-Where we introduced a parameter $\alpha$ that is the learning rate of the algorithm, the learning rate controls how much the new estimate of the value gathered in the episode should count with respect to the previous value estimate $V(S_t)$.\\
+Where we introduced a parameter $\alpha$ which is the learning rate of the algorithm, the learning rate controls how much the new estimate of the value gathered in the episode should count with respect to the previous value estimate $V(S_t)$.\\
 Finally, the quantity in parentheses $\delta = R_t + V(S_t) - V(S_{t+1})$ is known as the TD error, and measures the difference between the estimated value of the current state $V(S_t)$ and the better estimate $R_t + V(S_{t+1})$, given by the episode.\\
+Updating the value function in this way \eqref{td0-update} introduces bias in the value estimate, however, this also reduces the variance, which is why TD methods usually learn faster Monte Carlo methods.
 
 \subsection{TD control}
 In TD control we need to estimate the action-value function $q_{\pi}(s, a)$, rather than a state-value function. There are three main methods to do so, Sarsa, Expected Sarsa and Q-learning.
@@ -359,7 +361,7 @@ Expected Sarsa, estimates the value of the next state by using directly its expe
     \end{split}
     \label{expected-Sarsa-update}
 \end{equation}
-This update reduces the variance of the value estimate, but it also increases its computational cost, because to compute the value of the next state we must sum over all actions, $V(S_{t+1}) = \sum_a{Q(S_{t+1}, a) \pi(a | S_{t+1})}$, which can be quite costly when the number of actions is high.
+This update reduces the variance of the value estimate, but it also increases its computational cost, because to compute the value of the next state we must sum over all actions, $V(S_{t+1}) = \sum_a{Q(S_{t+1}, a) \pi(a | S_{t+1})}$, which can be computationally expensive when the number of actions is high.
 
 \subsubsection{Q-learning}
 Q-learning is an off-policy TD control method, that uses the following update rule to estimate the action-value function:
@@ -367,4 +369,54 @@ Q-learning is an off-policy TD control method, that uses the following update ru
     Q(S_t, A_t) = Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_a{Q(S_{t+1}, a)} - Q(S_t, A_t))
     \label{Q-learning-update}
 \end{equation}
-Q-learning assumes that the next action $A_{t+1}$ is selected according to a greedy policy with respect to the action-value function $Q(S_{t+1}, a)$. In this algorithm, the learned action-value function directly approximates the optimal action-value function $q_*$, independently of the policy being followed. However, the policy $\pi$ still has an important effect because it determines which state-action pairs are visited and is thus called the behavioral policy. 
+Q-learning assumes that the next action $A_{t+1}$ is selected according to a greedy policy with respect to the action-value function $Q(S_{t+1}, a)$. In this algorithm, the learned action-value function directly approximates the optimal action-value function $q_*$, independently of the policy being followed. However, the policy $\pi$ still has an important effect because it determines which state-action pairs are visited and is thus called the behavioral policy.
+
+\section{$n$-step methods}
+$n$-step methods merge the gap between MC and TD methods, so that one can shift from one to the other smoothly. This is important because the best method for a given problem is often intermediate between these two extremes figure \ref{fig:n-step-comparison}.\\\\
+$n$-step methods estimate the value function using the $n$-step return, which is the sum of the rewards obtained in the next $n$ steps, plus the value of the state reached after $n$ steps.\\
+\begin{equation}
+    G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{n-1} R_{t+n} + \gamma^n V(S_{t+n})
+    \label{n-step-return}
+\end{equation}
+Where the subscript $t:t+n$ indicates that we consider the rewards up to time $t+n$ and approximate subsequent rewards with the value of the state $S_{t+n}$.\\
+We then update the value function as follows:
+\begin{equation}
+    V(S_t) = V(S_t) + \alpha (G_{t:t+n} - V(S_t))
+    \label{n-step-update}
+\end{equation}
+If $n$ is greater than the episode length $T$, then the $n$-step return is equal to the full return, and we have Monte Carlo prediction. While, if $n$ is equal to 1, then we have TD prediction.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/n-step-comparison.png}
+    \caption{Comparison between $n$-step methods as a function of $\alpha$ for various values of $n$ in a random-walk task. The $n$-step methods converge faster than both TD methods ($n=1$), and  MC methods ($n=512$).}
+    \label{fig:n-step-comparison}
+\end{figure}
+It can be shown that all $n$-step TD methods converge to the correct value function $v_{\pi}$ under appropriate technical conditions. The $n$-step TD methods hence form a family of sound methods, with one-step TD methods and Monte Carlo methods as extreme members.\\\\
+For control problems, we can generalize one-step TD methods to their respective $n$-step versions by defining the $n$-step return in terms of estimated action values.
+\begin{equation}
+    G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \dots + \gamma^{n-1} R_{t+n} + \gamma^n Q(S_{t+n}, A_{t+n})
+    \label{n-step-return-Sarsa}
+\end{equation}
+The update rule of $n$-step Sarsa is then the following:
+\begin{equation}
+    Q(S_t, A_t) = Q(S_t, A_t) + \alpha (G_{t:t+n} - Q(S_t, A_t))
+    \label{n-step-action-update}
+\end{equation}
+In essence, a new TD control algorithm can be constructed by incorporating a formula for the return into Equation \eqref{n-step-action-update}.\\
+For example, we can define $n$-step Expected Sarsa by defining the $n$-step return in terms of the expected value of state $S_{t+n}$.
+\begin{equation}
+    G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \dots + \gamma^{n-1} R_{t+n} + \gamma^n \sum_a{Q(S_{t+n}, a) \pi(a | S_{t+n})}
+    \label{n-step-return-expected-Sarsa}
+\end{equation}
+And $n$-step Q-learning by defining the $n$-step return in terms of the maximum value of state $S_{t+n}$.
+\begin{equation}
+    G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \dots + \gamma^{n-1} R_{t+n} + \gamma^n \max_a{Q(S_{t+n}, a)}
+    \label{n-step-return-Q-learning}
+\end{equation}
+
+It can be shown that all $n$-step methods converge to the optimal value function if the leaning  and that the convergence rate is independent of $n$.
+
+\section{Discussion}
+In this chapter we introduced the main concepts of reinforcement learning, we saw that reinforcement learning is a framework for learning in sequential decision-making problems, where the agent interacts with the environment and learns to maximize its reward.\\
+We then presented Monte Carlo methods, which are a class of algorithms that use the full return \eqref{return} to estimate the value function, and TD methods, which use the one-step return \eqref{return-recursive}. TD methods are usually better than MC methods because they can be applied to continuing tasks, and reduce the variance of the value estimate.\\
+Finally, we discussed $n$-step methods, which estimate the value function using the $n$-step return formula \eqref{n-step-return}. These methods have been proven to converge to the correct value function $v_{\pi}$ under specific conditions and represent a family of reliable techniques, with one-step TD methods and Monte Carlo methods being their two ends of the spectrum.
