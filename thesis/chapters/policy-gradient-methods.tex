@@ -77,12 +77,12 @@ We can further simplify expression \eqref{eq:policy-gradient-theorem} by multipl
     \end{split}
     \label{eq:single-action-policy-gradient}
 \end{equation}
-Where in the last step we used the equality $\nabla_{\theta} \pi_{\theta}(a|s) / \pi_{\theta}(a|s) = \nabla_{\theta} \log \pi_{\theta}(a|s)$, which is true for any differentiable function $\pi_{\theta}(a|s)$.\\ This is the most commonly used form of the policy gradient theorem and allows the computation of the policy gradient even with continuous action spaces.
+Where in the last step we used the equality $\nabla_{\theta} \pi_{\theta}(a|s) / \pi_{\theta}(a|s) = \nabla_{\theta} \log \pi_{\theta}(a|s)$, which is true for any differentiable function $\pi_{\theta}(a|s)$.\\ This is the most commonly used form of the policy gradient theorem and allows the computation of the policy gradient even in continuous action spaces.
 
 \section{REINFORCE}
 REINFORCE estimates the action-value function $q_{\pi_{\theta}}(S_t, A_t)$ of the policy gradient (\ref{eq:single-action-policy-gradient}) using Monte Carlo.
 \begin{equation}
-    q_{\pi}(S_t, A_t) = \sum_{t'=t}^T \gamma^{t'-t} R_{t' + 1} = G_t
+    q_{\pi}(S_t, A_t) = G_t = \sum_{t'=t}^T \gamma^{t'-t} R_{t' + 1}
 \end{equation}
 Thus the update rule for the policy parameter vector $\vect{\theta}$ is:
 \begin{equation}
@@ -116,18 +116,19 @@ Where $\hat{v}_{\pi_{\theta}}(S_t)$ is estimated with Monte Carlo. The improveme
 \end{figure}
 
 \section{Actor-Critic Methods}
-Actor-Critic methods merge policy gradient and temporal difference methods. The policy gradient is used to update the policy parameter vector $\vect{\theta}$ and TD-learning is used to update the value function $v_{\pi_{\theta}}(s)$. This introduces a bias in the policy gradient update, however it also reduces variance and hence accelerates learning.\\
-One-step actor-critic methods updates the policy as following:
+The REINFORCE with baseline algorithm is unbiased, but it has a high variance and is therefore slow to converge. Additionally, it is challenging to extend it to continuous tasks. In order to address these issues, Actor-Critic methods merge policy gradient and bootstrapping by using the one-step return $G_{t:t+1}$ instead of the full return $G_t$ to update the policy.\\\\
+More in detail, the policy parameter vector $\vect{\theta}$ is updated using policy gradient and TD-learning is used to update the value function $v_{\pi_{\theta}}(s; \vect{w})$. This adds a bias in the policy gradient update, but it also reduces variance and speeds up learning.\\
+In particular, one-step actor-critic methods update the policy as following:
 \begin{equation}
-    \theta_{t+1} = \theta_t + \alpha (R_{t+1} + \gamma \hat{v}_{\pi_{\theta}}(S_{t+1}; \vect{w}) - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)}
-    \label{eq:one-step-actor-critic-update}
+    \theta_{t+1} = \theta_t + \alpha (G_{t:t+1} - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \frac{\nabla_{\theta} \pi_{\theta}(A_t|S_t)}{\pi_{\theta}(A_t|S_t)}
+    \label{eq:one-step-actor-update}
 \end{equation}
-Which is similar to the REINFORCE with baseline update \eqref{eq:reinforce-with-baseline-update}, but uses the one-step TD target $G_{t:t+1} = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$ instead of the full return $G_t$.\\
-At the same time the value function is updated using the TD error:
+Which is similar to the REINFORCE with baseline update \eqref{eq:reinforce-with-baseline-update}, but uses the one-step return $G_{t:t+1} = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$ instead of the full return $G_t$ \eqref{return}.\\
+At the same time the value function parameters $\vect{w}$ are updated towards the bootstrapping target $G_{t:t+1}$:
 \begin{equation}
-    \vect{w}_{t+1} = \vect{w}_t + \alpha (R_{t+1} + \gamma \hat{v}_{\pi_{\theta}}(S_{t+1}; \vect{w}) - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \nabla_{\vect{w}} \hat{v}_{\pi_{\theta}}(S_t; \vect{w})
-    \label{eq:one-step-actor-critic-value-function-update}
+    \vect{w}_{t+1} = \vect{w}_t + \alpha (G_{t:t+1} - \hat{v}_{\pi_{\theta}}(S_t; \vect{w})) \nabla_{\vect{w}} \hat{v}_{\pi_{\theta}}(S_t; \vect{w})
+    \label{eq:one-step-critic-update}
 \end{equation}
-These methods are called actor-critic methods because the policy is called the actor and the value function is called the critic. The critic learns the value function and the actor, given the value function, learns the policy.
+The actor-critic update can be generalized to $n$-step returns by simply replacing the one-step return $G_{t:t+1}$, with the $n$-step return $G_{t:t+n}$ \eqref{n-step-return} in equations \eqref{eq:one-step-actor-update} and \eqref{eq:one-step-critic-update}.\\
 
 \section{Trust Region Policy Optimization}
