@@ -13,7 +13,7 @@ We can formalize the problem of learning from interaction to achieve a goal with
 \begin{figure}[H]
     \centering
     \includesvg[width=0.6\textwidth]{images/mdp.svg}
-    \caption{Illustration of the agent-environment interaction in a Markov Decision Process}
+    \caption{Illustration of the agent-environment interaction in a Markov Decision Process, image adapted from \cite{sutton-barto}.}
     \label{fig:mdp}
 \end{figure}
 More specifically, the agent and environment interact in discrete time steps ($t=0, 1, 2 \dots$). At each time step $t$ the agent receives an observation of the environment's state $S_t \in S$ and based on that chooses an action $A_t \in A$. In the next time step $t+1$ the agent receives from the environment a numerical reward $R_{t+1} \in R \in \mathbb{R}$ and a new observation $S_{t+1} \in S$ and so on. This generates a sequence of observations, actions and rewards, which we call trajectory: $S_0, A_0, R_1, S_1, A_1, R_2, \dots$.\\\\
@@ -252,7 +252,7 @@ The value iteration algorithm \ref{alg:value-iteration} has a limitation in that
 \begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     \includesvg[width=0.3\textwidth]{images/GPI.svg}
-    \caption{Generalized policy iteration loop}
+    \caption{Generalized policy iteration loop. Image adapted from \cite{sutton-barto}.}
     \label{fig:gpi}
 \end{wrapfigure} 
 We can view both the policy iteration algorithm \ref{alg:policy-iteration} and the value iteration algorithm \ref{alg:value-iteration} as special cases of a more general process referred to as generalized policy iteration (GPI). Almost all RL algorithms are described by this process where the policy is improved towards the value function and vice-versa, as shown in figure \ref{fig:gpi}. This loop ends only when we reach a policy that is greedy with respect to its own value function, which implies that the value function satisfies the Bellman optimality equation \eqref{bellman-optimality-equation}.\\
@@ -260,7 +260,7 @@ Another way to see the process is in terms of two different goals, the two conve
 \begin{figure}[H]
     \centering
     \includesvg[width=\textwidth]{images/policy-and-value-iteration-gpi.svg}
-    \caption{Another way to see generalized policy iteration. Left: policy iteration with full policy evaluation at each step. Right: policy iteration with truncated policy evaluation at each step.}
+    \caption{Another way to see generalized policy iteration. Left: policy iteration with full policy evaluation at each step. Right: policy iteration with truncated policy evaluation at each step. Image adapted from \cite{sutton-barto}.}
     \label{fig:gpi2}
 \end{figure}
 
@@ -388,7 +388,7 @@ If $n$ is greater than the episode length $T$, then the $n$-step return is equal
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/n-step-comparison.png}
-    \caption{Comparison between $n$-step methods as a function of $\alpha$ for various values of $n$ in a random-walk task. The $n$-step methods converge faster than both TD methods ($n=1$), and  MC methods ($n=512$).}
+    \caption{Comparison between $n$-step methods as a function of $\alpha$ for various values of $n$ in a random-walk task. An intermediate value of $n=4$ performs best, converging faster than both TD methods ($n=1$), and  MC methods ($n=512$). Image taken from \cite{sutton-barto}.}
     \label{fig:n-step-comparison}
 \end{figure}
 It can be shown that all $n$-step TD methods converge to the correct value function $v_{\pi}$ under appropriate technical conditions. The $n$-step TD methods hence form a family of sound methods, with one-step TD methods and Monte Carlo methods as extreme members.\\\\
