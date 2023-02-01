@@ -1,0 +1,2 @@
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qinkscapelatex=false\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QCurrently, GAE is used in all major PPO implementation, like CleanRL \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, Tianshou \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q and Stable Baselines3 \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
