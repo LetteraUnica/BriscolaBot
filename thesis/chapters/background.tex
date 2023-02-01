@@ -88,7 +88,7 @@ Similarly, we can define the value of selecting an action $a$ in state $s$ under
 We call $q_{\pi}(s, a)$ the action-value function of policy $\pi$.\\\\
 In practice, it is also convenient to define the advantage, which is the difference between the value of taking action $a$ in state $s$ and the value of the state:
 \begin{equation}
-    A(s, a) = q_{\pi}(s, a) - v_{\pi}(s)
+    A_{\pi}(s, a) = q_{\pi}(s, a) - v_{\pi}(s)
     \label{advantage}
 \end{equation}
 The advantage is a measure of how much better it is to take action $a$ in state $s$, with respect to the other possible actions in state $s$.\\
