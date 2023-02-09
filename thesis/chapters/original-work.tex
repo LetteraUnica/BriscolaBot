@@ -70,6 +70,16 @@ Where $l$ is the logits vector, $a$ is the action vector, $s$ is the state and $
 In order to make the training process faster, we utilized a vectorized environment. This is a wrapper around the original environment that allows multiple instances of it to run simultaneously. In this setup, the agent receives all observations from all environments at once, which enables batching of policy evaluation and potentially performing it on a GPU, resulting in a significant speed-up of the training process.
 
 \section{Agent}
+When using policy-gradient methods the agent consists of two parts, the Actor and the Critic. The Actor, implemented as a multi-layer perceptron (MLP) with ReLU activations, defines the policy by mapping the agent's observation to a probability distribution over the action space (Figure \ref{fig:actor-critic-network}). On the other hand, the Critic uses the same MLP architecture as the Actor but outputs a single real value that represents the state's value (Figure \ref{fig:actor-critic-network}).
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.6\textwidth]{images/actor-critic-net.svg}
+    \caption{Diagram of the Actor-Critic Network Architecture. The Actor (left) transforms the agent's observation into a probability distribution over the 40 available actions, while the Critic (right) outputs a single real value, representing the state's value. We used two separate neural networks for the Actor and Critic as suggested in \cite{ppo-implementation-details}.}
+    \label{fig:actor-critic-network}
+\end{figure}
 
 
 \section{Training procedure}
+
+\section{Results}
