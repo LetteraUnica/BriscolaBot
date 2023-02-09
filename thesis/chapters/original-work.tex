@@ -2,7 +2,14 @@
 
 In this chapter we explain and discuss the approach that was used to create a reinforcement learning agent that can play Briscola.\\
 The code implementation is available at \url{https://github.com/LetteraUnica/BriscolaBot}.
-The general architecture of the agent is shown in figure \ref{fig:architecture}.
+The general architecture of the agent is shown in figure \ref{fig:general-architecture}.
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\textwidth]{images/general-architecture.svg}
+    \caption{General architecture of the agent.}
+    \label{fig:general-architecture}
+\end{figure}
 
 \section{Environment implementation}
 To implement the environment we followed the guidelines of the PettingZoo library, which is a Python library for conducting research in multiagent reinforcement learning \cite{pettingzoo}. It is similar to OpenAI Gym, but it is designed for multiagent environments. We aimed to optimize the speed of the environment implementation to maximize the time spent in the training loop and minimize the time spent on executing game logic.
@@ -78,7 +85,6 @@ When using policy-gradient methods the agent consists of two parts, the Actor an
     \caption{Diagram of the Actor-Critic Network Architecture. The Actor (left) transforms the agent's observation into a probability distribution over the 40 available actions, while the Critic (right) outputs a single real value, representing the state's value. We used two separate neural networks for the Actor and Critic as suggested in \cite{ppo-implementation-details}.}
     \label{fig:actor-critic-network}
 \end{figure}
-
 
 \section{Training procedure}
 
