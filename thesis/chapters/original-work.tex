@@ -1,6 +1,6 @@
 \chapter{Original work}
 
-In this chapter we explain and discuss the approach that was used to create a reinforcement learning agent that can play Briscola.\\
+In this chapter we explain and discuss the approach that was used to create a reinforcement learning agent that learns to play Briscola.\\
 The code implementation is available at \url{https://github.com/LetteraUnica/BriscolaBot}.
 The general architecture of the whole training process is shown in figure \ref{fig:general-architecture}.
 
@@ -10,7 +10,15 @@ The general architecture of the whole training process is shown in figure \ref{f
     \caption{Starting from the Agent Pool, 8 opponents with frozen parameters are sampled. If the pool contains fewer than 8 agents, sampling is continued with replacement. The agent then plays 128 games against each opponent, resulting in a total of 2048 games, which are played in parallel using a Vectorized Environment. During gameplay, the agent collects experience and stores it in an Experience Buffer. After playing 2048 games (corresponding to 40960 tricks), the agent is trained on the collected experience using the PPO algorithm \cite{schulman2017proximal}. Finally, a copy of updated agent is inserted into the Agent Pool with frozen weights.}
     \label{fig:general-architecture}
 \end{figure}
-We start by describing how the environment has been implemented, describing the agent observation, reward structure and action space. Then we discuss the agent implementation, which constists of two neural networks. After that we will explore the training process in more detail. Finally, we will discuss the performance our agent has been able to achieve.
+The general architecture is composed of four main components, described in their respective sections in more detail:
+\begin{itemize}
+    \item \textbf{Vectorized Environment:} Implements the Briscola environment and allows for parallel execution of multiple games.
+    \item \textbf{Agent Pool:} Stores a pool of agents with frozen weights. The agents are sampled during training to play against the agent being trained.
+    \item \textbf{Experience Buffer:} Stores the experience collected by the agent during gameplay.
+    \item \textbf{Parameter update:} The agent is trained on the experience collected during gameplay using the PPO algorithm \cite{schulman2017proximal}.
+\end{itemize}
+
+Finally, we will discuss the performance our agent has been able to achieve.
 
 \section{Environment implementation}
 To implement the environment we followed the guidelines of the PettingZoo library, which is a Python library for conducting research in multiagent reinforcement learning \cite{pettingzoo}. It is similar to OpenAI Gym, but it is designed for multiagent environments. We aimed to optimize the speed of the environment implementation to maximize the time spent in the training loop and minimize the time spent on executing game logic.
@@ -43,11 +51,10 @@ The agent has access to various information during gameplay, including the cards
 \subsection{Reward structure}
 The reward structure is a weighted combination of two elements: win or loss and points earned in each turn:
 \begin{equation}
-    R = \alpha R_{win} + (1 - \alpha) R_{points}
+    R = \alpha R_\textrm{win} + (1 - \alpha) R_\textrm{points}
     \label{eq:reward-structure}
 \end{equation}
-The reward structure consists of two terms: $R_{win}$ and $R_{points}$. $R_{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\alpha$, which is a hyperparameter. Ideally, $\alpha=1$ would give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. To understand the impact of $\alpha$ on the agent's performance, we will conduct an ablation study. DEVO FARLO ADESSO O LO METTO DOPO?
-
+The reward structure consists of two terms: $R_\textrm{win}$ and $R_\textrm{points}$. $R_\textrm{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_\textrm{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\alpha$, which is a hyperparameter. Ideally, $\alpha=1$ would give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. To understand the impact of $\alpha$ on the agent's performance, we will conduct an ablation study in section \ref{sec:ablation-study}. For now we used $\alpha=0.1$.
 \subsection{Action space}
 
 We explored two different ways to represent the action space. The first representation consisted of three discrete actions, corresponding to each of the three cards the agent could play, making it an intuitive choice that mimics how humans play the game. In this representation all actions are valid except when near to the end of the game, where the player has fewer than 3 cards in hand. The second representation consisted of 40 discrete actions, each representing a card from the deck. This representation is less intuitive and most of the actions, around 93\%, are invalid. Despite these limitations, the second representation outperformed the first (as shown in Figure \ref{fig:action-space-comparison}). We believe this is because the agent doesn't have to consider the position of the cards in its hand and can instead focus solely on the cards it holds.
@@ -64,7 +71,7 @@ Both in the first and second representation of the action space, the agent must 
 The masking is done by setting the logits corresponding to the invalid actions to a small number, this way of performing the masking can be demonstrated to still produce a valid policy gradient as we are applying a differentiable state-dependent transformation to the policy \cite{action-masking}.
 
 \begin{equation*}
-    \pi'(\cdot|s) = \mathrm{softmax}(\mathrm{mask}(l(s)))
+    \pi'(\cdot|s) = \mathrm{softmax}(\mathrm{mask}(l_i))
 \end{equation*}
 \begin{equation*}
     \mathrm{mask}(l_{i}) = \begin{cases}
@@ -78,15 +85,84 @@ Where $l$ is the logits vector, $a$ is the action vector, $s$ is the state and $
 In order to make the training process faster, we utilized a vectorized environment. This is a wrapper around the original environment that allows multiple instances of it to run simultaneously. In this setup, the agent receives all observations from all environments at once, which enables batching of policy evaluation and potentially performing it on a GPU, resulting in a significant speed-up of the training process.
 
 \section{Agent}
-When using policy-gradient methods the agent consists of two parts, the Actor and the Critic. The Actor, implemented as a multi-layer perceptron (MLP) with ReLU activations, defines the policy by mapping the agent's observation to a probability distribution over the action space (Figure \ref{fig:actor-critic-network}). On the other hand, the Critic uses the same MLP architecture as the Actor but outputs a single real value that represents the state's value (Figure \ref{fig:actor-critic-network}).
+When using policy-gradient methods the agent consists of two parts, the Actor and the Critic. The Actor, implemented as a multi-layer perceptron (MLP) with ReLU activations, defines the policy by mapping the agent's observation to a probability distribution over the action space (Figure \ref{fig:actor-critic-network}). On the other hand, the Critic uses the same MLP architecture as the Actor but outputs a single real value that represents the state's value (Figure \ref{fig:actor-critic-network}). We used two separate neural networks for the Actor and Critic as suggested in \cite{ppo-implementation-details}.
 
 \begin{figure}[H]
     \centering
     \includesvg[width=0.6\textwidth]{images/actor-critic-net.svg}
-    \caption{Diagram of the Actor-Critic Network Architecture. The Actor (left) transforms the agent's observation into a probability distribution over the 40 available actions, while the Critic (right) outputs a single real value, representing the state's value. We used two separate neural networks for the Actor and Critic as suggested in \cite{ppo-implementation-details}.}
+    \caption{Diagram of the Actor-Critic Network Architecture. The Actor (left) transforms the agent's observation into a probability distribution over the 40 available actions, while the Critic (right) outputs a single real value, representing the state's value.}
     \label{fig:actor-critic-network}
 \end{figure}
 
-\section{Training procedure}
+\section{Agent Pool}
+The agent pool serves as a repository for past versions of the agent undergoing training, and keeps track of each version's win probability against the current agent. In detail, the pool holds a list of agents and their ratings $E_i$ against the agent being trained\footnote{The rating is very similar to the ELO system}. When opponents are selected for training, the pool samples them based on their ratings, with higher-rated agents having a higher probability of being chosen. This sampling is done using the following formula:
+
+\begin{equation}
+    P_i = \frac{e^{E_i}}{\sum_{j=1}^n e^{E_j}}
+    \label{eq:agent-pool-sampling}
+\end{equation}
+
+The ratings of the opponents in the agent pool are updated after the agent has played games against them. This is done by using the following equation:
+
+\begin{equation}
+    E_i \rightarrow (1-\beta) E_i + \beta \, \textrm{logit}(\bar W_i)
+    \label{eq:agent-pool-rating-update}
+\end{equation}
+
+In this equation, $E_i$ represents the rating of opponent $i$, $\bar W_i$ is the average win rate of opponent $i$ against the agent being trained. The hyperparameter $\beta$ determines the influence of the old rating $E_i$ and the new rating $\textrm{logit}(\bar W_i)$ on the updated rating. If $\beta = 1$, the updated rating would be an unbiased estimator of the true rating. However, this would result in high variance. To reduce the variance, $\beta = 0.1$ is used, which biases the estimator towards $E_i$, however it drastically reduces its variance.\\\\
+The agent pool is a crucial component as it prevents the agent from forgetting how to overcome previous versions of itself. With the agent pool, the agent is exposed to a diverse range of opponents, including those it has previously defeated, and must be able to overcome them once again, thus ensuring its overall improvement.
+
+\section{Optimization}
+The optimization process is done using a variant of the Proximal Policy Optimization (PPO) algorithm, which includes several modifications that have been shown to improve the performance of the algorithm \cite{ppo-implementation-details}. Some of them are:
+\begin{itemize}
+    \item The learning rate decreases gradually during training, a common practice in deep learning that has been shown to also enhance PPO's performance.
+    \item Generalized Advantage Estimation (GAE): The advantage function is calculated using GAE \cite{schulman2015high}, reducing variance in the advantage function and shortening training time.
+    \item Normalization of Advantages: After GAE is used to calculate the advantages, they are normalized at the mini-batch level to have mean zero and unit variance. This operation doesn't change the policy gradient, but it helps the optimization process as the data is centered around zero.
+    \item Loss entropy bonus: The loss function is enhanced with an entropy bonus, encouraging exploration and preventing the policy from becoming too deterministic too early in training.
+\end{itemize}
+
+The optimization of the agent is performed using the Adam optimizer \cite{kingma2014adam}, with a starting learning rate of $3 \cdot 10^{-3}$, which gradually decreases to $3 \cdot 10^{-4}$ during the training process. To accelerate the training, a large batch size of 1024 is employed, as it has been observed to increase efficiency, and it aligns with the typical use of large batch sizes in reinforcement learning \cite{mccandlish2018empirical}. The agent's performance is optimized by minimizing the following loss function.
+
+\begin{equation}
+    L = L_{\textrm{policy}} + \beta_\textrm{v} L_\textrm{value} - \beta_\textrm{e} L_\textrm{entropy}
+    \label{eq:ppo-loss}
+\end{equation}
+In equation \eqref{eq:ppo-loss}, $L_{\textrm{policy}}$ represents the PPO policy loss as in equation \eqref{eq:ppo-update-clip}, $L_\textrm{value}$ is the mean squared error between the predicted value and the actual episode return, and $L_\textrm{entropy}$ is the entropy of the policy. The hyperparameters $\beta_\textrm{v}$ and $\beta_\textrm{e}$ control the relative importance of these terms and are set to $0.5$ and $0.01$ respectively.
+
+\section{Hyperparameter search}
+We performed a hyperparameter search before starting the final training run by utilizing the bayesian search method from Weights \& Biases \cite{wandb}. The method was tasked to maximize the win probability against a random opponent in 1 million training steps. The method successfully discovered hyperparameters that reduced the time taken to reach an 80\% win rate against a random agent by half, as depicted in Figure \ref{fig:hyperparam-best-default}. The optimized hyperparameters are displayed in Table \ref{tab:hyperparam-best}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/hyperparam-best-default.png}
+    \caption{Comparison of the default hyperparameters and the best hyperparameters found using Weights \& Biases bayesian search method.}
+    \label{fig:hyperparam-best-default}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccc}
+        \hline
+        Hyperparameter & Default value & Best value \\
+        \hline
+        Learning rate & 0.001 & 0.003 \\
+        Clip coefficient \eqref{eq:ppo-update-clip} & 0.2 & 0.3\\
+        Entropy bonus \eqref{eq:ppo-loss} & 0.001 & 0.01 \\
+        GAE $\lambda$ \eqref{eq:gae-advantage} & 0.95 & 0.9 \\
+        Reward for win \eqref{eq:reward-structure} & 0 & 0.1 \\
+        Update epochs & 4 & 2 \\
+    \end{tabular}
+    \caption{Best hyperparameters found using Weights \& Biases bayesian search method. The default parameters were taken from the CleanRL implementation of PPO \cite{huang2022cleanrl} which provide a good starting point for reinforcement learning tasks. Update epochs is the number of passes over the collected episode data the optimization performs.}
+    \label{tab:hyperparam-best}
+\end{table}
 
 \section{Results}
+We trained the agent for 20 million steps, which took approximately one hour on an intel i5-4690K CPU. Even though the agent was trained for a relatively short amount of time, it was able to achieve a win rate of 90\% against a random agent. Human players were also able to play against the agent, and it was able to beat them with a win rate of 50\%. Which is a very good result considering the randomness of the game of Briscola.\\\\
+
+\subsection{Agent vs Random}
+
+\subsection{Agent vs Human}
+
+\subsection{Reward structure}
+
+\subsection{Impact of Self-play}
