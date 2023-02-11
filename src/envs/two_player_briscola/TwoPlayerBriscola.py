@@ -82,7 +82,7 @@ class TwoPlayerBriscola(AECEnv):
         self.observation_spaces = {
             agent: Dict(
                 {
-                    "observation": Box(low=0, high=1, shape=(2 + Constants.deck_cards * 6 + Constants.n_agents,),
+                    "observation": Box(low=0, high=1, shape=(4 * Constants.deck_cards + Constants.n_agents,),
                                        dtype=np.float32),
                     "action_mask": Box(low=0, high=1, shape=(Constants.deck_cards,), dtype=np.int64),
                 }) for agent in self.agents
