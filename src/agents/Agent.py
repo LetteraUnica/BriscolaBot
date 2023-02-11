@@ -5,5 +5,9 @@ from torch import tensor
 
 class Agent(ABC):
     @abstractmethod
+    def get_name(self) -> str:
+        pass
+
+    @abstractmethod
     def get_actions(self, observations: tensor, action_masks: tensor = None) -> tensor:
         pass

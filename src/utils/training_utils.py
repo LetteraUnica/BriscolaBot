@@ -4,7 +4,11 @@ from pettingzoo import AECEnv
 from torch import Tensor
 
 from src.agents import Agent
-from src.vectorizers import VectorizedEnv
+from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
+
+from scipy.special import logit
+
+from src.vectorizers.VectorizedEnv import VectorizedEnv
 
 
 def get_state_representation(envs: VectorizedEnv) -> tuple[Tensor, Tensor, Tensor, Tensor]:
@@ -46,3 +50,28 @@ def play_all_moves_of_players(vec_env: VectorizedEnv, policies: list[Agent], pla
     for i, policy in enumerate(policies):
         start, end = (i * n_envs) // n_policies, ((i + 1) * n_envs) // n_policies
         play_all_moves_of_player(vec_env[start:end], policy, player, device)
+
+
+def compute_rating(current_policy: Agent,
+                   other_player_policy: Agent,
+                   n_games: int = 512,
+                   device: str = "cpu",
+                   n_steps: int = 20,
+                   env_fn=lambda: TwoPlayerBriscola(),
+                   current_player: str = "player_0",
+                   other_player: str = "player_1"):
+    vec_env = VectorizedEnv(env_fn, n_games)
+    vec_env.reset()
+    other_player_policies = [other_player_policy]
+    for _ in range(n_steps):
+        with torch.no_grad():
+            play_all_moves_of_players(vec_env, other_player_policies, other_player)
+            next_obs, action_mask, _, _ = get_state_representation(vec_env)
+            actions = current_policy.get_actions(next_obs.to(device), action_mask.to(device))
+
+        vec_env.step(actions.cpu().numpy())
+    play_all_moves_of_players(vec_env, other_player_policies, "player_1")  # Play the last move
+
+    scores = np.array([env.get_game_outcome(current_player) for env in vec_env.get_envs()], dtype=np.float64)
+    mean_score = np.mean(scores)
+    return mean_score, logit(mean_score)

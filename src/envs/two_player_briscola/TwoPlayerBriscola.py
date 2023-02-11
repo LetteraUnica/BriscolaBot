@@ -27,7 +27,8 @@ def cards_to_string(cards: list[int]) -> str:
 @dataclass
 class State:
     deck: list[int]
-    seen_cards: list[int]
+    thrown_cards_player: list[str]
+    thrown_cards: list[int]
     hand_cards: dict[str, list[int]]
     table_card: int
     briscola_card: int
@@ -49,8 +50,9 @@ class State:
         index = self.hand_cards[agent].index(card)
         return self.hand_cards[agent].pop(index)
 
-    def add_seen_cards(self, cards: list[int]):
-        self.seen_cards.extend(cards)
+    def add_seen_cards(self, cards: list[int], players: list[str]):
+        self.thrown_cards.extend(cards)
+        self.thrown_cards_player.extend(players)
 
     def number_of_agent_cards(self, agent: str) -> int:
         return len(self.hand_cards[agent])
@@ -58,7 +60,7 @@ class State:
     def __repr__(self):
         hand_cards = {k: cards_to_string(v) for k, v in self.hand_cards.items()}
         return f"deck: {cards_to_string(self.deck)}\n" \
-               f"seen_cards: {cards_to_string(self.seen_cards)}\n" \
+               f"seen_cards: {cards_to_string(self.thrown_cards)}\n" \
                f"hand_cards: {hand_cards}\n" \
                f"table_card: {card_to_string(self.table_card)}\n" \
                f"briscola_card: {card_to_string(self.briscola_card)}\n" \
@@ -80,7 +82,7 @@ class TwoPlayerBriscola(AECEnv):
         self.observation_spaces = {
             agent: Dict(
                 {
-                    "observation": Box(low=0, high=1, shape=(Constants.deck_cards * 4 + Constants.n_agents,),
+                    "observation": Box(low=0, high=1, shape=(2 + Constants.deck_cards * 6 + Constants.n_agents,),
                                        dtype=np.float32),
                     "action_mask": Box(low=0, high=1, shape=(Constants.deck_cards,), dtype=np.int64),
                 }) for agent in self.agents
@@ -101,7 +103,8 @@ class TwoPlayerBriscola(AECEnv):
         deck = np.arange(Constants.deck_cards)
         self.rng.shuffle(deck)
         self.game_state = State(deck=list(deck),
-                                seen_cards=[],
+                                thrown_cards=[],
+                                thrown_cards_player=[],
                                 hand_cards=dict([(agent, []) for agent in self.agents]),
                                 table_card=Constants.null_card_number,
                                 briscola_card=deck[0],
@@ -133,7 +136,7 @@ class TwoPlayerBriscola(AECEnv):
 
     def observe(self, agent: str) -> dict[str, np.ndarray]:
         observation = np.zeros((4, Constants.deck_cards), dtype=np.float32)
-        observation[0, self.game_state.seen_cards] = 1
+        observation[0, self.game_state.thrown_cards] = 1
         observation[1, self.game_state.briscola_card] = 1
         if self.game_state.table_card < Constants.null_card_number:
             observation[2, self.game_state.table_card] = 1
@@ -167,8 +170,10 @@ class TwoPlayerBriscola(AECEnv):
         else:
             first_card = self.game_state.table_card
             second_card = self.game_state.pop_card_of_agent(self.agent_selection, action)
-            hand_points = get_cards_points([first_card, second_card])
 
+            self.game_state.add_seen_cards([first_card, second_card], [self.other_player(self.agent_selection), self.agent_selection])
+
+            hand_points = get_cards_points([first_card, second_card])
             if is_first_player_win(first_card, second_card, get_seed(self.game_state.briscola_card)):
                 winner = self.other_player(self.agent_selection)
             else:
@@ -177,7 +182,7 @@ class TwoPlayerBriscola(AECEnv):
 
             self.rewards[winner] = hand_points / Constants.total_points
             self.game_state.agent_points[winner] += hand_points
-            self.game_state.add_seen_cards([first_card, second_card])
+
             self.game_state.table_card = Constants.null_card_number
             self.deal_cards(1, winner)
 
@@ -200,6 +205,7 @@ class TwoPlayerBriscola(AECEnv):
         return self.game_state.__repr__()
 
     def state(self) -> State:
+        # pass
         pass
 
     def deal_cards(self, n_cards: int, winner: Optional[str] = None) -> None:

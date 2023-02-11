@@ -5,6 +5,9 @@ from src.agents.Agent import Agent
 
 
 class RandomAgent(Agent):
+    def get_name(self) -> str:
+        return "RandomAgent"
+
     def __init__(self, n_actions):
         self.n_actions = n_actions
 

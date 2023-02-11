@@ -50,7 +50,7 @@ class TestBriscola(unittest.TestCase):
             self.assertEqual(env.game_state.deck[0], env.game_state.briscola_card)
             self.assertTrue(env.game_state.current_agent in env.agents)
             self.assertEqual(env.game_state.current_agent, env.agent_selection)
-            self.assertEqual(len(env.game_state.seen_cards), 0)
+            self.assertEqual(len(env.game_state.thrown_cards), 0)
             self.assertEqual(len(env.game_state.hand_cards), Constants.n_agents)
             for agent in env.game_state.hand_cards.keys():
                 self.assertEqual(len(env.game_state.hand_cards[agent]), Constants.hand_cards)
@@ -95,7 +95,7 @@ class TestBriscola(unittest.TestCase):
                 self.assertEqual(len(env.game_state.hand_cards[agent]), 0)
 
             self.assertEqual(sum(env.game_state.agent_points.values()), Constants.total_points)
-            self.assertEqual(set(env.game_state.seen_cards), set(range(Constants.deck_cards)))
+            self.assertEqual(set(env.game_state.thrown_cards), set(range(Constants.deck_cards)))
 
     def test_number_of_player_moves(self):
         env = TwoPlayerBriscola()
@@ -155,7 +155,7 @@ class TestBriscola(unittest.TestCase):
         for _ in range(100):
             env.reset()
             prev_agent_points = env.game_state.agent_points.copy()
-            for i in range(Constants.deck_cards):
+            for _ in range(Constants.deck_cards):
                 point_difference = env.game_state.agent_points[env.agent_selection] - prev_agent_points[
                     env.agent_selection]
                 prev_agent_points[env.agent_selection] = env.game_state.agent_points[env.agent_selection]
@@ -186,7 +186,7 @@ class TestBriscola(unittest.TestCase):
             env.reset()
             while not env.is_over():
                 self.assertEqual(env.is_over(), env.game_state.num_moves == Constants.deck_cards)
-                self.assertEqual(env.is_over(), len(env.game_state.seen_cards) == Constants.deck_cards)
+                self.assertEqual(env.is_over(), len(env.game_state.thrown_cards) == Constants.deck_cards)
                 self.assertEqual(env.is_over(), sum(len(env.game_state.hand_cards[agent]) for agent in env.agents) == 0)
                 self.assertEqual(env.is_over(), all(env.terminations.values()))
                 play_random_actions(env)
