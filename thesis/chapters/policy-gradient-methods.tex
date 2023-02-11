@@ -222,10 +222,10 @@ Where $\Psi_t$ can be any method of advantage estimation, like:
 It can be proven that among these estimators the advantage function is the lowest variance estimator \cite{greensmith2004variance}.\\\\
 Another advantage estimation method that is used in practice is Generalized Advantage Estimation (GAE) \cite{schulman2015high}. GAE is a popular advantage estimation method that combines the strengths of both Monte Carlo and TD methods. The GAE advantage is expressed as:
 \begin{equation}
-    A_{t}^{GAE}(s, a) = \sum_{k=0}^{\infty} \gamma^k \lambda^k \delta_{t+k}
+    A_{t}^{\textrm{GAE}}(s, a) = \sum_{k=0}^{\infty} \gamma^k \lambda^k \delta_{t+k}
     \label{eq:gae-advantage}
 \end{equation}
-Where $\delta_{t+k}$ is the TD-error at time $t+k$ and $\lambda \in (0, 1)$ is a hyperparameter that determines the weight given to future TD-errors. In particular, if $\lambda = 0$ then $A_t^{GAE} = \delta_t$, while if $\lambda = 1$ then $A_t^{GAE} = G_t$. The $\lambda$ parameter thus makes a compromise between the bias and variance of the estimator, like the parameter $n$ does for $n$-step TD methods \ref{n-step-return}. Figure \ref{fig:gae-comparison} shows the performance of GAE with different values of $\lambda$.\\
+Where $\delta_{t+k}$ is the TD-error at time $t+k$ and $\lambda \in (0, 1)$ is a hyperparameter that determines the weight given to future TD-errors. In particular, if $\lambda = 0$ then $A_t^{\textrm{GAE}} = \delta_t$, while if $\lambda = 1$ then $A_t^{\textrm{GAE}} = G_t$. The $\lambda$ parameter thus makes a compromise between the bias and variance of the estimator, like the parameter $n$ does for $n$-step TD methods \ref{n-step-return}. Figure \ref{fig:gae-comparison} shows the performance of GAE with different values of $\lambda$.\\
 Currently, GAE is used in all major PPO implementation, like CleanRL \cite{huang2022cleanrl}, Tianshou \cite{tianshou} and Stable Baselines3 \cite{stable-baselines3}.
 \begin{figure}[H]
     \centering
