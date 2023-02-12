@@ -205,7 +205,7 @@ class TwoPlayerBriscola(AECEnv):
         return self.game_state.__repr__()
 
     def state(self) -> State:
-        # pass
+        # Not used
         pass
 
     def deal_cards(self, n_cards: int, winner: Optional[str] = None) -> None:
@@ -239,6 +239,9 @@ class TwoPlayerBriscola(AECEnv):
             else:
                 return 1. if self.game_winner() == agent else 0.
         return 0.
+
+    def set_state(self, state: State):
+        self.game_state = state
 
     def __repr__(self) -> str:
         return self.game_state.__repr__()
