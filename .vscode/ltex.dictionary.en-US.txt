@@ -8,3 +8,4 @@ MDPs
 Barto
 TRPO
 gridworld
+Stockfish

@@ -7,7 +7,7 @@ The general architecture of the whole training process is shown in figure \ref{f
 \begin{figure}[H]
     \centering
     \includesvg[width=0.9\textwidth]{images/general-architecture.svg}
-    \caption{Starting from the Agent Pool, 8 opponents with frozen parameters are sampled. If the pool contains fewer than 8 agents, sampling is continued with replacement. The agent then plays 128 games against each opponent, resulting in a total of 2048 games, which are played in parallel using a Vectorized Environment. During gameplay, the agent collects experience and stores it in an Experience Buffer. After playing 2048 games (corresponding to 40960 tricks), the agent is trained on the collected experience using the PPO algorithm \cite{schulman2017proximal}. Finally, a copy of updated agent is inserted into the Agent Pool with frozen weights.}
+    \caption{Starting from the Agent Pool, 4 opponents with frozen parameters are sampled. If the pool contains fewer than 4 agents, sampling is continued with replacement. The agent then plays 512 games against each opponent, resulting in a total of 2048 games (corresponding to 40960 tricks), which are played in parallel using a Vectorized Environment. During episode generation, the agent also collects experience and stores it in an Experience Buffer. Afterwards, the agent is trained on the collected experience using the PPO algorithm \cite{schulman2017proximal}. Finally, a copy of updated agent is inserted into the Agent Pool with frozen weights. The process is repeated until the agent reaches the desired performance.}
     \label{fig:general-architecture}
 \end{figure}
 The general architecture is composed of four main components, described in their respective sections in more detail:
@@ -54,9 +54,9 @@ The reward structure is a weighted combination of two elements: win or loss and 
     R = \alpha R_\textrm{win} + (1 - \alpha) R_\textrm{points}
     \label{eq:reward-structure}
 \end{equation}
-The reward structure consists of two terms: $R_\textrm{win}$ and $R_\textrm{points}$. $R_\textrm{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_\textrm{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\alpha$, which is a hyperparameter. Ideally, $\alpha=1$ would give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. To understand the impact of $\alpha$ on the agent's performance, we will conduct an ablation study in section \ref{sec:ablation-study}. For now we used $\alpha=0.1$.
-\subsection{Action space}
+The reward structure consists of two terms: $R_\textrm{win}$ and $R_\textrm{points}$. $R_\textrm{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_\textrm{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\alpha$, which is a hyperparameter. Ideally, $\alpha=1$ should give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. In practice, we started training with $\alpha=0.1$ and the gradually increased it until we reached $\alpha=1$. This allows to learn fast a the beginning of training and then focus on winning the game.
 
+\subsection{Action space}
 We explored two different ways to represent the action space. The first representation consisted of three discrete actions, corresponding to each of the three cards the agent could play, making it an intuitive choice that mimics how humans play the game. In this representation all actions are valid except when near to the end of the game, where the player has fewer than 3 cards in hand. The second representation consisted of 40 discrete actions, each representing a card from the deck. This representation is less intuitive and most of the actions, around 93\%, are invalid. Despite these limitations, the second representation outperformed the first (as shown in Figure \ref{fig:action-space-comparison}). We believe this is because the agent doesn't have to consider the position of the cards in its hand and can instead focus solely on the cards it holds.
 \begin{figure}[H]
     \centering
@@ -102,14 +102,14 @@ The agent pool serves as a repository for past versions of the agent undergoing 
     \label{eq:agent-pool-sampling}
 \end{equation}
 
-The ratings of the opponents in the agent pool are updated after the agent has played games against them. This is done by using the following equation:
+The ratings of the opponents in the agent pool are updated after the agent has played games against them, with the following equation:
 
 \begin{equation}
-    E_i \rightarrow (1-\beta) E_i + \beta \, \textrm{logit}(\bar W_i)
+    E_i \rightarrow (1-\nu) E_i + \nu \, \textrm{logit}(\bar W_i)
     \label{eq:agent-pool-rating-update}
 \end{equation}
 
-In this equation, $E_i$ represents the rating of opponent $i$, $\bar W_i$ is the average win rate of opponent $i$ against the agent being trained. The hyperparameter $\beta$ determines the influence of the old rating $E_i$ and the new rating $\textrm{logit}(\bar W_i)$ on the updated rating. If $\beta = 1$, the updated rating would be an unbiased estimator of the true rating. However, this would result in high variance. To reduce the variance, $\beta = 0.1$ is used, which biases the estimator towards $E_i$, however it drastically reduces its variance.\\\\
+Where $E_i$ represents the rating of opponent $i$, $\bar W_i$ is the average win rate of opponent $i$ against the agent being trained. The hyperparameter $\nu$ determines the influence of the old rating $E_i$ and the new rating $\textrm{logit}(\bar W_i)$ on the updated rating. If $\nu = 1$, the updated rating would be an unbiased estimator of the true rating. However, this would result in high variance. To reduce the variance, $\nu = 0.1$ is used, which biases the estimator towards $E_i$, reducing its variance.\\\\
 The agent pool is a crucial component as it prevents the agent from forgetting how to overcome previous versions of itself. With the agent pool, the agent is exposed to a diverse range of opponents, including those it has previously defeated, and must be able to overcome them once again, thus ensuring its overall improvement.
 
 \section{Optimization}
@@ -121,16 +121,19 @@ The optimization process is done using a variant of the Proximal Policy Optimiza
     \item Loss entropy bonus: The loss function is enhanced with an entropy bonus, encouraging exploration and preventing the policy from becoming too deterministic too early in training.
 \end{itemize}
 
-The optimization of the agent is performed using the Adam optimizer \cite{kingma2014adam}, with a starting learning rate of $3 \cdot 10^{-3}$, which gradually decreases to $3 \cdot 10^{-4}$ during the training process. To accelerate the training, a large batch size of 1024 is employed, as it has been observed to increase efficiency, and it aligns with the typical use of large batch sizes in reinforcement learning \cite{mccandlish2018empirical}. The agent's performance is optimized by minimizing the following loss function.
+The optimization of the agent is performed using the Adam optimizer \cite{kingma2014adam}, with a starting learning rate of $3 \cdot 10^{-3}$, which gradually decreases to $1 \cdot 10^{-4}$ during the training process. To accelerate training, a large batch size of 1024 to 2048 is employed, as it has been observed to increase efficiency, and it aligns with the typical use of large batch sizes in reinforcement learning \cite{mccandlish2018empirical}. The agent's performance is optimized by minimizing the following loss function.
 
 \begin{equation}
     L = L_{\textrm{policy}} + \beta_\textrm{v} L_\textrm{value} - \beta_\textrm{e} L_\textrm{entropy}
     \label{eq:ppo-loss}
 \end{equation}
-In equation \eqref{eq:ppo-loss}, $L_{\textrm{policy}}$ represents the PPO policy loss as in equation \eqref{eq:ppo-update-clip}, $L_\textrm{value}$ is the mean squared error between the predicted value and the actual episode return, and $L_\textrm{entropy}$ is the entropy of the policy. The hyperparameters $\beta_\textrm{v}$ and $\beta_\textrm{e}$ control the relative importance of these terms and are set to $0.5$ and $0.01$ respectively.
+In equation \eqref{eq:ppo-loss}, $L_{\textrm{policy}}$ represents the PPO policy loss as in equation \eqref{eq:ppo-update-clip}, $L_\textrm{value}$ is the mean squared error between the predicted value and the actual episode return, and $L_\textrm{entropy}$ is the entropy of the policy. The hyperparameters $\beta_\textrm{v}$ and $\beta_\textrm{e}$ control the relative importance of these terms and are commonly set around $0.5$ and $0.01$ respectively.
 
-\section{Hyperparameter search}
-We performed a hyperparameter search before starting the final training run by utilizing the bayesian search method from Weights \& Biases \cite{wandb}. The method was tasked to maximize the win probability against a random opponent in 1 million training steps. The method successfully discovered hyperparameters that reduced the time taken to reach an 80\% win rate against a random agent by half, as depicted in Figure \ref{fig:hyperparam-best-default}. The optimized hyperparameters are displayed in Table \ref{tab:hyperparam-best}.
+\section{Training Procedure}
+We trained three agents with increasing level of performance using an incremental approach, similar to the one used when developing chess engines \cite{stockfish,lc0}. More in detail, when developing the next version of Stockfish, the developers measure its performance against the previous version, if the new version wins more games than the previous version, it is considered an improvement. This is a simple yet powerful approach because it allows to test the agent's improvement without having to define an elo rating, which can be hard to do, as it depends on the distributions of the opponents.
+
+\subsection{BriscolaBot-v1}
+The first version of the agent didn't use self-play with the agent pool, instead was only trained against a random opponent for 10 million steps. Before starting the final training run we performed an extensive hyperparameter search using the Weights \& Biases bayesian search method \cite{wandb}. The algorithm was tasked to maximize the win probability against a random opponent in 1 million training steps. The method successfully discovered hyperparameters that reduced the time taken to reach an 80\% win rate against a random agent by half, as depicted in Figure \ref{fig:hyperparam-best-default}. While the optimized hyperparameters are displayed in Table \ref{tab:hyperparam-best}.
 
 \begin{figure}[H]
     \centering
@@ -149,6 +152,7 @@ We performed a hyperparameter search before starting the final training run by u
         Clip coefficient \eqref{eq:ppo-update-clip} & 0.2 & 0.3\\
         Entropy bonus \eqref{eq:ppo-loss} & 0.001 & 0.01 \\
         GAE $\lambda$ \eqref{eq:gae-advantage} & 0.95 & 0.9 \\
+        Discount factor \eqref{return-recursive} & 1 & 1 \\
         Reward for win \eqref{eq:reward-structure} & 0 & 0.1 \\
         Update epochs & 4 & 2 \\
     \end{tabular}
@@ -156,13 +160,49 @@ We performed a hyperparameter search before starting the final training run by u
     \label{tab:hyperparam-best}
 \end{table}
 
-\section{Results}
-We trained the agent for 20 million steps, which took approximately one hour on an intel i5-4690K CPU. Even though the agent was trained for a relatively short amount of time, it was able to achieve a win rate of 90\% against a random agent. Human players were also able to play against the agent, and it was able to beat them with a win rate of 50\%. Which is a very good result considering the randomness of the game of Briscola.\\\\
+The final training run which produced BriscolaBot-v1 was performed using the optimized hyperparameters, and the agent was able to achieve a win rate of 80\% against a random agent in 1 million steps and almost 90\% in 10 million steps as shown in figure \ref{fig:hyperparam-best-default}.
 
-\subsection{Agent vs Random}
+\subsection{BriscolaBot-v2}
+In the second version of the agent, we added self-play with the agent pool because the agent manages beat a random opponent very quickly. Furthermore, we increased the neural network size to 256, changed the activation function from ReLU to Mish \cite{misra2019mish} and added learning-rate decay. The effect of these last two changes can be seen in figure \ref{fig:mish-activation}, demonstrating that the agent was able to beat the previous version of the agent with a win rate of 60\% in 10 million steps, which is a very good result considering the randomness of the game of Briscola.
 
-\subsection{Agent vs Human}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/mish-activation.png}
+    \caption{Winrate against BriscolaBot-v1 when increasing the neural network size from 128 to 256 and on top of that changing the activation function from ReLU to Mish.}
+    \label{fig:mish-activation}
+\end{figure}
 
-\subsection{Reward structure}
+For the final version of the BriscolaBot-v2 agent we continued training until 20 million steps, the final agent was able to achieve a win rate of 90\% against a random agent and 64\% against BriscolaBot-v1.
 
-\subsection{Impact of Self-play}
+\subsection{BriscolaBot-v3}
+A problem with BriscolaBot-v2 is that it throws the ace and the 3 of briscola very often, instead of waiting for the right opportunity. This is a problem, because the ace and the 3 of briscola are the most powerful cards in the game, and wasting them can lead to a loss.\\\\
+We think that this problem is caused by giving too much importance to the number of points scored in the loss function, which, combined with $\gamma = 0.95$ causes the agent to collect points as soon as possible. In this version, we tried to address this problem by gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} from 0.1 up to 1 during training. Another change that was applied was to decay the entropy $\beta_\textrm{e}$ parameter in equation \eqref{eq:ppo-loss} from 0.01 down to approximately zero, as this is an exploration parameter and should decrease when reaching optimal play \cite{open-ai-five}. The effect of these changes can be seen in figure \ref{fig:briscolabot-v3}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/briscolabot-v3.png}
+    \caption{Winrate against BriscolaBot-v2 when gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} and decreasing the entropy during training. We can see that these two changes improved the performance of the agent. The ratio game won starts very high because these two runs started from the BriscolaBot-v2 weights.}
+    \label{fig:briscolabot-v3}
+\end{figure}
+
+The final agent was trained starting from the BriscolaBot-v2 weights, with the modifications listed above for 50 million steps, corresponding to approximately 4 hours of training on an intel i5-4690K CPU. The agent was able to achieve a win rate of 57\% against BriscolaBot-v2 and 93\% against a random agent, surpassing previous approaches to the problem \cite{alsora-deep-briscola-dqn}. The final list of hyperparameters used for the final agent is shown in Table \ref{tab:hyperparam-final}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Hyperparameter & Value & Hyperparameter & Value \\
+        \hline
+        Learning rate & 0.003 & Learning rate decay & 0.997 \\
+        Clip coefficient & 0.3 & Batch size & 2048 \\
+        Discount factor $\gamma$ & 1 & GAE $\lambda$ \eqref{eq:gae-advantage} & 0.9 \\
+        Entropy bonus $\beta_\textrm{e}$ \eqref{eq:ppo-loss} & 0.01 & $\beta_\textrm{e}$ decay & 0.998 \\
+        $\nu$ \eqref{eq:reward-structure} & 0.1 & $\nu$ increase & 0.001 \\
+        Update epochs & 2 & hidden network size & 256
+    \end{tabular}
+    \caption{Hyperparameters used for the final agent.}
+    \label{tab:hyperparam-final}
+\end{table}
+
+\section{Human evaluation}
+To test the agent performance we decided to test it against human players. We developed a website where it is possible to play against the trained agent, accessible at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}. The results from the human evaluation are shown in table \ref{tab:human-evaluation}.

@@ -1,0 +1,11 @@
+\chapter{Discussion}
+In this thesis we presented a novel approach to the problem of Briscola using the PPO algorithm to find the optimal policy
+
+
+\section{Future Work}
+To further improve the performance of the agent we identified two possible improvements:
+\begin{enumerate}
+    \item Exact solving in endgame positions: When all cards have been extracted the cards of the opponent are known, and it becomes possible to solve the game of Briscola exactly with minimax search. This improvement comes with a low computational cost, as the possible ways of playing out a given endgame are only 36, which can be further reduced with dynamic programming techniques.
+    \item Implement a form of Monte Carlo Tree Search (MCTS) for the game of Briscola. Previous approaches have already tackled Briscola with MCTS \cite{Briscola-mcts-Playing-Algorithm, villa2013-briscola-mcts}, these approaches, however, assumed a model of the opponent, rather than learning it. We think that they could be improved by learning a model that predicts the card that the opponent will throw in a given situation. Once this model is created we can then use it to perform MCTS search.
+    \item Solving the game of Briscola using imperfect information games approaches, like Counterfactual Regret Minimization (CFR) which has been used to beat the world's best Poker players \cite{libratus}.
+\end{enumerate}
