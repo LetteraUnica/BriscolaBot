@@ -10,7 +10,7 @@ from pettingzoo import AECEnv
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank, is_first_player_win, \
-    get_cards_points
+    get_cards_points, get_points
 
 
 def card_to_string(card: int) -> str:
@@ -67,6 +67,12 @@ class State:
                f"current_agent: {self.current_agent}\n" \
                f"agent_points: {self.agent_points}\n" \
                f"num_moves: {self.num_moves}\n"
+
+
+def get_briscola_points(card: int, briscola_seed: int) -> float:
+    if get_seed(card) == briscola_seed:
+        return get_points(card)
+    return 0
 
 
 class TwoPlayerBriscola(AECEnv):
@@ -157,7 +163,7 @@ class TwoPlayerBriscola(AECEnv):
     def legal_actions(self, agent: str) -> list[int]:
         return self.game_state.hand_cards[agent]
 
-    def step(self, action: int) -> None:
+    def step(self, action: int, briscola_penalization: float = 0) -> None:
         assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
 
         if action not in self.legal_actions(self.agent_selection):
@@ -174,13 +180,16 @@ class TwoPlayerBriscola(AECEnv):
             self.game_state.add_seen_cards([first_card, second_card], [self.other_player(self.agent_selection), self.agent_selection])
 
             hand_points = get_cards_points([first_card, second_card])
-            if is_first_player_win(first_card, second_card, get_seed(self.game_state.briscola_card)):
+            briscola_seed = get_seed(self.game_state.briscola_card)
+            if is_first_player_win(first_card, second_card, briscola_seed):
                 winner = self.other_player(self.agent_selection)
+                winner_card = first_card
             else:
                 winner = self.agent_selection
+                winner_card = second_card
                 self.invert_player_turn()
 
-            self.rewards[winner] = hand_points / Constants.total_points
+            self.rewards[winner] = hand_points / Constants.total_points - get_briscola_points(winner_card, briscola_seed) * briscola_penalization
             self.game_state.agent_points[winner] += hand_points
 
             self.game_state.table_card = Constants.null_card_number

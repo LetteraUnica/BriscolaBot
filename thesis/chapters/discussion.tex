@@ -3,9 +3,12 @@ In this thesis we presented a novel approach to the problem of Briscola using th
 
 
 \section{Future Work}
-To further improve the performance of the agent we identified two possible improvements:
+To further improve the performance of the agent we identified a number of possible improvements:
 \begin{enumerate}
-    \item Exact solving in endgame positions: When all cards have been extracted the cards of the opponent are known, and it becomes possible to solve the game of Briscola exactly with minimax search. This improvement comes with a low computational cost, as the possible ways of playing out a given endgame are only 36, which can be further reduced with dynamic programming techniques.
-    \item Implement a form of Monte Carlo Tree Search (MCTS) for the game of Briscola. Previous approaches have already tackled Briscola with MCTS \cite{Briscola-mcts-Playing-Algorithm, villa2013-briscola-mcts}, these approaches, however, assumed a model of the opponent, rather than learning it. We think that they could be improved by learning a model that predicts the card that the opponent will throw in a given situation. Once this model is created we can then use it to perform MCTS search.
-    \item Solving the game of Briscola using imperfect information games approaches, like Counterfactual Regret Minimization (CFR) which has been used to beat the world's best Poker players \cite{libratus}.
+    \item \textbf{Exact solving of endgame positions:} when all cards have been extracted the cards of the opponent are known, so it becomes possible to solve the game of Briscola exactly with minimax search. This improvement comes with a low computational cost, as the possible ways of playing out a given endgame are only 36, which can be further reduced with dynamic programming techniques.
+    \item \textbf{Improve agent performance with MCTS:} previous approaches to the game of Briscola used Monte Carlo Tree Search (MCTS) to find the best move \cite{Briscola-mcts-Playing-Algorithm, villa2013-briscola-mcts}. A problem with these approaches, however, is that they assumed a model of the opponent, rather than learning it (for example the opponent throws a random card from the set of unseen cards). We think that they could be improved by learning a model that predicts the card that the opponent will throw in a given situation. Once this model is created we can then use it to perform MCTS search.
+    \item Solving the game of Briscola using imperfect information games approaches, these approaches find or approximate a Nash equilibrium of the game and have been used successfully in poker where they have beaten the world's best Poker players \cite{libratus}.
 \end{enumerate}
+
+Other direction of future work can be to apply the same technique to other italian card games, like Scopa, Tressette, Macchiavelli, Scala 40. Or to tackle the problem of Briscola when multiple players are playing, as the game can be played up to 6 players in teams or free for all.
+

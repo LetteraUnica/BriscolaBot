@@ -14,8 +14,8 @@ class VectorizedEnv:
     def reset(self):
         [env.reset() for env in self.envs]
 
-    def step(self, actions: ndarray):
-        [env.step(action) for env, action in zip(self.envs, actions)]
+    def step(self, actions: ndarray, **kwargs):
+        [env.step(action, **kwargs) for env, action in zip(self.envs, actions)]
 
     def observe(self, agent: str) -> list[dict[str, ndarray]]:
         return [env.observe(agent) for env in self.envs]
