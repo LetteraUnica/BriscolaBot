@@ -327,11 +327,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="630.71429"
-     inkscape:cy="404.28571"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="708.62201"
+     inkscape:cy="381.83766"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g1261-3"
      inkscape:document-rotation="0"
      showgrid="true"
      showguides="false"
@@ -547,19 +547,19 @@
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="329.72559"
-         y="66.76796"
+         x="329.18054"
+         y="66.70446"
          id="text848-2-8-0"><tspan
            sodipodi:role="line"
-           id="tspan846-9-6-8"
-           x="329.72559"
-           y="66.76796"
-           style="text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.264583">Training</tspan><tspan
-           sodipodi:role="line"
-           x="329.72559"
-           y="79.997086"
+           x="329.18054"
+           y="66.70446"
            style="text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.264583"
-           id="tspan1302">Loop</tspan></text>
+           id="tspan1302">PPO</tspan><tspan
+           sodipodi:role="line"
+           x="329.18054"
+           y="79.933586"
+           style="text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.264583"
+           id="tspan1321">update</tspan></text>
     </g>
     <rect
        style="opacity:0.999;fill:#ffb000;fill-opacity:1;stroke:none;stroke-width:1.87872;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"

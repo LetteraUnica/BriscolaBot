@@ -1,8 +1,6 @@
 \chapter{Original work}
 
-In this chapter we explain and discuss the approach that was used to create a reinforcement learning agent that learns to play Briscola.\\
-The code implementation is available at \url{https://github.com/LetteraUnica/BriscolaBot}.
-The general architecture of the whole training process is shown in figure \ref{fig:general-architecture}.
+In this chapter we explain the approach that was used to create a reinforcement learning agent that learns to play Briscola. The code implementation is available at \url{https://github.com/LetteraUnica/BriscolaBot}.
 
 \begin{figure}[H]
     \centering
@@ -10,15 +8,14 @@ The general architecture of the whole training process is shown in figure \ref{f
     \caption{Starting from the Agent Pool, 4 opponents with frozen parameters are sampled. If the pool contains fewer than 4 agents, sampling is continued with replacement. The agent then plays 512 games against each opponent, resulting in a total of 2048 games (corresponding to 40960 tricks), which are played in parallel using a Vectorized Environment. During episode generation, the agent also collects experience and stores it in an Experience Buffer. Afterwards, the agent is trained on the collected experience using the PPO algorithm \cite{schulman2017proximal}. Finally, a copy of the updated agent is inserted into the Agent Pool with frozen weights. The process is repeated until the agent reaches the desired performance.}
     \label{fig:general-architecture}
 \end{figure}
-The general architecture is composed of four main components, described in their respective sections in more detail:
+The general architecture \ref{fig:general-architecture} is composed of four main components, described in their respective sections in more detail:
 \begin{itemize}
     \item \textbf{Vectorized Environment:} Implements the Briscola environment and allows for parallel execution of multiple games.
     \item \textbf{Agent Pool:} Stores a pool of agents with frozen weights. The agents are sampled during training to play against the agent being trained.
     \item \textbf{Experience Buffer:} Stores the experience collected by the agent during gameplay.
-    \item \textbf{Parameter update:} The agent is trained on the experience collected during gameplay using the PPO algorithm \cite{schulman2017proximal}.
+    \item \textbf{Optimization:} The agent is trained on the experience collected during gameplay using the PPO algorithm \cite{schulman2017proximal}.
 \end{itemize}
-
-Finally, we will discuss the performance our agent has been able to achieve.
+After outlining the general architecture, we will explain the training process for the Briscola agent, along with the hyperparameters employed and performance evaluation. Ultimately, we will showcase the effectiveness of our approach by pitting the latest iteration of our agent, BriscolaBot-v3, against human players. To that end, interested readers can access the game at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}.
 
 \section{Environment implementation}
 To implement the environment we followed the guidelines of the PettingZoo library, which is a Python library for conducting research in multiagent reinforcement learning \cite{pettingzoo}. It is similar to OpenAI Gym, but it is designed for multiagent environments. We aimed to optimize the speed of the environment implementation to maximize the time spent in the training loop and minimize the time spent on executing game logic.
@@ -130,10 +127,10 @@ The optimization of the agent is performed using the Adam optimizer \cite{kingma
 In equation \eqref{eq:ppo-loss}, $L_{\textrm{policy}}$ represents the PPO policy loss as in equation \eqref{eq:ppo-update-clip}, $L_\textrm{value}$ is the mean squared error between the predicted value and the actual episode return, and $L_\textrm{entropy}$ is the entropy of the policy. The hyperparameters $\beta_\textrm{v}$ and $\beta_\textrm{e}$ control the relative importance of these terms and are commonly set around $0.5$ and $0.01$ respectively.
 
 \section{Training Procedure}
-We trained three agents with increasing level of performance using an incremental approach, similar to the one used when developing chess engines \cite{stockfish,lc0}. More in detail, when developing the next version of Stockfish, the developers measure its performance against the previous version, if the new version wins more games than the previous version, it is considered an improvement. This is a simple yet powerful approach because it allows to test the agent's improvement without having to define an elo rating, which can be hard to do, as it depends on the distributions of the opponents.
+We trained three agents with increasing level of performance using an incremental approach, similar to the one used when developing chess engines \cite{stockfish,lc0}. More in detail, when developing the next version of Stockfish, the developers measure its performance against the previous version, if the new version wins more games than the previous version, it is considered an improvement. This is a simple yet powerful approach as it allows to test the agent improvement without having to define an ELO rating, which can be hard to do, as it depends on the distribution of the opponents.
 
 \subsection{BriscolaBot-v1}
-The first version of the agent didn't use self-play with the agent pool, instead was only trained against a random opponent for 10 million steps. Before starting the final training run we performed an extensive hyperparameter search using the Weights \& Biases bayesian search method \cite{wandb}. The algorithm was tasked to maximize the win probability against a random opponent in 1 million training steps. The method successfully discovered hyperparameters that reduced the time taken to reach an 80\% win rate against a random agent by half, as depicted in Figure \ref{fig:hyperparam-best-default}. While the optimized hyperparameters are displayed in Table \ref{tab:hyperparam-best}.
+The first version of the agent didn't use self-play with the agent pool, instead was only trained against a random opponent for 10 million steps. Before starting the final training run, however, we performed an extensive hyperparameter search using the Weights \& Biases bayesian search method \cite{wandb}. The algorithm was tasked to maximize the win probability against a random opponent in 1 million training steps. The method successfully discovered hyperparameters that reduced the time taken to reach an 80\% win rate against a random agent by half, as depicted in Figure \ref{fig:hyperparam-best-default}. The optimized hyperparameters are displayed in Table \ref{tab:hyperparam-best}.
 
 \begin{figure}[H]
     \centering
@@ -152,36 +149,36 @@ The first version of the agent didn't use self-play with the agent pool, instead
         Clip coefficient \eqref{eq:ppo-update-clip} & 0.2 & 0.3\\
         Entropy bonus \eqref{eq:ppo-loss} & 0.001 & 0.01 \\
         GAE $\lambda$ \eqref{eq:gae-advantage} & 0.95 & 0.9 \\
-        Discount factor \eqref{return-recursive} & 1 & 1 \\
+        Discount factor $\gamma$ \eqref{return-recursive} & 1 & 1 \\
         Reward for win \eqref{eq:reward-structure} & 0 & 0.1 \\
         Update epochs & 4 & 2 \\
     \end{tabular}
-    \caption{Best hyperparameters found using Weights \& Biases bayesian search method. The default parameters were taken from the CleanRL implementation of PPO \cite{huang2022cleanrl} which provide a good starting point for reinforcement learning tasks. Update epochs is the number of passes over the collected episode data the optimization performs.}
+    \caption{Best hyperparameters found using Weights \& Biases bayesian search method. The default parameters were taken from the CleanRL implementation of PPO \cite{huang2022cleanrl} which provide a good starting point for reinforcement learning tasks. Update epochs is the number of passes over the collected episode data the optimization process performs.}
     \label{tab:hyperparam-best}
 \end{table}
 
-The final training run which produced BriscolaBot-v1 was performed using the optimized hyperparameters, and the agent was able to achieve a win rate of 80\% against a random agent in 1 million steps and almost 90\% in 10 million steps as shown in figure \ref{fig:hyperparam-best-default}.
+The final training run, which produced BriscolaBot-v1, was performed using the optimized hyperparameters. The agent was able to achieve a win rate of 80\% against a random agent in 1 million steps and almost 90\% in 10 million steps, as shown in figure \ref{fig:hyperparam-best-default}.
 
 \subsection{BriscolaBot-v2}
-In the second version of the agent, we added self-play with the agent pool because the agent manages beat a random opponent very quickly. Furthermore, we increased the neural network size to 256, changed the activation function from ReLU to Mish \cite{misra2019mish} and added learning-rate decay. The effect of these last two changes can be seen in figure \ref{fig:mish-activation}, demonstrating that the agent was able to beat the previous version of the agent with a win rate of 60\% in 10 million steps, which is a very good result considering the randomness of the game of Briscola.
+In the second version of the agent, we added self-play with the agent pool, because the agent manages beat a random opponent very quickly. Furthermore, we increased the neural network size to 256, changed the activation function from ReLU to Mish \cite{misra2019mish} and added learning-rate decay. The effect of some of these changes can be seen in figure \ref{fig:mish-activation}. With these changes the new agent was able to beat BriscolaBot-v1 60\% of the time when trained for 10 million steps, which is a very good result considering the randomness of the game of Briscola.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/mish-activation.png}
-    \caption{Winrate against BriscolaBot-v1 when increasing the neural network size from 128 to 256 and on top of that changing the activation function from ReLU to Mish.}
+    \caption{Winrate against BriscolaBot-v1 when increasing the neural network size from 128 to 256 (purple line) and on top of that changing the activation function from ReLU to Mish (orange line).}
     \label{fig:mish-activation}
 \end{figure}
 
-For the final version of the BriscolaBot-v2 agent we continued training until 20 million steps, the final agent was able to achieve a win rate of 90\% against a random agent and 64\% against BriscolaBot-v1.
+To produce the final version of the BriscolaBot-v2 agent we continued training until 20 million steps. BriscolaBot-v2 was able to achieve a win rate of 90\% against a random agent and 64\% against BriscolaBot-v1.
 
 \subsection{BriscolaBot-v3}
 A problem with BriscolaBot-v2 is that it throws the ace and the 3 of briscola very often, instead of waiting for the right opportunity. This is a problem, because the ace and the 3 of briscola are the most powerful cards in the game, and wasting them can lead to a loss.\\\\
-We think that this problem is caused by giving too much importance to the number of points scored in the loss function, which, combined with $\gamma = 0.95$ causes the agent to collect points as soon as possible. In this version, we tried to address this problem by gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} from 0.1 up to 1 during training. Another change that was applied was to decay the entropy $\beta_\textrm{e}$ parameter in equation \eqref{eq:ppo-loss} from 0.01 down to approximately zero, as this is an exploration parameter and should decrease when reaching optimal play \cite{open-ai-five}. The effect of these changes can be seen in figure \ref{fig:briscolabot-v3}.
+We think that this problem is caused by giving too much importance to the number of points scored in the loss function, which, combined with $\gamma = 0.95$ causes the agent to collect points as soon as possible. In this version, we tried to address this problem by gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} from 0.1 up to 1 during training. Another change that we applied was to decay the entropy $\beta_\textrm{e}$ parameter in equation \eqref{eq:ppo-loss} from 0.01 down to approximately zero, as this is an exploration parameter and should decrease when reaching optimal play \cite{open-ai-five}. The effect of these changes can be seen in figure \ref{fig:briscolabot-v3}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/briscolabot-v3.png}
-    \caption{Winrate against BriscolaBot-v2 when gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} and decreasing the entropy during training. We can see that these two changes improved the performance of the agent. The ratio game won starts very high because these two runs started from the BriscolaBot-v2 weights.}
+    \caption{Winrate against BriscolaBot-v2 when gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} and decreasing the entropy during training, we can see that these two changes improved the performance of the agent. Since these two runs started from the weights of BriscolaBot-v2, the ratio of games won starts near 0.5.}
     \label{fig:briscolabot-v3}
 \end{figure}
 
@@ -205,4 +202,32 @@ The final agent was trained starting from the BriscolaBot-v2 weights, with the m
 \end{table}
 
 \section{Human evaluation}
-To test the agent performance we decided to test it against human players. We developed a website where it is possible to play against the trained agent, accessible at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}. The results from the human evaluation are shown in table \ref{tab:human-evaluation}.
+We evaluated the agent's performance by pitting it against human players using a website we developed, which can be accessed at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}. The results of the human evaluation are presented in Table \ref{tab:human-evaluation}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccccc}
+        \hline
+        Opponent & Games played & Games won & Games lost & Win probability \\
+        \hline
+        Me & 0 & 0 & 0 & 0 \\
+        Antonio & 3 & 0 & 3 & 1 \\
+        Emanuele & 3 & 3 & 0 & 0 \\
+        Simone & 39 & 19 & 20 & 0.5 \\
+        Andrea & 39 & 19 & 20 & 0.5 \\
+        Ilaria & 39 & 19 & 20 & 0.5 \\
+        Teresa & 39 & 19 & 20 & 0.5 \\
+        Giacomo & 39 & 19 & 20 & 0.5 \\
+        \hline
+        \textbf{Total} & 45 & 22 & 23 & 0.5 \\
+    \end{tabular}
+    \caption{Results from the human evaluation.}
+    \label{tab:human-evaluation}
+\end{table}
+
+
+The agent was able to beat human players more than 50\% of the time.
+Simone found the agent quite frustrating to play against as he said: "I was up 19 to 16 and then he won 4 games in a row, beating me with a final score of 19-20". Furthermore, Simone added that the agent seemed to predict his hand cards, because sometimes it threw a briscola when he had his hand full of aces and threes of different seed than briscola.
+
+While the agent is performing well, there is still room for improvement, as it occasionally makes suboptimal moves. For instance, it sometimes chooses to throw the 7 of briscola instead of taking the trick with the 4 of briscola, which would have allowed it to save the 7 for later use.
+

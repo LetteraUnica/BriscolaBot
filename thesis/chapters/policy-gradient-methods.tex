@@ -17,29 +17,29 @@ With function approximation the idea is the same, moving the prediction closer t
     \vect{w} = \vect{w} - \alpha \nabla_w L(\hat{v}(s; \vect{w}), G_t)
     \label{eq:nn-update}
 \end{equation}
-The loss function measures how far the value prediction $\hat{v}(s; \vect{w})$ is from the target $G_t$. A natural loss function for learning the value is the \textit{mean squared error loss} denoted as $L_{MSE}$:
+The loss function measures how far the value prediction $\hat{v}(s; \vect{w})$ is from the target $G_t$. A natural loss function for learning the value is the \textit{mean squared error loss} denoted as $L_\textrm{MSE}$:
 \begin{equation}
-    L_{MSE} = \frac{1}{2}(G_t - \hat{v}(S_t; \vect{w}))^2
+    L_\textrm{MSE} = \frac{1}{2}(G_t - \hat{v}(S_t; \vect{w}))^2
     \label{eq:mse}
 \end{equation}
 The gradient of the loss function \eqref{eq:mse} with respect to $\vect{w}$, can be quickly computed:
 \begin{equation}
-    \nabla_{w} \mathrm{MSE} = \left( \hat{v}(S_t; \vect{w}) - G_t \right) \nabla_w \hat{v}(S_t; \vect{w})
+    \nabla_{w} L_\mathrm{MSE} = \left( \hat{v}(S_t; \vect{w}) - G_t \right) \nabla_w \hat{v}(S_t; \vect{w})
     \label{eq:mse-gradient}
 \end{equation}
 Where $\nabla_w \hat{v}(s; \vect{w})$ is the gradient of the output of the function with respect to the parameter vector $\vect{w}$ and can be quickly found with automatic differentiation techniques.\\\\
-We can view tabular methods as special case of function approximation where we have one parameter for each state, representing the value of that state. In this setting, the gradient of the loss function is simply the one-hot vector corresponding to state $S_t$:
+Tabular methods can be viewed as a special case of function approximation, where we have one parameter for each state representing the value of that state. In this setting, the gradient of the loss function is simply the one-hot vector corresponding to state $S_t$:
 \begin{equation}
-    \nabla_w \mathrm{MSE} = \left( \hat{v}(S_t; \vect{w}) - G_t \right) \delta_{S_t}
+    \nabla_w L_\mathrm{MSE} = \left( \hat{v}(S_t; \vect{w}) - G_t \right) \mathbf{1}_{S_t}
     \label{eq:tabular-mse-gradient}
 \end{equation}
-Where the one-hot vector $\delta_{S_t}$ is a vector of zeros with a one in the position corresponding to the state $S_t$. The update rule \eqref{eq:nn-update} then becomes:
+Where the one-hot vector $\mathbf{1}_{S_t}$ is a vector of zeros with a one in the position corresponding to the state $S_t$. The update rule \eqref{eq:nn-update} then becomes:
 \begin{equation}
-    \vect{w} = \vect{w} - \alpha \left( \hat{v}(S_t; \vect{w}) - G_t \right) \delta_{S_t}
+    \vect{w} = \vect{w} - \alpha \left( \hat{v}(S_t; \vect{w}) - G_t \right) \mathbf{1}_{S_t}
     \label{eq:approximation-tabular-update}
 \end{equation}
 Which is exactly the update rule \eqref{eq:tabular-update} for tabular methods. Function approximation is hence a generalization of tabular methods, where the parameter vector $\vect{w}$ replaces the table of values.\\\\
-Note that in the gradient derivation \eqref{eq:mse-gradient} we assumed $\nabla_w G_t = 0$, while this is true for Monte Carlo methods, where $G_t = R_{t+1} + \gamma R_{t+2} + \dots + R_T$, it is not in general true for TD methods, where the one-step return is used $G_t = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$. In this case, the gradient is not a true-gradient but a semi-gradient, because we left out the $\nabla_w G_t = \gamma \nabla_w \hat{v}(S_{t+1}; \vect{w})$ term.\\
+Note that in the gradient derivation \eqref{eq:mse-gradient} we assumed $\nabla_w G_t = 0$. While this is true for Monte Carlo methods, where $G_t = R_{t+1} + \gamma R_{t+2} + \dots + R_T$, it is not correct for TD methods, where the one-step return is used $G_t = R_{t+1} + \gamma \hat{v}(S_{t+1}; \vect{w})$. In this case, the gradient is not a true-gradient but a semi-gradient, because we left out the $\nabla_w G_t = \gamma \nabla_w \hat{v}(S_{t+1}; \vect{w})$ term.\\
 It can be shown that semi-gradient methods have better convergence properties than true-gradient ones, in particular true-gradient methods even in the tabular case won't converge to the true value function $v_{\pi}$ in stochastic environments. The interested reader can find an example of this behavior in chapter 11.5 of the Sutton and Barto book \cite{sutton-barto}.
 
 \subsection{Policy Approximation}
@@ -169,7 +169,7 @@ With these approximations the TRPO update becomes:
     \end{split}
     \label{eq:trpo-update-approx}
 \end{equation}
-The solution to this optimization problem is on the boundary, because we are maximizing a linear function on a convex domain. This maximization problem can be solved exactly using the Lagrangian method, yielding the solution:
+The solution to this optimization problem is on the boundary, because we are maximizing a linear function on a convex domain, so it can be solved exactly using the Lagrangian method, yielding the solution:
 \begin{equation}
     \theta_{t+1} = \theta_t + \sqrt{\frac{2\delta}{g^T H^{-1} g}} H^{-1} g
     \label{eq:trpo-update-solution}
@@ -226,7 +226,7 @@ Another advantage estimation method that is used in practice is Generalized Adva
     \label{eq:gae-advantage}
 \end{equation}
 Where $\delta_{t+k}$ is the TD-error at time $t+k$ and $\lambda \in (0, 1)$ is a hyperparameter that determines the weight given to future TD-errors. In particular, if $\lambda = 0$ then $A_t^{\textrm{GAE}} = \delta_t$, while if $\lambda = 1$ then $A_t^{\textrm{GAE}} = G_t$. The $\lambda$ parameter thus makes a compromise between the bias and variance of the estimator, like the parameter $n$ does for $n$-step TD methods \ref{n-step-return}. Figure \ref{fig:gae-comparison} shows the performance of GAE with different values of $\lambda$.\\
-Currently, GAE is used in all major PPO implementation, like CleanRL \cite{huang2022cleanrl}, Tianshou \cite{tianshou} and Stable Baselines3 \cite{stable-baselines3}.
+Currently, GAE is used in all major reinforcement learning libraries, like CleanRL \cite{huang2022cleanrl}, Tianshou \cite{tianshou} and Stable Baselines3 \cite{stable-baselines3}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{images/gae-comparison.png}
