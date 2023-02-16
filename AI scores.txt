@@ -1,30 +1,12 @@
-		AI	Human
-relatore	3	0
-correlatore	0	3
-Sinome		20	19
-
-AI points
-59
-61
-71
-49
-87
-47
-50
-58
-49
-37
-74
-43
-43
-35
-68
-29
-65
-55
-64
-72
-64
-71
-66
-71
+Player Won Lost
+Me 6 10
+Andrea 0 2
+Antonio 0 3
+Daniel 2 8
+Emanuele 3 0
+Giacomo 4 10
+Simone 19 20
+Silvio 12 11
+Alessandro 5 12
+Teresa 6 7
+Ilaria 0 2
