@@ -1,7 +1,8 @@
 # BriscolaBot
-Repository of the thesis "BriscolaBot: Mastering Briscola with model-free Deep Reinforcement Learning"
+Repository of the master thesis [**BriscolaBot: Mastering Briscola with model-free Deep Reinforcement Learning**](https://raw.githubusercontent.com/LetteraUnica/BriscolaBot/main/thesis/thesis.pdf)
 
-We studied and implemented an AI Agent that plays Briscola, a famous italian card game. You can play against our latest agent BriscolaBot-v3 [**on replit**](https://replit.com/@LorenzoCavuoti/BriscolaBot). Be careful, however! The agent achieves a 60 percent win rate against average human players, making it very difficult to beat.
+We studied and implemented an AI Agent that plays Briscola, a famous italian card game.  
+You can play against our latest agent, BriscolaBot-v3, [**on replit**](https://replit.com/@LorenzoCavuoti/BriscolaBot). Be careful, however! The agent achieves a 60% win rate against average human players, making it very difficult to beat.
 
 ## Training procedure
 
