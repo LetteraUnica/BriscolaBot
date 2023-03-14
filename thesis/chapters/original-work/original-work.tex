@@ -150,7 +150,7 @@ The first version of the agent didn't use self-play with the agent pool, instead
         Entropy bonus \eqref{eq:ppo-loss} & 0.001 & 0.01 \\
         GAE $\lambda$ \eqref{eq:gae-advantage} & 0.95 & 0.9 \\
         Discount factor $\gamma$ \eqref{return-recursive} & 1 & 1 \\
-        Ratio win reward \eqref{eq:reward-structure} & 0 & 0.1 \\
+        Ratio win reward $\nu$ \eqref{eq:reward-structure} & 0 & 0.1 \\
         Update epochs & 4 & 2 \\
     \end{tabular}
     \caption{Best hyperparameters found using Weights \& Biases bayesian search method. The default parameters were taken from the CleanRL implementation of PPO \cite{huang2022cleanrl} which provide a good starting point for reinforcement learning tasks. Update epochs is the number of passes over the collected episode data the optimization process performs.}
@@ -160,12 +160,12 @@ The first version of the agent didn't use self-play with the agent pool, instead
 The final training run, which produced BriscolaBot-v1, was performed using the optimized hyperparameters. The agent was able to achieve a win rate of 80\% against a random agent in 1 million steps and almost 90\% in 10 million steps, as shown in figure \ref{fig:hyperparam-best-default}.
 
 \subsection{BriscolaBot-v2}
-In the second version of the agent, we added self-play with the agent pool, because the agent manages beat a random opponent very quickly. Furthermore, we increased the neural network size to 256, changed the activation function from ReLU to Mish \cite{misra2019mish} and added learning-rate decay. The effect of some of these changes can be seen in figure \ref{fig:mish-activation}. With these changes the new agent was able to beat BriscolaBot-v1 60\% of the time when trained for 10 million steps, which is a very good result considering the randomness of the game of Briscola.
+In the second version of the agent, we added self-play with the agent pool, because the agent manages beat to a random opponent very quickly. Furthermore, we increased the neural network size to 256, changed the activation function from ReLU to Mish \cite{misra2019mish} and added learning-rate decay. The effect of some of these changes can be seen in figure \ref{fig:mish-activation}. After these changes, the agent was able to beat BriscolaBot-v1 60\% of the time when trained for 10 million steps, which is a good result considering the randomness of the game of Briscola.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/mish-activation.png}
-    \caption{Winrate against BriscolaBot-v1 when increasing the neural network size from 128 to 256 (purple line) and on top of that changing the activation function from ReLU to Mish (orange line).}
+    \caption{Win rate against BriscolaBot-v1 when adding self-play (green line), then increasing the neural network size from 128 to 256 (purple line) and on top of that changing the activation function from ReLU to Mish (orange line).}
     \label{fig:mish-activation}
 \end{figure}
 
@@ -173,7 +173,7 @@ To produce the final version of the BriscolaBot-v2 agent we continued training u
 
 \subsection{BriscolaBot-v3}
 A problem with BriscolaBot-v2 is that it throws the ace and the 3 of briscola very often, instead of waiting for the right opportunity. This is a problem, because the ace and the 3 of briscola are the most powerful cards in the game, and wasting them can lead to a loss.\\\\
-We think that this problem is caused by giving too much importance to the number of points scored in the loss function, which, combined with $\gamma = 0.95$ causes the agent to collect points as soon as possible. In this version, we tried to address this problem by gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} from 0.1 up to 1 during training. Another change that we applied was to decay the entropy $\beta_\textrm{e}$ parameter in equation \eqref{eq:ppo-loss} from 0.01 down to approximately zero, as this is an exploration parameter and should decrease when reaching optimal play \cite{open-ai-five}. The effect of these changes can be seen in figure \ref{fig:briscolabot-v3}.
+We think that this problem is caused by giving too much importance to the number of points scored in the loss function \eqref{eq:reward-structure}, which might cause the agent to collect points as soon as possible. In this version, we tried to address this problem by gradually increasing the $\nu$ parameter in equation \eqref{eq:reward-structure} from 0.1 up to 1 during training. Another change that we applied was to decay the entropy $\beta_\textrm{e}$ parameter in equation \eqref{eq:ppo-loss} from 0.01 down to approximately zero, as this is an exploration parameter and should decrease when reaching optimal play \cite{open-ai-five}. The effect of these changes can be seen in figure \ref{fig:briscolabot-v3}.
 
 \begin{figure}[H]
     \centering
@@ -182,7 +182,7 @@ We think that this problem is caused by giving too much importance to the number
     \label{fig:briscolabot-v3}
 \end{figure}
 
-The final agent was trained starting from the BriscolaBot-v2 weights, with the modifications listed above for 50 million steps, corresponding to approximately 4 hours of training on an intel i5-4690K CPU. The agent was able to achieve a win rate of 57\% against BriscolaBot-v2 and 93\% against a random agent, surpassing previous approaches to the problem \cite{alsora-deep-briscola-dqn}. The final list of hyperparameters used for the final agent is shown in Table \ref{tab:hyperparam-final}.
+The final agent was trained starting from the BriscolaBot-v2 weights, with the modifications listed above for 50 million steps, corresponding to approximately 4 hours of training on an Intel i5-4690K CPU. The agent was able to achieve a win rate of 57\% against BriscolaBot-v2 and 93\% against a random agent, surpassing previous approaches to the problem \cite{alsora-deep-briscola-dqn}. The final list of hyperparameters used for the final agent is shown in Table \ref{tab:hyperparam-final}.
 
 \begin{table}[H]
     \centering
@@ -202,29 +202,44 @@ The final agent was trained starting from the BriscolaBot-v2 weights, with the m
 \end{table}
 
 \section{Human evaluation}
-We evaluated the performance of BriscolaBot-v3 by having human players play against it using our website, available at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}. The human evaluation results are presented in Table \ref{tab:human-evaluation}.\\
+We evaluated the performance of BriscolaBot-v3 by having human players play against it using our website, available at \url{https://replit.com/@LorenzoCavuoti/BriscolaBot}. The human evaluation results are presented in Table \ref{tab:human-evaluation} and figure \ref{fig:player-scores}.
 
 \begin{table}[H]
-    \centering
-    \begin{tabular}{cccccc}
+    \begin{tabular}{lrrrrll}
         \hline
-        Opponent & Games played & Won & Lost & Win probability & 90\% CI\\
+            Opponent &  Games &  Won &  Lost &  Win rate &      90\% CI & Player Skill \\
         \hline
-        Me & 16 & 6 & 10 & 0.38 & 0.21-0.58\\
-        Alessandro & 17 & 5 & 12 & 0.52 & 0.16-0.50\\
-        Daniel & 10 & 2 & 8 & 0.2 & 0.08-0.47\\
-        Giacomo & 10 & 4 & 8 & 0.2 & 0.14-0.51\\
-        Silvio & 23 & 12 & 11 & 0.52 & 0.36-0.68\\
-        Simone & 39 & 19 & 20 & 0.49 & 0.36-0.62\\
-        Teresa & 13 & 6 & 7 & 0.46 & 0.26-0.67\\
-        Others & 10 & 3 & 7 & 0.3 & 0.14-0.56\\
-
+          Alessandro &            25 &   17 &     8 &      0.68 & 0.51 - 0.81 & Intermediate \\
+              Daniel &            10 &    8 &     2 &      0.80 & 0.53 - 0.92 & Intermediate \\
+          Giacomo A. &            18 &   10 &     8 &      0.56 & 0.37 - 0.73 &       Expert \\
+          Giacomo C. &            14 &   10 &     4 &      0.71 & 0.49 - 0.86 &     Beginner \\
+                  Me &            16 &   10 &     6 &      0.62 & 0.42 - 0.79 & Intermediate \\
+              Silvio &            23 &   11 &    12 &      0.48 & 0.32 - 0.64 &       Expert \\
+              Simone &            39 &   20 &    19 &      0.51 & 0.38 - 0.64 &       Expert \\
+              Teresa &            13 &    7 &     6 &      0.54 & 0.33 - 0.74 &       Expert \\
+              Others &            12 &    7 &     5 &      0.58 & 0.35 - 0.78 &           NA \\
         \hline
-        \textbf{Total} & 142 & 57 & 85 & 0.4 & 0.34-0.47\\
-    \end{tabular}
-    \caption{Results of the human evaluation study. The Won and Lost columns represent the games won and lost by the human against the BriscolaBot-v3 agent. The confidence interval (CI) is calculated exactly using the Beta distribution and reflects the degree of uncertainty around the estimated win rate. The agent is shown to win about 60\% of the games against human players, with a 90\% confidence interval of 0.53 to 0.66.}
+            Beginners &            14 &   10 &     4 &      0.71 & 0.49 - 0.86 &     Beginner \\
+              
+        Intermediates &            63 &   42 &    21 &      0.67 & 0.56 - 0.75 & Intermediate \\
+        Experts &            93 &   48 &    45 &      0.52 & 0.43 - 0.60 &       Expert \\
+        \hline
+               \textbf{Total} &           170 &  100 &    70 &      0.59 & 0.53 - 0.65 &           NA \\
+        \hline
+        \end{tabular}
+        
+    \caption{Results of the human evaluation study. The Won and Lost columns represent the games won and lost by the BriscolaBot-v3 agent against the corresponding human opponent. The "Player Skill" column represents the self-declared skill of the player on the game of Briscola. The confidence interval (CI) is calculated exactly using the Beta distribution and reflects the degree of uncertainty around the estimated win rate. The agent is shown to win about 59\% of the games against human players, with a 90\% confidence interval of 0.53 to 0.65. The rows marked with "Beginners", "Intermediates" and "Experts" represent the games grouped by the corresponding skill group.}
     \label{tab:human-evaluation}
 \end{table}
-The human evaluation study demonstrates the strength of our agent, where it has \textbf{won against human players 60\% of the time}, with a 90\% confidence interval of 0.53 to 0.66.\\
+
+The human evaluation study demonstrates the strength of our agent, where it has \textbf{won against human players 59\% of the time}, with a 90\% confidence interval of 0.53 to 0.65. More impressive are the results against expert players, where BriscolaBot-v3 has won 52\% of the games, with only one expert player Silvio, being able to beat it 12-11.\\\\
 All the human players we tested against expressed that the agent is very good at the game. One of the best performing players, Simone, found the agent frustrating to play against because it seemed to predict his hand cards, as the agent sometimes threw a briscola when he had a hand full of aces and threes of different seeds than briscola.\\\\
-Despite its success, the agent can still be improved, as it occasionally makes suboptimal moves. For instance, it can throw the 7 of briscola instead of taking the trick with the 4 of briscola, which would have allowed it to save the 7 for later use. Probably the agent has't learned these minor optimizations because they provide minimal gains in terms of points.
+
+\begin{figure}[H]
+    \includesvg[width=0.9\textwidth]{images/player-scores.svg}
+    \caption{The results from table \ref{tab:human-evaluation} plotted as a bar chart. The dashed line represents the 50\% win rate, while the grey vertical lines represent the 90\% confidence interval.}
+    \label{fig:player-scores}
+\end{figure}
+
+
+Despite its success, the agent can still be improved, as it occasionally makes suboptimal moves. For instance, sometimes it throws the 7 of briscola instead of taking the trick with the 4 of briscola, which would have allowed it to save the 7 for later use. Probably the agent has't learned these minor optimizations because they provide minimal gains in terms of points.
