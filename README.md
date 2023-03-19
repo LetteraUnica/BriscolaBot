@@ -40,7 +40,7 @@ python3 -m pip install .;
 python3 main.py
 ```
 
-## Results
+## Results 📊
 The agent wins against average human players 59% of the time. More impressive are the results against expert players, where BriscolaBot-v3 has won 52% of the games, with only one expert player Silvio, being able to beat it 12-11.  
 
 <img src="thesis/images/player-scores.svg" width="800">
@@ -50,7 +50,7 @@ The agent wins against average human players 59% of the time. More impressive ar
 All the human players we tested against expressed that the agent is very good at the game. One of the best performing players, Simone, found the agent frustrating to play against because it seemed to predict his hand cards.
 
 
-## Training procedure
+## Training procedure 🏋️‍♀️
 
 <img src="thesis/images/general-architecture.svg" width="800">
 
