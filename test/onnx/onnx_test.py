@@ -1,5 +1,4 @@
 import unittest
-from random import randint
 
 import numpy as np
 import torch
@@ -10,20 +9,21 @@ from src.utils.onnx_utils import export_to_onnx
 import onnxruntime as ort
 
 
-class MyTestCase(unittest.TestCase):
+class OnnxTest(unittest.TestCase):
     batch_size = 1
     state_size = 162
     action_size = 40
-    def test_export(self):
-        agent = NNAgent((self.state_size,), self.action_size, hidden_size=128)
-        agent.load_state_dict(torch.load("agent.pt"))
+    model_path = "../pretrained_models/agent.pt"
+
+    def test_action_mask(self):
+        agent = NNAgent((self.state_size,), self.action_size, hidden_size=256)
+        agent.load_state_dict(torch.load(self.model_path))
 
         export_to_onnx(agent)
 
-    def test_action_mask(self):
         ort_session = ort.InferenceSession("agent.onnx")
 
-        for non_masked_action in range(1, self.action_size+1):
+        for non_masked_action in range(1, self.action_size + 1):
             inputs = np.random.randn(self.batch_size, self.state_size + self.action_size).astype(np.float32)
             inputs[:, -40:] = 0
             inputs[:, -non_masked_action] = 1
@@ -32,7 +32,7 @@ class MyTestCase(unittest.TestCase):
                 ["action"],
                 {"input": inputs}
             )
-            print(outputs)
+            self.assertEqual(outputs[0][0], 40 - non_masked_action)
 
 
 if __name__ == '__main__':

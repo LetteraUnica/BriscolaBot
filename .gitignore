@@ -133,6 +133,9 @@ dmypy.json
 /.vscode/
 /.idea/
 
+# Test
+/test/onnx/agent.onnx
+
 # Thesis
 /thesis/svg-inkscape/
 /thesis/thesis.aux
@@ -146,3 +149,4 @@ dmypy.json
 /thesis/thesis.synctex.gz
 /thesis/thesis.toc
 /thesis/thesis-blx.bib
+
