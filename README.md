@@ -1,6 +1,7 @@
 # BriscolaBot
-Repository of the master thesis [**BriscolaBot: Mastering Briscola with model-free Deep Reinforcement Learning**](https://raw.githubusercontent.com/LetteraUnica/BriscolaBot/main/thesis/thesis.pdf)
-I studied and implemented an AI Agent that plays Briscola, a famous italian card game.  
+Repository of my master thesis [**BriscolaBot: Mastering Briscola with model-free Deep Reinforcement Learning**](https://raw.githubusercontent.com/LetteraUnica/BriscolaBot/main/thesis/thesis.pdf).
+
+We studied and implemented an AI Agent that plays Briscola, a famous italian card game.  
 
 ## Playing against the AI 🇬🇧
 You can play against our latest agent BriscolaBot-v3 both locally and on replit
