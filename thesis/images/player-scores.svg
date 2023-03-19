@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="380.09369pt"
-   height="279.48843pt"
-   viewBox="0 0 380.09368 279.48842"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="420.63428pt"
+   height="340.59332pt"
+   viewBox="0 0 420.63427 340.5933"
    version="1.1"
    id="svg459"
    sodipodi:docname="player-scores.svg"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
   <sodipodi:namedview
      id="namedview461"
      pagecolor="#ffffff"
@@ -28,14 +28,17 @@
      showgrid="false"
      showguides="false"
      inkscape:zoom="1.507657"
-     inkscape:cx="296.81817"
-     inkscape:cy="157.19756"
+     inkscape:cx="243.89365"
+     inkscape:cy="247.02225"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1029"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg459" />
+     inkscape:current-layer="svg459"
+     inkscape:document-rotation="0"
+     inkscape:snap-page="true"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata2">
     <rdf:RDF>
@@ -273,704 +276,1020 @@
          id="rect454-5" />
     </clipPath>
   </defs>
+  <rect
+     style="opacity:0.999;fill:#ffffff;stroke:none;stroke-width:4.9378"
+     id="rect1033"
+     width="420.63428"
+     height="340.59332"
+     x="0"
+     y="0"
+     rx="0"
+     ry="0" />
   <use
      xlink:href="#ArialMT-41"
      id="use25"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6c"
      x="66.699219"
      id="use27"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="88.916016"
      id="use29"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-73"
      x="144.53125"
      id="use31"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-73"
      x="194.53125"
      id="use33"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="244.53125"
      id="use35"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6e"
      x="300.14648"
      id="use37"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-64"
      x="355.76172"
      id="use39"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-72"
      x="411.37695"
      id="use41"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="444.67773"
      id="use43"
-     transform="matrix(0,-0.1,-0.1,0,47.799077,274.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,78.837313,308.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-44"
      id="use53"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="72.216797"
      id="use55"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6e"
      x="127.83203"
      id="use57"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="183.44727"
      id="use59"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="205.66406"
      id="use61"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6c"
      x="261.2793"
      id="use63"
-     transform="matrix(0,-0.1,-0.1,0,71.577486,253.18844)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,102.61572,286.56088)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-47"
      id="use76"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="77.783203"
      id="use78"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="100"
      id="use80"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-63"
      x="155.61523"
      id="use82"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="205.61523"
      id="use84"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6d"
      x="261.23047"
      id="use86"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="344.53125"
      id="use88"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-20"
      x="400.14648"
      id="use90"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-41"
      x="422.42969"
      id="use92"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="489.12891"
      id="use94"
-     transform="matrix(0,-0.1,-0.1,0,95.355895,276.52906)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-47"
      id="use103"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="77.783203"
      id="use105"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="100"
      id="use107"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-63"
      x="155.61523"
      id="use109"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="205.61523"
      id="use111"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6d"
      x="261.23047"
      id="use113"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="344.53125"
      id="use115"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-20"
      x="400.14648"
      id="use117"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-43"
      x="427.92969"
      id="use119"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="500.14648"
      id="use121"
-     transform="matrix(0,-0.1,-0.1,0,119.1343,277.63063)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-4d"
      id="use130"
-     transform="matrix(0,-0.1,-0.1,0,142.91271,238.73062)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,173.95094,272.10306)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="83.300781"
      id="use132"
-     transform="matrix(0,-0.1,-0.1,0,142.91271,238.73062)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,173.95094,272.10306)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-53"
      id="use142"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="66.699219"
      id="use144"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6c"
      x="88.916016"
      id="use146"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-76"
      x="111.13281"
      id="use148"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="161.13281"
      id="use150"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="183.34961"
      id="use152"
-     transform="matrix(0,-0.1,-0.1,0,166.69112,248.73687)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,197.72935,282.10931)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-53"
      id="use158"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="66.699219"
      id="use160"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6d"
      x="88.916016"
      id="use162"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="172.2168"
      id="use164"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6e"
      x="227.83203"
      id="use166"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="283.44727"
      id="use168"
-     transform="matrix(0,-0.1,-0.1,0,190.46953,258.74469)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-54"
      id="use177"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="49.958984"
      id="use179"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-72"
      x="105.57422"
      id="use181"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="138.875"
      id="use183"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-73"
      x="194.49023"
      id="use185"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="244.49023"
      id="use187"
-     transform="matrix(0,-0.1,-0.1,0,214.24793,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-4f"
      id="use198"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-74"
      x="77.783203"
      id="use200"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-68"
      x="105.56641"
      id="use202"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="161.18164"
      id="use204"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-72"
      x="216.79688"
      id="use206"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-73"
      x="250.09766"
      id="use208"
-     transform="matrix(0,-0.1,-0.1,0,238.02634,254.84781)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,269.06457,288.22025)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-42"
      id="use218"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="66.699219"
      id="use220"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-67"
      x="122.31445"
      id="use222"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-69"
      x="177.92969"
      id="use224"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6e"
      x="200.14648"
      id="use226"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6e"
      x="255.76172"
      id="use228"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-65"
      x="311.37695"
      id="use230"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-72"
      x="366.99219"
      id="use232"
-     transform="matrix(0,-0.1,-0.1,0,273.74617,264.86656)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,304.7844,298.239)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      id="use308"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,221.41891)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,254.79135)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="55.615234"
      id="use310"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,221.41891)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,254.79135)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      x="83.398438"
      id="use312"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,221.41891)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,254.79135)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      id="use321"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,176.40027)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,209.77271)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="55.615234"
      id="use323"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,176.40027)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,209.77271)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-32"
      x="83.398438"
      id="use325"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,176.40027)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,209.77271)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      id="use334"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,131.38164)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,164.75408)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="55.615234"
      id="use336"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,131.38164)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,164.75408)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-34"
      x="83.398438"
      id="use338"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,131.38164)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,164.75408)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      id="use347"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,86.363006)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,119.73544)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="55.615234"
      id="use349"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,86.363006)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,119.73544)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-36"
      x="83.398438"
      id="use351"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,86.363006)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,119.73544)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-30"
      id="use360"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,41.344372)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,74.7168)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-2e"
      x="55.615234"
      id="use362"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,41.344372)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,74.7168)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-38"
      x="83.398438"
      id="use364"
-     transform="matrix(0.1,0,0,-0.1,-0.415625,41.344372)"
-     style="fill:#262626" />
+     transform="matrix(0.1,0,0,-0.1,30.622611,74.7168)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <path
      d="M 43.318182,224.64 H 62.340909 V 71.576646 H 43.318182 Z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path371"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 67.096591,224.64 H 86.119318 V 44.565466 H 67.096591 Z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path374"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 90.875,224.64 h 19.02273 V 99.58824 H 90.875 Z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path377"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 114.65341,224.64 h 19.02273 V 63.859166 h -19.02273 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path380"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 138.43182,224.64 h 19.02272 V 83.95677 h -19.02272 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path383"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 162.21023,224.64 h 19.02272 V 116.98675 h -19.02272 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path386"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 185.98864,224.64 h 19.02272 V 109.20761 h -19.02272 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path389"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 209.76704,224.64 h 19.02273 V 103.43599 h -19.02273 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path392"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 233.54545,224.64 h 19.02273 V 93.335652 h -19.02273 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path395"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="m 257.32386,224.64 h 19.02273 V 63.859166 h -19.02273 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#ffb000;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#ffb000;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path398"
-     transform="translate(4.384375,-6.8)" />
+     transform="translate(35.422611,26.572428)" />
   <path
      d="M 52.829545,109.84248 V 42.314534"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path410"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 76.607955,105.34062 V 17.554286"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path412"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 100.38636,141.35553 V 60.321988"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path414"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 124.16477,114.34435 V 31.059876"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path416"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 147.94318,130.10087 V 46.816398"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path418"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 171.72159,152.61019 V 80.580373"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path420"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 195.5,139.1046 V 80.580373"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path422"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 219.27841,150.35925 V 58.071056"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path424"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 243.05682,145.85739 V 49.067329"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path426"
-     transform="translate(-7.615625,-6.8)" />
+     transform="translate(23.422611,26.572428)" />
   <path
      d="M 266.83523,114.34435 V 31.059876"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path428"
-     transform="translate(4.384375,-6.8)" />
+     transform="translate(35.422611,26.572428)" />
   <g
      id="g2869"
-     transform="translate(-7.615625,-6.8)">
+     transform="translate(23.422611,26.572428)">
     <use
        xlink:href="#ArialMT-49"
        id="use262"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       x="0"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-6e"
        x="27.783203"
        id="use264"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-74"
        x="83.398438"
        id="use266"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-65"
        x="111.18164"
        id="use268"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-72"
        x="166.79688"
        id="use270"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-6d"
        x="200.09766"
        id="use272"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-65"
        x="283.39844"
        id="use274"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-64"
        x="339.01367"
        id="use276"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-69"
        x="394.62891"
        id="use278"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-61"
        x="416.8457"
        id="use280"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-74"
        x="472.46094"
        id="use282"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-65"
        x="500.24414"
        id="use284"
        transform="matrix(0,-0.1,-0.1,0,304.9772,287.22125)"
-       style="fill:#262626" />
+       style="fill:#262626"
+       y="0"
+       width="100%"
+       height="100%" />
   </g>
   <g
      id="g2881"
-     transform="translate(-7.615625,-6.8)"
+     transform="translate(23.422611,26.572428)"
      style="fill:#ff9955">
     <path
        d="m 304.88068,224.64 h 19.02273 V 74.577888 h -19.02273 z"
        clip-path="url(#p991a1f8582)"
-       style="fill:#ffb000;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+       style="fill:#ffb000;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
        id="path404"
        transform="translate(-12)" />
     <path
@@ -983,55 +1302,71 @@
   <use
      xlink:href="#ArialMT-54"
      id="use290"
-     transform="matrix(0,-0.1,-0.1,0,357.13998,245.95719)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,388.17821,279.32963)"
+     style="fill:#262626"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6f"
      x="49.958984"
      id="use292"
-     transform="matrix(0,-0.1,-0.1,0,357.13998,245.95719)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,388.17821,279.32963)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-74"
      x="105.57422"
      id="use294"
-     transform="matrix(0,-0.1,-0.1,0,357.13998,245.95719)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,388.17821,279.32963)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-61"
      x="133.35742"
      id="use296"
-     transform="matrix(0,-0.1,-0.1,0,357.13998,245.95719)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,388.17821,279.32963)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <use
      xlink:href="#ArialMT-6c"
      x="188.97266"
      id="use298"
-     transform="matrix(0,-0.1,-0.1,0,357.13998,245.95719)"
-     style="fill:#262626" />
+     transform="matrix(0,-0.1,-0.1,0,388.17821,279.32963)"
+     style="fill:#262626"
+     y="0"
+     width="100%"
+     height="100%" />
   <path
      d="m 328.65909,224.64 h 19.02273 V 92.232254 h -19.02273 z"
      clip-path="url(#p991a1f8582)"
-     style="fill:#dd277f;stroke:#ffffff;stroke-linejoin:miter;fill-opacity:1"
+     style="fill:#dd277f;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
      id="path407"
-     transform="translate(16.384375,-6.8)" />
+     transform="translate(47.422611,26.572428)" />
   <path
      d="M 338.17045,105.34062 V 78.329441"
      clip-path="url(#p991a1f8582)"
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path434"
-     transform="translate(16.384375,-6.8)" />
+     transform="translate(47.422611,26.572428)" />
   <path
-     d="M 20.484375,217.84 V 0.40000001"
+     d="M 51.522611,251.21244 V 33.772428"
      style="fill:none;stroke:#262626;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
      id="path440" />
   <path
-     d="M 379.69367,217.84 V 0.40000001"
+     d="M 410.7319,251.21244 V 33.772428"
      style="fill:none;stroke:#262626;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
      id="path443"
      sodipodi:nodetypes="cc" />
   <path
-     d="M 20.484375,0.40000001 H 379.59776"
+     d="M 51.522611,33.772428 H 410.63599"
      style="fill:none;stroke:#262626;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
      id="path449"
      sodipodi:nodetypes="cc" />
@@ -1049,51 +1384,70 @@
   </defs>
   <g
      id="g2877"
-     transform="translate(-7.765598,-6.2674347)">
+     transform="translate(23.272638,27.104993)">
     <use
        xlink:href="#ArialMT-45"
        id="use243"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       x="0"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-78"
        x="66.699219"
        id="use245"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-70"
        x="116.69922"
        id="use247"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-65"
        x="172.31445"
        id="use249"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-72"
        x="227.92969"
        id="use251"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       y="0"
+       width="100%"
+       height="100%" />
     <use
        xlink:href="#ArialMT-74"
        x="261.23047"
        id="use253"
        transform="matrix(0,-0.1,-0.1,0,329.01638,260.34513)"
-       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round" />
+       style="fill:#262626;stroke-linecap:butt;stroke-linejoin:round"
+       y="0"
+       width="100%"
+       height="100%" />
   </g>
   <g
      id="g2885"
-     transform="translate(-7.765598,-6.6051234)"
+     transform="translate(23.272638,26.767304)"
      style="fill:#ff9955">
     <path
        d="M 281.10227,224.64 H 300.125 V 108.46288 h -19.02273 z"
        clip-path="url(#p991a1f8582-6)"
-       style="fill:#ffb000;stroke:#ffffff;stroke-linecap:butt;stroke-linejoin:miter;fill-opacity:1"
+       style="fill:#ffb000;fill-opacity:1;stroke:#ffffff;stroke-linecap:butt;stroke-linejoin:miter"
        id="path401"
        transform="translate(35.817588,-0.1948766)" />
     <path
@@ -1104,7 +1458,7 @@
        transform="translate(35.817588,-0.1948766)" />
   </g>
   <path
-     d="M 20.484375,217.84 H 379.56424"
+     d="M 51.522611,251.21244 H 410.60247"
      style="fill:none;stroke:#262626;stroke-width:0.8;stroke-linecap:square;stroke-linejoin:miter"
      id="path446"
      sodipodi:nodetypes="cc" />
@@ -1113,5 +1467,39 @@
      clip-path="url(#p991a1f8582-4)"
      style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:5.55, 2.4;stroke-dashoffset:0"
      id="path437-3"
-     transform="matrix(1.0707664,0,0,0.89623146,-9.0607325,8.580525)" />
+     transform="matrix(1.0707664,0,0,0.89623146,21.977503,41.952953)" />
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.75"
+     x="230.93391"
+     y="330.10016"
+     id="text1119"><tspan
+       sodipodi:role="line"
+       id="tspan1117"
+       x="230.93391"
+       y="330.10016"
+       style="font-size:12px;stroke-width:0.75">Opponent</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="-142.3723"
+     y="22.608217"
+     id="text1119-3"
+     transform="rotate(-90)"><tspan
+       sodipodi:role="line"
+       id="tspan1117-1"
+       x="-142.3723"
+       y="22.608217"
+       style="font-size:12px;stroke-width:0.75">Win Rate</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:round"
+     x="230.83138"
+     y="21.50634"
+     id="text1119-9"><tspan
+       sodipodi:role="line"
+       id="tspan1117-4"
+       x="230.83138"
+       y="21.50634"
+       style="font-size:12px;stroke-width:0.75">BriscolaBot-v3 vs human players</tspan></text>
 </svg>
