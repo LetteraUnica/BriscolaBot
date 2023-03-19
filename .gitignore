@@ -127,7 +127,21 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# My stuff
 /wandb/
 *.pb
 /.vscode/
+/.idea/
 /thesis/svg-inkscape/
+/thesis/thesis.aux
+/thesis/thesis.bbl
+/thesis/thesis.blg
+/thesis/thesis.fdb_latexmk
+/thesis/thesis.fls
+/thesis/thesis.log
+/thesis/thesis.out
+/thesis/thesis.run.xml
+/thesis/thesis.synctex.gz
+/thesis/thesis.toc
+/thesis/thesis-blx.bib
