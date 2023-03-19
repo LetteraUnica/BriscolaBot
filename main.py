@@ -1,7 +1,7 @@
 import sys
-from functools import cache
+from functools import lru_cache
 from time import sleep
-from typing import Optional, Union
+from typing import Optional, Union, List, Tuple
 
 import pygame
 from pygame.rect import Rect, RectType
@@ -12,7 +12,7 @@ from src.ui.UIConstants import UIConstants
 from src.ui.controller.BriscolaController import BriscolaController
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_card_path(card: Optional[int]) -> str:
     if card is None:
         return "src/ui/resources/briscola_cards/back.png"
@@ -23,24 +23,24 @@ def get_card_path(card: Optional[int]) -> str:
     return f"src/ui/resources/briscola_cards/{card_string}.png"
 
 
-@cache
+@lru_cache(maxsize=None)
 def load_card_image(card: int) -> pygame.Surface:
     card_path = get_card_path(card)
     card_image = pygame.image.load(card_path)
     return rescale(card_image)
 
 
-@cache
+@lru_cache(maxsize=None)
 def rescale(image: pygame.Surface) -> pygame.Surface:
     return pygame.transform.smoothscale(image, (UIConstants.card_width, UIConstants.card_height))
 
 
-def draw_card(screen: pygame.Surface, card: Optional[int], location: tuple[int, int]):
+def draw_card(screen: pygame.Surface, card: Optional[int], location: Tuple[int, int]):
     card_image = load_card_image(card)
     screen.blit(card_image, location)
 
 
-@cache
+@lru_cache(maxsize=None)
 def load_deck_image() -> pygame.Surface:
     deck_image = pygame.image.load("src/ui/resources/deck.png")
     return rescale(deck_image)
@@ -64,7 +64,7 @@ def draw_briscola_card(screen: pygame.Surface, briscola_card: int):
     draw_card(screen, briscola_card, location)
 
 
-def draw_table_cards(screen: pygame.Surface, cards: list[int]):
+def draw_table_cards(screen: pygame.Surface, cards: List[int]):
     for i, card in enumerate(cards):
         x = UIConstants.width - UIConstants.padding - UIConstants.card_width - i * (
                 UIConstants.card_width + UIConstants.space_between_cards)
@@ -72,7 +72,7 @@ def draw_table_cards(screen: pygame.Surface, cards: list[int]):
         draw_card(screen, card, (x, y))
 
 
-def draw_human_hand(screen: pygame.Surface, human_cards: list[int]) -> list[Union[RectType, Rect]]:
+def draw_human_hand(screen: pygame.Surface, human_cards: List[int]) -> List[Union[RectType, Rect]]:
     card_rects = []
     is_over_card = 0
     for i, card in enumerate(human_cards):
@@ -96,7 +96,7 @@ def draw_human_hand(screen: pygame.Surface, human_cards: list[int]) -> list[Unio
     return card_rects
 
 
-def draw_ai_hand(screen: pygame.Surface, cards: list[int]):
+def draw_ai_hand(screen: pygame.Surface, cards: List[int]):
     for i in range(len(cards)):
         x = UIConstants.width - UIConstants.padding - UIConstants.card_width - i * (
                 UIConstants.card_width + UIConstants.space_between_cards)
@@ -117,7 +117,7 @@ def print_points(screen: pygame.Surface, player_points: float, ai_points: float)
     )
 
 
-def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
+def print_win_screen(screen: pygame.Surface, player_won: Optional[str], points: float):
     pygame.draw.rect(screen, UIConstants.background_color, (0, 0, screen.get_width(), screen.get_height()))
 
     font = pygame.font.Font(None, UIConstants.big_font_size)
@@ -126,7 +126,7 @@ def print_win_screen(screen: pygame.Surface, player_won: str, points: float):
     else:
         player_won = "You" if player_won == UIConstants.human_player else "AI"
         win_text = f'{player_won} won with {points} points!'
-
+     
     text = font.render(win_text,
                        True,
                        UIConstants.text_color)
@@ -165,8 +165,8 @@ if __name__ == "__main__":
         card_rects = draw_human_hand(screen, controller.get_player_cards(UIConstants.human_player))
         draw_ai_hand(screen, controller.get_player_cards(UIConstants.ai_player))
         draw_table_cards(screen, controller.get_table_cards())
+        draw_briscola_card(screen, controller.get_briscola_card())
         if controller.get_deck_size() > 0:
-            draw_briscola_card(screen, controller.get_briscola_card())
             draw_deck(screen, controller.get_deck_size())
         print_points(screen,
                      controller.get_points_of_player(UIConstants.human_player),

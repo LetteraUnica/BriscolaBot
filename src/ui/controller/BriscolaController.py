@@ -1,6 +1,5 @@
-import torch
-
-from src.agents.NNAgent import NNAgent
+import onnxruntime as ort
+import numpy as np
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
 from src.ui.UIConstants import UIConstants
@@ -22,7 +21,7 @@ class BriscolaController:
     def get_current_player(self) -> str:
         return self.briscola_env.agent_selection
 
-    def get_player_cards(self, player: str) -> list[int]:
+    def get_player_cards(self, player: str):
         player_cards = self.briscola_env.game_state.hand_cards[player].copy()
         try:
             player_cards.remove(self.played_card)
@@ -30,7 +29,7 @@ class BriscolaController:
             pass
         return player_cards
 
-    def get_table_cards(self) -> list[int]:
+    def get_table_cards(self):
         return [self.played_card, self.briscola_env.game_state.table_card]
 
     def get_briscola_card(self) -> int:
@@ -56,23 +55,20 @@ class BriscolaController:
 
     def play_ai_card(self):
         if self.get_current_player() == UIConstants.ai_player:
-            with torch.no_grad():
-                obs = self.briscola_env.observe(self.get_current_player())
-                observation, action_mask = torch.tensor(obs["observation"]), torch.tensor(obs["action_mask"])
-                actions = self.ai_policy.get_actions(observation.view(1, -1), action_mask.view(1, -1))
-            self.play_card(actions[0].cpu().item())
+            obs = self.briscola_env.observe(self.get_current_player())
+            inputs = np.concatenate((obs["observation"], obs["action_mask"]), dtype=np.float32)
+            actions = self.ai_policy.run(["action"], {"input": inputs.reshape(1, -1)})
+            self.play_card(actions[0][0])
 
     def two_cards_on_table(self) -> bool:
         return Constants.null_card_number not in self.get_table_cards()
 
     def _load_ai_policy(self):
-        player_policy = NNAgent(self.briscola_env.observation_space(self.ai_player)["observation"].shape,
-                                self.briscola_env.action_space(self.ai_player).n)
+        opts = ort.SessionOptions()
+        opts.intra_op_num_threads = 1
+        session = ort.InferenceSession("src/ui/resources/agent.onnx", sess_options=opts)
 
-        player_policy.load_state_dict(torch.load("src/ui/resources/agent.pt"))
-        player_policy.eval()
-
-        return player_policy
+        return session
 
     def get_winner(self) -> str:
         if self.is_over():
