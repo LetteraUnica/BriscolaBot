@@ -43,7 +43,7 @@ python3 main.py
 ## Results
 The agent wins against average human players 59% of the time. More impressive are the results against expert players, where BriscolaBot-v3 has won 52% of the games, with only one expert player Silvio, being able to beat it 12-11.  
 
-![Alt text](thesis/images/player-scores.svg)
+<img src="thesis/images/player-scores.svg" width="600">
 
 <small>The black dashed line represents the 50% win rate, while the gray vertical lines represent the 90% confidence interval.</small>
 
@@ -52,7 +52,7 @@ All the human players we tested against expressed that the agent is very good at
 
 ## Training procedure
 
-![](thesis/images/general-architecture.svg)
+<img src="thesis/images/general-architecture.svg" width="600">
 
 The agent plays a total of 2048 games against 4 opponents sampled from the Agent Pool. The agent collects this experience and stores it in an Experience Buffer, which is then used to train the agent. After training with the PPO algorithm, a copy of the updated agent is inserted into the Agent Pool with frozen weights, and the process is repeated until the agent reaches the desired performance. For more information read the [thesis](https://raw.githubusercontent.com/LetteraUnica/BriscolaBot/main/thesis/thesis.pdf) or explore the [notebook](https://github.com/LetteraUnica/BriscolaBot/blob/main/briscola.ipynb).
 
