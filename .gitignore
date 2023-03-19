@@ -130,9 +130,10 @@ dmypy.json
 
 # My stuff
 /wandb/
-*.pb
 /.vscode/
 /.idea/
+
+# Thesis
 /thesis/svg-inkscape/
 /thesis/thesis.aux
 /thesis/thesis.bbl
