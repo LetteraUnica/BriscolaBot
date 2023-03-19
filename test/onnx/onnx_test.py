@@ -13,7 +13,7 @@ class OnnxTest(unittest.TestCase):
     batch_size = 1
     state_size = 162
     action_size = 40
-    model_path = "../pretrained_models/agent.pt"
+    model_path = "../pretrained_models/briscola-bot-v3.pt"
 
     def test_action_mask(self):
         agent = NNAgent((self.state_size,), self.action_size, hidden_size=256)
