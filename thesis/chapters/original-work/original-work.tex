@@ -48,10 +48,10 @@ The agent has access to various information during gameplay, including the cards
 \subsection{Reward structure}
 The reward structure is a weighted combination of two elements: win or loss and points earned in each turn:
 \begin{equation}
-    R = \alpha R_\textrm{win} + (1 - \alpha) R_\textrm{points}
+    R = \nu R_\textrm{win} + (1 - \nu) R_\textrm{points}
     \label{eq:reward-structure}
 \end{equation}
-The reward structure consists of two terms: $R_\textrm{win}$ and $R_\textrm{points}$. $R_\textrm{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_\textrm{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\alpha$, which is a hyperparameter. Ideally, $\alpha=1$ should give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. In practice, we started training with $\alpha=0.1$ and the gradually increased it until we reached $\alpha=1$. This allows to learn fast a the beginning of training and then focus on winning the game.
+The reward structure consists of two terms: $R_\textrm{win}$ and $R_\textrm{points}$. $R_\textrm{win}$ is equal to 1 if the agent wins the game and 0 otherwise, and is only given at the end of the game. On the other hand, $R_\textrm{points}$ are the points the agent gains in each turn normalized by the highest possible score in Briscola and are given at every turn. The relative importance of these two terms is controlled by $\nu$, which is a hyperparameter. Ideally, $\nu=1$ should give the best results as it prioritizes winning. However, this can also lead to high variance in the reward structure and sparse rewards, with only 0 or 1 being given at the end of the game. In practice, we started training with $\nu=0.1$ and the gradually increased it until we reached $\nu=1$. This allows to learn fast a the beginning of training and then focus on winning the game.
 
 \subsection{Action space}
 We explored two different ways to represent the action space. The first representation consisted of three discrete actions, corresponding to each of the three cards the agent could play, making it an intuitive choice that mimics how humans play the game. In this representation all actions are valid except when near to the end of the game, where the player has fewer than 3 cards in hand. The second representation consisted of 40 discrete actions, each representing a card from the deck. This representation is less intuitive and most of the actions, around 93\%, are invalid. Despite these limitations, the second representation outperformed the first (as shown in Figure \ref{fig:action-space-comparison}). We believe this is because the agent doesn't have to consider the position of the cards in its hand and can instead focus solely on the cards it holds.
@@ -102,11 +102,11 @@ The agent pool serves as a repository for past versions of the agent undergoing 
 The ratings of the opponents in the agent pool are updated after the agent has played games against them, with the following equation:
 
 \begin{equation}
-    E_i \rightarrow (1-\nu) E_i + \nu \, \textrm{logit}(\bar W_i)
+    E_i \rightarrow (1-\eta) E_i + \eta \, \textrm{logit}(\bar W_i)
     \label{eq:agent-pool-rating-update}
 \end{equation}
 
-Where $E_i$ represents the rating of opponent $i$, $\bar W_i$ is the average win rate of opponent $i$ against the agent being trained. The hyperparameter $\nu$ determines the influence of the old rating $E_i$ and the new rating $\textrm{logit}(\bar W_i)$ on the updated rating. If $\nu = 1$, the updated rating would be an unbiased estimator of the true rating. However, this would result in high variance. To reduce the variance, $\nu = 0.1$ is used, which biases the estimator towards $E_i$, reducing its variance.\\\\
+Where $E_i$ represents the rating of opponent $i$, $\bar W_i$ is the average win rate of opponent $i$ against the agent being trained. The hyperparameter $\eta$ determines the influence of the old rating $E_i$ and the new rating $\textrm{logit}(\bar W_i)$ on the updated rating. If $\eta = 1$, the updated rating would be an unbiased estimator of the true rating. However, this would result in high variance. To reduce the variance, $\eta = 0.1$ is used, which biases the estimator towards $E_i$, reducing its variance.\\\\
 The agent pool is a crucial component as it prevents the agent from forgetting how to overcome previous versions of itself. With the agent pool, the agent is exposed to a diverse range of opponents, including those it has previously defeated, and must be able to overcome them once again, thus ensuring its overall improvement.
 
 \section{Optimization}

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="281.22952mm"
    height="344.05026mm"
    viewBox="0 0 281.22952 344.05026"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="actor-and-critic-net.svg">
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="actor-critic-net.svg"
+   inkscape:export-filename="actor-critic-net.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2">
     <marker
@@ -206,18 +209,21 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="683.0749"
-     inkscape:cy="807.17151"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="552.55344"
+     inkscape:cy="630.33519"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1029"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1" />
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -226,7 +232,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -238,16 +244,16 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="180.50461"
+       x="180.56277"
        y="-178.23657"
        id="text857"><tspan
          sodipodi:role="line"
          id="tspan855"
-         x="180.50461"
+         x="180.56277"
          y="-178.23657"
          style="text-align:center;text-anchor:middle;fill:#333333;stroke-width:0.264583">State representation</tspan><tspan
          sodipodi:role="line"
-         x="182.18668"
+         x="181.93861"
          y="-165.00745"
          style="fill:#333333;stroke-width:0.264583"
          id="tspan1434"><tspan
@@ -273,134 +279,114 @@
        d="m 96.040985,-106.85044 v 23.562185"
        id="path1463-0"
        sodipodi:nodetypes="cc" />
-    <g
-       id="g1886"
-       transform="translate(0,-3.4018997)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-131.01059"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="54.423504"
-         y="-113.00214"
-         id="text857-0"><tspan
-           sodipodi:role="line"
-           id="tspan855-9"
-           x="54.423504"
-           y="-113.00214"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 162x128</tspan></text>
-    </g>
-    <g
-       id="g1901"
-       transform="translate(-1.0742188e-7,-3.062006)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-3"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="35.073933"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="82.729179"
-         y="52.919609"
-         id="text857-6"><tspan
-           sodipodi:role="line"
-           id="tspan855-0"
-           x="82.729179"
-           y="52.919609"
-           style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
-    </g>
-    <g
-       id="g1896"
-       transform="translate(-1.0742188e-7,-2.9706463)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7-9"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-20.492231"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="54.423504"
-         y="-2.4837735"
-         id="text857-0-2"><tspan
-           sodipodi:role="line"
-           id="tspan855-9-0"
-           x="54.423504"
-           y="-2.4837735"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 128x128</tspan></text>
-    </g>
-    <g
-       id="g1891"
-       transform="translate(-1.0742188e-7,-2.8829593)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-3-2"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-76.054726"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="82.729179"
-         y="-58.209049"
-         id="text857-6-3"><tspan
-           sodipodi:role="line"
-           id="tspan855-0-7"
-           x="82.729179"
-           y="-58.209049"
-           style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
-    </g>
-    <g
-       id="g1906"
-       transform="translate(0,-3.4018997)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7-5"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="90.888641"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="57.779877"
-         y="108.8971"
-         id="text857-0-9"><tspan
-           sodipodi:role="line"
-           id="tspan855-9-2"
-           x="57.779877"
-           y="108.8971"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 128x40</tspan></text>
-    </g>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7"
+       width="112.50379"
+       height="28.12595"
+       x="39.789089"
+       y="-134.41249"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="57.893475"
+       y="-116.40404"
+       id="text857-0"><tspan
+         sodipodi:role="line"
+         id="tspan855-9"
+         x="57.893475"
+         y="-116.40404"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 162x256</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-3"
+       width="112.50379"
+       height="28.12595"
+       x="39.789089"
+       y="32.011925"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="83.145241"
+       y="49.857601"
+       id="text857-6"><tspan
+         sodipodi:role="line"
+         id="tspan855-0"
+         x="83.145241"
+         y="49.857601"
+         style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7-9"
+       width="112.50379"
+       height="28.12595"
+       x="39.789089"
+       y="-23.462877"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="57.893475"
+       y="-5.4544196"
+       id="text857-0-2"><tspan
+         sodipodi:role="line"
+         id="tspan855-9-0"
+         x="57.893475"
+         y="-5.4544196"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 256x256</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-3-2"
+       width="112.50379"
+       height="28.12595"
+       x="39.789089"
+       y="-78.937683"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="83.145241"
+       y="-61.092007"
+       id="text857-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan855-0-7"
+         x="83.145241"
+         y="-61.092007"
+         style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7-5"
+       width="112.50379"
+       height="28.12595"
+       x="39.789089"
+       y="87.48674"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="60.930882"
+       y="105.4952"
+       id="text857-0-9"><tspan
+         sodipodi:role="line"
+         id="tspan855-9-2"
+         x="60.930882"
+         y="105.4952"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 256x40</tspan></text>
     <path
        style="fill:#666666;stroke:#666666;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM-4-3)"
-       d="m 96.040986,115.62336 v 23.56219"
+       d="m 96.040985,115.62336 v 23.56219"
        id="path1463-1-4"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="63.376419"
+       x="65.365303"
        y="155.57146"
        id="text857-8"><tspan
          sodipodi:role="line"
-         x="63.376419"
+         x="65.365303"
          y="155.57146"
          style="fill:#333333;stroke-width:0.264583"
          id="tspan1434-2">Action logits </tspan></text>
@@ -424,129 +410,109 @@
        d="m 264.76671,-106.60099 v 23.562175"
        id="path1463-0-1"
        sodipodi:nodetypes="cc" />
-    <g
-       id="g1886-7"
-       transform="translate(168.72572,-3.152459)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7-2"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-131.01059"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="54.423504"
-         y="-113.00214"
-         id="text857-0-7"><tspan
-           sodipodi:role="line"
-           id="tspan855-9-22"
-           x="54.423504"
-           y="-113.00214"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 162x128</tspan></text>
-    </g>
-    <g
-       id="g1901-6"
-       transform="translate(168.72572,-2.812565)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-3-1"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="35.073933"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="82.729179"
-         y="52.919609"
-         id="text857-6-0"><tspan
-           sodipodi:role="line"
-           id="tspan855-0-6"
-           x="82.729179"
-           y="52.919609"
-           style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
-    </g>
-    <g
-       id="g1896-1"
-       transform="translate(168.72572,-2.721206)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7-9-5"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-20.492231"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="54.423504"
-         y="-2.4837735"
-         id="text857-0-2-9"><tspan
-           sodipodi:role="line"
-           id="tspan855-9-0-4"
-           x="54.423504"
-           y="-2.4837735"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 128x128</tspan></text>
-    </g>
-    <g
-       id="g1891-9"
-       transform="translate(168.72572,-2.633519)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-3-2-0"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="-76.054726"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="82.729179"
-         y="-58.209049"
-         id="text857-6-3-9"><tspan
-           sodipodi:role="line"
-           id="tspan855-0-7-1"
-           x="82.729179"
-           y="-58.209049"
-           style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
-    </g>
-    <g
-       id="g1906-7"
-       transform="translate(168.72572,-3.152459)">
-      <rect
-         style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
-         id="rect833-2-7-5-7"
-         width="112.50379"
-         height="28.12595"
-         x="39.789089"
-         y="90.888641"
-         ry="4.99999" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-         x="57.779877"
-         y="108.8971"
-         id="text857-0-9-1"><tspan
-           sodipodi:role="line"
-           id="tspan855-9-2-1"
-           x="57.779877"
-           y="108.8971"
-           style="fill:#ffffff;stroke-width:0.264583">Linear 128x1</tspan></text>
-    </g>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7-2"
+       width="112.50379"
+       height="28.12595"
+       x="208.51482"
+       y="-134.16306"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="226.6192"
+       y="-116.15459"
+       id="text857-0-7"><tspan
+         sodipodi:role="line"
+         id="tspan855-9-22"
+         x="226.6192"
+         y="-116.15459"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 162x256</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-3-1"
+       width="112.50379"
+       height="28.12595"
+       x="208.51482"
+       y="32.261368"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="251.87097"
+       y="50.107044"
+       id="text857-6-0"><tspan
+         sodipodi:role="line"
+         id="tspan855-0-6"
+         x="251.87097"
+         y="50.107044"
+         style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7-9-5"
+       width="112.50379"
+       height="28.12595"
+       x="208.51482"
+       y="-23.213438"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="226.6192"
+       y="-5.2049794"
+       id="text857-0-2-9"><tspan
+         sodipodi:role="line"
+         id="tspan855-9-0-4"
+         x="226.6192"
+         y="-5.2049794"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 256x256</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-3-2-0"
+       width="112.50379"
+       height="28.12595"
+       x="208.51482"
+       y="-78.688248"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="251.87097"
+       y="-60.842567"
+       id="text857-6-3-9"><tspan
+         sodipodi:role="line"
+         id="tspan855-0-7-1"
+         x="251.87097"
+         y="-60.842567"
+         style="fill:#ffffff;stroke-width:0.264583">ReLU</tspan></text>
+    <rect
+       style="opacity:0.999;fill:#648fff;fill-opacity:1;stroke:none;stroke-width:0.3;stroke-linecap:round"
+       id="rect833-2-7-5-7"
+       width="112.50379"
+       height="28.12595"
+       x="208.51482"
+       y="87.834633"
+       ry="4.99999" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="233.57243"
+       y="105.74464"
+       id="text857-0-9-1"><tspan
+         sodipodi:role="line"
+         id="tspan855-9-2-1"
+         x="233.57243"
+         y="105.74464"
+         style="fill:#ffffff;stroke-width:0.264583">Linear 256x1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#333333;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="234.27513"
+       x="237.16547"
        y="157.37357"
        id="text857-8-1"><tspan
          sodipodi:role="line"
-         x="234.27513"
+         x="237.16547"
          y="157.37357"
          style="fill:#333333;stroke-width:0.264583"
          id="tspan1434-2-1">State value </tspan></text>

@@ -417,9 +417,9 @@ And $n$-step Q-learning by defining the $n$-step return in terms of the maximum 
 It can be shown that all $n$-step methods converge to the optimal value function if the leaning  and that the convergence rate is independent of $n$.
 
 \section{Multiagent reinforcement learning}
-In multiagent reinforcement learning (MARL), multiple agents interact with the same environment. In the most general case, each agent receives from the environment the reward $R_t^{(i)}$ and observation $S_t^{(i)}$, and can execute an action from set $A_t^{(i)}$, where $i$ indicates the agent's index and $t$ the time, figure \ref{fig:marl}. While in single-agent RL we only need to maximize $G_t$, in multiagent RL each agent maximizes its own expected future reward $G_t^{(i)}$.
+In multiagent reinforcement learning (MARL), multiple agents interact with the same environment. In the most general case, each agent receives from the environment the reward $R_t^{(i)}$ and observation $S_t^{(i)}$, and can execute an action from set $A_t^{(i)}$, where $i$ indicates the agent's index and $t$ the time, figure \ref{fig:marl}. While in single-agent RL we only need to maximize $G_t$, in multiagent RL each agent maximizes its own expected future reward $\mathbb{E}[G_t^{(i)}]$.
 \begin{equation}
-    G_t^{(i)} = \mathbb{E}\left[ \sum_{t'=0}^{\infty} \gamma^{t'} R_t^{(i)} \right]
+    \mathbb{E}[G_t^{(i)}] = \mathbb{E}\left[ \sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}^{(i)} \right]
     \label{eq:marl-gt}
 \end{equation}    
 Where $\gamma$ is the discount factor.
