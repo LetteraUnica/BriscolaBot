@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="420.63428pt"
    height="340.59332pt"
    viewBox="0 0 420.63427 340.5933"
    version="1.1"
    id="svg459"
    sodipodi:docname="player-scores.svg"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      id="namedview461"
      pagecolor="#ffffff"
@@ -28,12 +28,12 @@
      showgrid="false"
      showguides="false"
      inkscape:zoom="1.507657"
-     inkscape:cx="243.89365"
-     inkscape:cy="247.02225"
+     inkscape:cx="275.92483"
+     inkscape:cy="312.40528"
      inkscape:window-width="1920"
-     inkscape:window-height="1029"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg459"
      inkscape:document-rotation="0"
@@ -275,6 +275,24 @@
          height="217.44"
          id="rect454-5" />
     </clipPath>
+    <clipPath
+       id="p991a1f8582-47">
+      <rect
+         x="28.1"
+         y="7.1999998"
+         width="334.79999"
+         height="217.44"
+         id="rect454-6" />
+    </clipPath>
+    <clipPath
+       id="clipPath1477">
+      <rect
+         x="28.1"
+         y="7.1999998"
+         width="334.79999"
+         height="217.44"
+         id="rect1475" />
+    </clipPath>
   </defs>
   <rect
      style="opacity:0.999;fill:#ffffff;stroke:none;stroke-width:4.9378"
@@ -430,69 +448,6 @@
      width="100%"
      height="100%" />
   <use
-     xlink:href="#ArialMT-47"
-     id="use76"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     x="0"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-69"
-     x="77.783203"
-     id="use78"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-61"
-     x="100"
-     id="use80"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-63"
-     x="155.61523"
-     id="use82"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6f"
-     x="205.61523"
-     id="use84"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6d"
-     x="261.23047"
-     id="use86"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6f"
-     x="344.53125"
-     id="use88"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
      xlink:href="#ArialMT-20"
      x="400.14648"
      id="use90"
@@ -502,108 +457,9 @@
      width="100%"
      height="100%" />
   <use
-     xlink:href="#ArialMT-41"
-     x="422.42969"
-     id="use92"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-2e"
-     x="489.12891"
-     id="use94"
-     transform="matrix(0,-0.1,-0.1,0,126.39413,309.9015)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-47"
-     id="use103"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     x="0"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-69"
-     x="77.783203"
-     id="use105"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-61"
-     x="100"
-     id="use107"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-63"
-     x="155.61523"
-     id="use109"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6f"
-     x="205.61523"
-     id="use111"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6d"
-     x="261.23047"
-     id="use113"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-6f"
-     x="344.53125"
-     id="use115"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
      xlink:href="#ArialMT-20"
      x="400.14648"
      id="use117"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-43"
-     x="427.92969"
-     id="use119"
-     transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-2e"
-     x="500.14648"
-     id="use121"
      transform="matrix(0,-0.1,-0.1,0,150.17253,311.00307)"
      style="fill:#262626"
      y="0"
@@ -731,60 +587,6 @@
      x="283.44727"
      id="use168"
      transform="matrix(0,-0.1,-0.1,0,221.50776,292.11713)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-54"
-     id="use177"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
-     style="fill:#262626"
-     x="0"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-65"
-     x="49.958984"
-     id="use179"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-72"
-     x="105.57422"
-     id="use181"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-65"
-     x="138.875"
-     id="use183"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-73"
-     x="194.49023"
-     id="use185"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
-     style="fill:#262626"
-     y="0"
-     width="100%"
-     height="100%" />
-  <use
-     xlink:href="#ArialMT-61"
-     x="244.49023"
-     id="use187"
-     transform="matrix(0,-0.1,-0.1,0,245.28616,288.22025)"
      style="fill:#262626"
      y="0"
      width="100%"
@@ -1063,18 +865,6 @@
      id="path374"
      transform="translate(23.422611,26.572428)" />
   <path
-     d="m 90.875,224.64 h 19.02273 V 99.58824 H 90.875 Z"
-     clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
-     id="path377"
-     transform="translate(23.422611,26.572428)" />
-  <path
-     d="m 114.65341,224.64 h 19.02273 V 63.859166 h -19.02273 z"
-     clip-path="url(#p991a1f8582)"
-     style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
-     id="path380"
-     transform="translate(23.422611,26.572428)" />
-  <path
      d="m 138.43182,224.64 h 19.02272 V 83.95677 h -19.02272 z"
      clip-path="url(#p991a1f8582)"
      style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
@@ -1122,18 +912,38 @@
      style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
      id="path412"
      transform="translate(23.422611,26.572428)" />
-  <path
-     d="M 100.38636,141.35553 V 60.321988"
-     clip-path="url(#p991a1f8582)"
-     style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
-     id="path414"
-     transform="translate(23.422611,26.572428)" />
-  <path
-     d="M 124.16477,114.34435 V 31.059876"
-     clip-path="url(#p991a1f8582)"
-     style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
-     id="path416"
-     transform="translate(23.422611,26.572428)" />
+  <g
+     id="g1514"
+     transform="translate(0,0.136835)">
+    <path
+       d="m 90.875,224.64 h 19.02273 V 99.58824 H 90.875 Z"
+       clip-path="url(#p991a1f8582-47)"
+       style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linecap:butt;stroke-linejoin:miter"
+       id="path377-0"
+       transform="translate(47.000147,26.435593)" />
+    <path
+       d="M 100.38636,141.35553 V 60.321988"
+       clip-path="url(#p991a1f8582-47)"
+       style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round"
+       id="path414-6"
+       transform="translate(47.000147,26.435593)" />
+  </g>
+  <g
+     id="g1518"
+     transform="translate(-23.7784)">
+    <path
+       d="m 114.65341,224.64 h 19.02273 V 63.859166 h -19.02273 z"
+       clip-path="url(#p991a1f8582)"
+       style="fill:#648fff;fill-opacity:1;stroke:#ffffff;stroke-linejoin:miter"
+       id="path380"
+       transform="translate(23.422601,26.572428)" />
+    <path
+       d="M 124.16477,114.34435 V 31.059876"
+       clip-path="url(#p991a1f8582)"
+       style="fill:#1a1a1a;stroke:#4d4d4d;stroke-width:1.5"
+       id="path416"
+       transform="translate(23.422601,26.572428)" />
+  </g>
   <path
      d="M 147.94318,130.10087 V 46.816398"
      clip-path="url(#p991a1f8582)"
@@ -1502,4 +1312,40 @@
        x="230.83138"
        y="21.50634"
        style="font-size:12px;stroke-width:0.75">BriscolaBot-v3 vs human players</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:9.99946px;fill:#262626;fill-opacity:1;stroke-width:0.734463;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:2.71751, 1.17513"
+     x="-280.20151"
+     y="246.22133"
+     id="text579"
+     transform="rotate(-90)"><tspan
+       sodipodi:role="line"
+       id="tspan577"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.99946px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#262626;fill-opacity:1;stroke-width:0.734463"
+       x="-280.20151"
+       y="246.22133">Mom</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:9.99946px;fill:#262626;fill-opacity:1;stroke-width:0.734463;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:2.71751, 1.17513"
+     x="-276.53531"
+     y="127.32929"
+     id="text579-1"
+     transform="rotate(-90)"><tspan
+       sodipodi:role="line"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.99946px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#262626;fill-opacity:1;stroke-width:0.734463"
+       x="-276.53531"
+       y="127.32929"
+       id="tspan1463">Dad</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:9.99946px;fill:#262626;fill-opacity:1;stroke-width:0.734463;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:2.71751, 1.17513"
+     x="-298.26752"
+     y="150.96542"
+     id="text579-1-2"
+     transform="rotate(-90)"><tspan
+       sodipodi:role="line"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.99946px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#262626;fill-opacity:1;stroke-width:0.734463"
+       x="-298.26752"
+       y="150.96542"
+       id="tspan1463-0">Giacomo</tspan></text>
 </svg>

@@ -137,7 +137,7 @@ Mathematically, the TRPO update is defined as follows:
 \begin{equation}
     \begin{split}
         \theta_{t+1} = & \arg\max_{\theta} \; L(\theta_t, \theta)\\
-        & \; \text{s.t.} \; \bar D_{KL}(\pi_{\theta_t}, \pi_{\theta}) \leq \delta        
+        & \; \text{s.t.} \; \bar D_{KL}(\pi_{\theta_t}, \pi_{\theta}) \leq \delta
     \end{split}
     \label{eq:trpo-update}
 \end{equation}
@@ -165,7 +165,7 @@ With these approximations the TRPO update becomes:
 \begin{equation}
     \begin{split}
         \theta_{t+1} = & \arg\max_{\theta} \; g^T (\theta - \theta_t)\\
-        & \; \text{s.t.} \; \frac{1}{2} (\theta - \theta_t)^T H (\theta - \theta_t) \leq \delta        
+        & \; \text{s.t.} \; \frac{1}{2} (\theta - \theta_t)^T H (\theta - \theta_t) \leq \delta
     \end{split}
     \label{eq:trpo-update-approx}
 \end{equation}
