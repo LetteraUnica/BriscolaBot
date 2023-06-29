@@ -7,6 +7,9 @@
    id="svg459"
    sodipodi:docname="player-scores.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   inkscape:export-filename="player-scores.png"
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -28,8 +31,8 @@
      showgrid="false"
      showguides="false"
      inkscape:zoom="1.507657"
-     inkscape:cx="275.92483"
-     inkscape:cy="312.40528"
+     inkscape:cx="193.34636"
+     inkscape:cy="203.62722"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -299,7 +302,7 @@
      id="rect1033"
      width="420.63428"
      height="340.59332"
-     x="0"
+     x="0.043969724"
      y="0"
      rx="0"
      ry="0" />
@@ -1273,11 +1276,36 @@
      id="path446"
      sodipodi:nodetypes="cc" />
   <path
+     d="m 48.062438,251.25228 h 2.700016"
+     style="fill:none;stroke:#262626;stroke-width:0.720314;stroke-linecap:square;stroke-linejoin:miter"
+     id="path446-7"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="m 48.062438,206.25984 h 2.700016"
+     style="fill:none;stroke:#262626;stroke-width:0.720314;stroke-linecap:square;stroke-linejoin:miter"
+     id="path446-7-7"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="m 48.062438,161.22128 h 2.700016"
+     style="fill:none;stroke:#262626;stroke-width:0.720314;stroke-linecap:square;stroke-linejoin:miter"
+     id="path446-7-3"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="m 48.062438,116.18271 h 2.700016"
+     style="fill:none;stroke:#262626;stroke-width:0.720314;stroke-linecap:square;stroke-linejoin:miter"
+     id="path446-7-1"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="m 48.062438,71.144144 h 2.700016"
+     style="fill:none;stroke:#262626;stroke-width:0.720314;stroke-linecap:square;stroke-linejoin:miter"
+     id="path446-7-9"
+     sodipodi:nodetypes="cc" />
+  <path
      d="M 28.1,112.09342 H 362.9"
      clip-path="url(#p991a1f8582-4)"
      style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:5.55, 2.4;stroke-dashoffset:0"
      id="path437-3"
-     transform="matrix(1.0707664,0,0,0.89623146,21.977503,41.952953)" />
+     transform="matrix(1.0707664,0,0,0.89623146,21.834075,38.250301)" />
   <text
      xml:space="preserve"
      style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.75"

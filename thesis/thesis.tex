@@ -52,29 +52,31 @@
       \null%
       \clearpage}
 
+      
 \begin{document}
-    \pagenumbering{roman}
-	\input{chapters/facciata.tex}
-    \thispagestyle{empty}%
-    \addtocounter{page}{-1}%
-    \null%
-    \clearpage
-	\input{chapters/abstract.tex}
-    \blankpage
-	\input{chapters/ringraziamenti.tex}
-	\blankpage
+\pagenumbering{roman}
+\input{chapters/facciata.tex}
+\thispagestyle{empty}
+\addtocounter{page}{-1}
+\null
+\clearpage
+\input{chapters/abstract.tex}
+\blankpage
+\thispagestyle{empty}
+\input{chapters/ringraziamenti.tex}
+\blankpage
 
-	\tableofcontents
-    \blankpage
-    \pagenumbering{arabic}
- 	\input{chapters/introduction.tex}
-    \blankpage
-    \input{chapters/background.tex}
-    \blankpage
-    \input{chapters/policy-gradient-methods.tex}
-    \blankpage
-    \input{chapters/original-work/original-work.tex}
-    \blankpage
-    \input{chapters/discussion.tex}
-    \printbibliography
+\tableofcontents
+\blankpage
+\pagenumbering{arabic}
+\input{chapters/introduction.tex}
+\blankpage
+\input{chapters/background.tex}
+\blankpage
+\input{chapters/policy-gradient-methods.tex}
+\blankpage
+\input{chapters/original-work/original-work.tex}
+\blankpage
+\input{chapters/discussion.tex}
+\printbibliography
 \end{document}

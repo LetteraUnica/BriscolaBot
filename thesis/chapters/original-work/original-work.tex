@@ -25,19 +25,19 @@ The agent has access to various information during gameplay, including the cards
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{c c c c} 
-     \hline
-     Feature & n. components \\
-     \hline
-        Cards played & 40 \\
-        Cards in hand & 40 \\
-        Briscola card & 40 \\
-        Table card & 40 \\
+    \begin{tabular}{c c c c}
         \hline
-        Agent points & 1 \\
-        Opponent points & 1 \\
+        Feature         & n. components \\
         \hline
-        Total & 162 \\
+        Cards played    & 40            \\
+        Cards in hand   & 40            \\
+        Briscola card   & 40            \\
+        Table card      & 40            \\
+        \hline
+        Agent points    & 1             \\
+        Opponent points & 1             \\
+        \hline
+        Total           & 162           \\
         \hline
     \end{tabular}
 
@@ -73,7 +73,7 @@ The masking is done by setting the logits corresponding to the invalid actions t
 \begin{equation*}
     \mathrm{mask}(l_{i}) = \begin{cases}
         l_i & \text{if $a_i$ is valid} \\
-        M & \text{otherwise}
+        M   & \text{otherwise}
     \end{cases}
 \end{equation*}
 Where $l$ is the logits vector, $a$ is the action vector, $s$ is the state and $M$ is a small number, in our implementation we used $M=-10^6$.
@@ -143,15 +143,15 @@ The first version of the agent didn't use self-play with the agent pool, instead
     \centering
     \begin{tabular}{ccc}
         \hline
-        Hyperparameter & Default value & Best value \\
+        Hyperparameter                                     & Default value & Best value \\
         \hline
-        Learning rate & 0.001 & 0.003 \\
-        Clip coefficient \eqref{eq:ppo-update-clip} & 0.2 & 0.3\\
-        Entropy bonus \eqref{eq:ppo-loss} & 0.001 & 0.01 \\
-        GAE $\lambda$ \eqref{eq:gae-advantage} & 0.95 & 0.9 \\
-        Discount factor $\gamma$ \eqref{return-recursive} & 1 & 1 \\
-        Ratio win reward $\nu$ \eqref{eq:reward-structure} & 0 & 0.1 \\
-        Update epochs & 4 & 2 \\
+        Learning rate                                      & 0.001         & 0.003      \\
+        Clip coefficient \eqref{eq:ppo-update-clip}        & 0.2           & 0.3        \\
+        Entropy bonus \eqref{eq:ppo-loss}                  & 0.001         & 0.01       \\
+        GAE $\lambda$ \eqref{eq:gae-advantage}             & 0.95          & 0.9        \\
+        Discount factor $\gamma$ \eqref{return-recursive}  & 1             & 1          \\
+        Ratio win reward $\nu$ \eqref{eq:reward-structure} & 0             & 0.1        \\
+        Update epochs                                      & 4             & 2          \\
     \end{tabular}
     \caption{Best hyperparameters found using Weights \& Biases bayesian search method. The default parameters were taken from the CleanRL implementation of PPO \cite{huang2022cleanrl} which provide a good starting point for reinforcement learning tasks. Update epochs is the number of passes over the collected episode data the optimization process performs.}
     \label{tab:hyperparam-best}
@@ -188,14 +188,14 @@ The final agent was trained starting from the BriscolaBot-v2 weights, with the m
     \centering
     \begin{tabular}{cccc}
         \hline
-        Hyperparameter & Value & Hyperparameter & Value \\
+        Hyperparameter                                       & Value & Hyperparameter                         & Value \\
         \hline
-        Learning rate & 0.003 & Learning rate decay & 0.997 \\
-        Clip coefficient & 0.3 & Batch size & 2048 \\
-        Discount factor $\gamma$ & 1 & GAE $\lambda$ \eqref{eq:gae-advantage} & 0.9 \\
-        Entropy bonus $\beta_\textrm{e}$ \eqref{eq:ppo-loss} & 0.01 & $\beta_\textrm{e}$ decay & 0.998 \\
-        Ratio win reward $\nu$ \eqref{eq:reward-structure} & 0.1 & $\nu$ increase & 0.001 \\
-        Update epochs & 2 & hidden layer size & 256
+        Learning rate                                        & 0.003 & Learning rate decay                    & 0.997 \\
+        Clip coefficient                                     & 0.3   & Batch size                             & 2048  \\
+        Discount factor $\gamma$                             & 1     & GAE $\lambda$ \eqref{eq:gae-advantage} & 0.9   \\
+        Entropy bonus $\beta_\textrm{e}$ \eqref{eq:ppo-loss} & 0.01  & $\beta_\textrm{e}$ decay               & 0.998 \\
+        Ratio win reward $\nu$ \eqref{eq:reward-structure}   & 0.1   & $\nu$ increase                         & 0.001 \\
+        Update epochs                                        & 2     & hidden layer size                      & 256
     \end{tabular}
     \caption{Hyperparameters used for the final agent. We decay or increase the parameters every 2048 games played, corresponding to 40960 steps.}
     \label{tab:hyperparam-final}
@@ -207,27 +207,27 @@ We evaluated the performance of BriscolaBot-v3 by having human players play agai
 \begin{table}[H]
     \begin{tabular}{lrrrrll}
         \hline
-            Opponent &  Games &  Won &  Lost &  Win rate &      90\% CI & Player Skill \\
+        Opponent       & Games & Won & Lost & Win rate & 90\% CI     & Player Skill \\
         \hline
-          Alessandro &            25 &   17 &     8 &      0.68 & 0.51 - 0.81 & Intermediate \\
-              Daniel &            10 &    8 &     2 &      0.80 & 0.53 - 0.92 & Intermediate \\
-          Giacomo A. &            18 &   10 &     8 &      0.56 & 0.37 - 0.73 &       Expert \\
-          Giacomo C. &            14 &   10 &     4 &      0.71 & 0.49 - 0.86 &     Beginner \\
-                  Me &            16 &   10 &     6 &      0.62 & 0.42 - 0.79 & Intermediate \\
-              Silvio &            23 &   11 &    12 &      0.48 & 0.32 - 0.64 &       Expert \\
-              Simone &            39 &   20 &    19 &      0.51 & 0.38 - 0.64 &       Expert \\
-              Teresa &            13 &    7 &     6 &      0.54 & 0.33 - 0.74 &       Expert \\
-              Others &            12 &    7 &     5 &      0.58 & 0.35 - 0.78 &           NA \\
+        Alessandro     & 25    & 17  & 8    & 0.68     & 0.51 - 0.81 & Intermediate \\
+        Dad            & 14    & 10  & 4    & 0.71     & 0.49 - 0.86 & Beginner     \\
+        Daniel         & 10    & 8   & 2    & 0.80     & 0.53 - 0.92 & Intermediate \\
+        Giacomo        & 18    & 10  & 8    & 0.56     & 0.37 - 0.73 & Expert       \\
+        Me             & 16    & 10  & 6    & 0.62     & 0.42 - 0.79 & Intermediate \\
+        Mom            & 13    & 7   & 6    & 0.54     & 0.33 - 0.74 & Expert       \\
+        Silvio         & 23    & 11  & 12   & 0.48     & 0.32 - 0.64 & Expert       \\
+        Simone         & 39    & 20  & 19   & 0.51     & 0.38 - 0.64 & Expert       \\
+        Others         & 12    & 7   & 5    & 0.58     & 0.35 - 0.78 & NA           \\
         \hline
-            Beginners &            14 &   10 &     4 &      0.71 & 0.49 - 0.86 &     Beginner \\
-              
-        Intermediates &            63 &   42 &    21 &      0.67 & 0.56 - 0.75 & Intermediate \\
-        Experts &            93 &   48 &    45 &      0.52 & 0.43 - 0.60 &       Expert \\
+        Beginners      & 14    & 10  & 4    & 0.71     & 0.49 - 0.86 & Beginner     \\
+
+        Intermediates  & 63    & 42  & 21   & 0.67     & 0.56 - 0.75 & Intermediate \\
+        Experts        & 93    & 48  & 45   & 0.52     & 0.43 - 0.60 & Expert       \\
         \hline
-               \textbf{Total} &           170 &  100 &    70 &      0.59 & 0.53 - 0.65 &           NA \\
+        \textbf{Total} & 170   & 100 & 70   & 0.59     & 0.53 - 0.65 & NA           \\
         \hline
-        \end{tabular}
-        
+    \end{tabular}
+
     \caption{Results of the human evaluation study. The Won and Lost columns represent the games won and lost by the BriscolaBot-v3 agent against the corresponding human opponent. The "Player Skill" column represents the self-declared skill of the player on the game of Briscola. The confidence interval (CI) is calculated exactly using the Beta distribution and reflects the degree of uncertainty around the estimated win rate. The agent is shown to win about 59\% of the games against human players, with a 90\% confidence interval of 0.53 to 0.65. The rows marked with "Beginners", "Intermediates" and "Experts" represent the games grouped by the corresponding skill group.}
     \label{tab:human-evaluation}
 \end{table}
