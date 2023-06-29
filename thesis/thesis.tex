@@ -45,38 +45,41 @@
 \addbibresource{bibliography.bib}
 
  
-\def\blankpage{%
-      \clearpage%
-      %\thispagestyle{empty}%
+\def\blankpage{
+      \clearpage
+      \thispagestyle{empty}
       %\addtocounter{page}{-1}%
-      \null%
+      \null
       \clearpage}
 
-      
+
 \begin{document}
 \pagenumbering{roman}
 \input{chapters/facciata.tex}
-\thispagestyle{empty}
+\blankpage
 \addtocounter{page}{-1}
-\null
-\clearpage
 \input{chapters/abstract.tex}
 \blankpage
-\thispagestyle{empty}
 \input{chapters/ringraziamenti.tex}
 \blankpage
 
 \tableofcontents
 \blankpage
+\blankpage
 \pagenumbering{arabic}
 \input{chapters/introduction.tex}
+\blankpage
 \blankpage
 \input{chapters/background.tex}
 \blankpage
 \input{chapters/policy-gradient-methods.tex}
 \blankpage
+\blankpage
 \input{chapters/original-work/original-work.tex}
 \blankpage
+\blankpage
 \input{chapters/discussion.tex}
+\blankpage
+\blankpage
 \printbibliography
 \end{document}
