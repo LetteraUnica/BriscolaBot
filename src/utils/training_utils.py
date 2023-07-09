@@ -42,7 +42,7 @@ def play_all_moves_of_player(envs: list[AECEnv], policy: Agent, player: str, dev
         obs, action_mask = np.array(obs, dtype=np.float32), np.array(action_mask, dtype=np.int64)
         actions = policy.get_actions(torch.tensor(obs).to(device), torch.tensor(action_mask).to(device))
 
-        [env.step(action) for env, action in zip(envs_to_play, actions)]
+        [env.step(action.item()) for env, action in zip(envs_to_play, actions)]
 
 
 def play_all_moves_of_players(vec_env: VectorizedEnv, policies: list[Agent], player: str, device="cpu"):

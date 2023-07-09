@@ -3,6 +3,7 @@ from typing import Callable, Any, Union
 from gymnasium import Space
 from numpy import ndarray
 from pettingzoo import AECEnv
+from torch import tensor
 
 from src.envs.two_player_briscola import TwoPlayerBriscola
 
@@ -14,8 +15,8 @@ class VectorizedEnv:
     def reset(self):
         [env.reset() for env in self.envs]
 
-    def step(self, actions: ndarray, **kwargs):
-        [env.step(action, **kwargs) for env, action in zip(self.envs, actions)]
+    def step(self, actions: tensor, **kwargs):
+        [env.step(action.item(), **kwargs) for env, action in zip(self.envs, actions)]
 
     def observe(self, agent: str) -> list[dict[str, ndarray]]:
         return [env.observe(agent) for env in self.envs]
