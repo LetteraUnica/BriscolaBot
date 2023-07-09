@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Optional, Union
 from warnings import warn
@@ -10,7 +11,7 @@ from pettingzoo import AECEnv
 
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.utils import get_seed, get_rank, is_first_player_win, \
-    get_cards_points, get_points
+    get_cards_points
 
 
 def card_to_string(card: int) -> str:
@@ -67,12 +68,6 @@ class State:
                f"current_agent: {self.current_agent}\n" \
                f"agent_points: {self.agent_points}\n" \
                f"num_moves: {self.num_moves}\n"
-
-
-def get_briscola_points(card: int, briscola_seed: int) -> float:
-    if get_seed(card) == briscola_seed:
-        return get_points(card)
-    return 0
 
 
 class TwoPlayerBriscola(AECEnv):
@@ -163,7 +158,7 @@ class TwoPlayerBriscola(AECEnv):
     def legal_actions(self, agent: str) -> list[int]:
         return self.game_state.hand_cards[agent]
 
-    def step(self, action: int, briscola_penalization: float = 0) -> None:
+    def step(self, action: int) -> None:
         assert not self.terminations[self.agent_selection] or not self.truncations, "game finished"
 
         if action not in self.legal_actions(self.agent_selection):
@@ -189,7 +184,7 @@ class TwoPlayerBriscola(AECEnv):
                 winner_card = second_card
                 self.invert_player_turn()
 
-            self.rewards[winner] = hand_points / Constants.total_points - get_briscola_points(winner_card, briscola_seed) * briscola_penalization
+            self.rewards[winner] = hand_points / Constants.total_points
             self.game_state.agent_points[winner] += hand_points
 
             self.game_state.table_card = Constants.null_card_number
@@ -249,8 +244,8 @@ class TwoPlayerBriscola(AECEnv):
                 return 1. if self.game_winner() == agent else 0.
         return 0.
 
-    def set_state(self, state: State):
-        self.game_state = state
+    def get_game_state(self) -> State:
+        return deepcopy(self.game_state)
 
     def __repr__(self) -> str:
         return self.game_state.__repr__()

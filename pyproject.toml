@@ -12,6 +12,7 @@ dependencies = [
     "pygame",
     "onnxruntime",
     "pettingzoo",
+    "torch",
     "requests"
 ]
 classifiers = [
