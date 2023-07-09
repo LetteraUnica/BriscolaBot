@@ -1,5 +1,7 @@
 import numpy as np
+import pandas as pd
 import torch
+import polars as pl
 
 from src.agents.Agent import Agent
 from src.agents.NNAgent import NNAgent
@@ -29,6 +31,8 @@ def track_games(current_policy: Agent,
 
 
 if __name__ == "__main__":
+    n_games = 2048
+    save_path = "games.parquet"
     device = "cpu"
     observation_shape = (162,)
     action_size = 40
@@ -36,10 +40,14 @@ if __name__ == "__main__":
     trained_previous = NNAgent(observation_shape, action_size, hidden_size=256).to(device)
     trained_previous.load_state_dict(torch.load("pretrained_models/briscola-bot-v3.pt"))
 
-    envs, score, scorestd = track_games(trained_previous,
-                              trained_previous,
-                              n_games=2048,
-                              env_fn=lambda: GameTracker())
+    tracked_envs, score, scorestd = track_games(trained_previous,
+                                                trained_previous,
+                                                n_games=n_games,
+                                                env_fn=lambda: GameTracker())
 
-    print(score, scorestd)
-    print([len(env.actions) for env in envs.get_envs()])
+    print(f"Played {n_games} games, score: {score} +- {scorestd}. The score should be close to 0.5")
+
+    games_played = pl.concat([tracked_env.to_df() for tracked_env in tracked_envs.get_envs()])
+    games_played.write_parquet(save_path)
+
+
