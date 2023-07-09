@@ -48,6 +48,7 @@ def track_games(current_policy: Agent,
 @click.option("--games", default=2048, help="Number of games to play and track.")
 @click.option("--fname", default="games.parquet", help="Output filename")
 def generate_games(**kwargs) -> VectorizedEnv:
+    print("Initializing environments")
     policy = NNAgent(OBS_SHAPE, ACTION_SIZE, hidden_size=HIDDEN_SIZE).to(device)
     policy.load_state_dict(torch.load("pretrained_models/briscola-bot-v3.pt"))
 
@@ -55,7 +56,8 @@ def generate_games(**kwargs) -> VectorizedEnv:
                                                 policy,
                                                 n_games=kwargs["games"],
                                                 env_fn=lambda: GameTracker())
-    print(f"Played {kwargs['games']} games, score: {score} +- {scorestd}, sigma: {abs(score - 0.5) / scorestd}. The score should be close to 0.5")
+    print(f"Played {kwargs['games']} games, score: {score} +- {scorestd}, sigma: {abs(score - 0.5) / scorestd}."
+          f" The score should be close to 0.5")
 
     print(f"Saving games on {kwargs['fname']}")
     games_played = concat_dicts([tracked_env.get_game_history() for tracked_env in tracked_envs.get_envs()])
@@ -66,9 +68,11 @@ if __name__ == "__main__":
     generate_games()
 
 
-@pytest.mark.parametrize("kwargs", [{"games": 32, "fname": "test_games.parquet"}, {"games": 64, "fname": "test/test_games.parquet"}])
+@pytest.mark.parametrize("kwargs", [{"games": 32, "fname": "test_games.parquet"},
+                                    {"games": 64, "fname": "test/test_games.parquet"}])
 def test_generate_games(kwargs, capfd):
-    process = subprocess.Popen(f"python generate_games.py --games={kwargs['games']} --fname={kwargs['fname']}", shell=True)
+    process = subprocess.Popen(f"python generate_games.py --games={kwargs['games']} --fname={kwargs['fname']}",
+                               shell=True)
     process.wait()
 
     # Capture printed output
