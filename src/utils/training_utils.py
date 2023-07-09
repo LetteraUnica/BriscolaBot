@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import numpy as np
 import torch
 from pettingzoo import AECEnv
@@ -75,3 +77,13 @@ def compute_rating(current_policy: Agent,
     scores = np.array([env.get_game_outcome(current_player) for env in vec_env.get_envs()], dtype=np.float64)
     mean_score = np.mean(scores)
     return mean_score, logit(mean_score)
+
+
+def concat_dicts(dicts: list[dict]) -> dict:
+    concatenated_dict = defaultdict(list)
+
+    for d in dicts:
+        for key, value in d.items():
+            concatenated_dict[key].append(value)
+
+    return dict(concatenated_dict)
