@@ -103,7 +103,7 @@ class TwoPlayerBriscola(AECEnv):
 
         deck = np.arange(Constants.deck_cards)
         self.rng.shuffle(deck)
-        self.game_state = State(deck=list(deck),
+        self.game_state = State(deck=[card.item() for card in deck],
                                 thrown_cards=[],
                                 thrown_cards_player=[],
                                 hand_cards=dict([(agent, []) for agent in self.agents]),
@@ -178,10 +178,8 @@ class TwoPlayerBriscola(AECEnv):
             briscola_seed = get_seed(self.game_state.briscola_card)
             if is_first_player_win(first_card, second_card, briscola_seed):
                 winner = self.other_player(self.agent_selection)
-                winner_card = first_card
             else:
                 winner = self.agent_selection
-                winner_card = second_card
                 self.invert_player_turn()
 
             self.rewards[winner] = hand_points / Constants.total_points
