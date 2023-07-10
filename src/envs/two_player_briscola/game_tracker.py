@@ -1,8 +1,6 @@
 from copy import deepcopy
 from typing import Optional, Any
 
-import polars as pl
-
 from src.envs.two_player_briscola.BriscolaConstants import Constants
 from src.envs.two_player_briscola.TwoPlayerBriscola import TwoPlayerBriscola
 
@@ -33,6 +31,9 @@ class GameTracker(TwoPlayerBriscola):
         self.tracked_metrics[f"action_{turn}"] = action
         self.tracked_metrics[f"agent_to_play_{turn}"] = self.game_state.current_agent
         self.tracked_metrics[f"card_on_table_{turn}"] = self.game_state.table_card
+
+        index_last_card = self.game_state.thrown_cards_player.index("player_1")
+        self.tracked_metrics[f"last_card_opponent_{turn}"] = self.game_state.thrown_cards[index_last_card]
 
     def get_game_history(self) -> dict:
         return deepcopy(self.tracked_metrics)
