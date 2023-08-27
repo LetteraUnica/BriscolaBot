@@ -135,6 +135,7 @@ dmypy.json
 
 # Test
 /test/onnx/agent.onnx
+/games/*.parquet
 
 # Thesis
 /thesis/svg-inkscape/

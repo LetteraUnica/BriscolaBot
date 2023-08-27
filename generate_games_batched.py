@@ -7,7 +7,7 @@ from tqdm.auto import tqdm
 
 @click.command()
 @click.option("--games", default=8192, help="Number of games to play and track.")
-@click.option("--folder", default="./games/", help="Output filename")
+@click.option("--folder", default="./games/", help="Output folder where to save games")
 @click.option("--batch-size", default=4096, help="Batch size for generating games.")
 @click.option("--prefix", default="", help="Prefix to append before the filename of the generated games.")
 def generate_games_batched(games: int, folder: str, batch_size: int, prefix: str) -> None:
