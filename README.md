@@ -45,7 +45,7 @@ python3 main.py
 If you wish to contribute or have ideas on how to extend this project feel free to open an issue, reach out on Discord (username "lettera") or by email at lorenzocav97@gmail.com
 
 ## Results 📊
-The agent wins against average human players 59% of the time. More impressive are the results against expert players, where BriscolaBot-v3 has won 52% of the games, with only one expert player Silvio, being able to beat it 12-11.  
+The agent wins against average human players 59% of the time. More impressive are the results against expert players, where BriscolaBot-v3 has won 52% of the games, with only one expert player Silvio, being able to beat it with a score of 12-11.  
 
 <img src="thesis/images/player-scores.svg" width="800">
 
