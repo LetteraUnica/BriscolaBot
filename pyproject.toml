@@ -1,31 +1,40 @@
-[project]
-name = "BriscolaBot"
+[tool.poetry]
+name = "briscolabot"
+version = "0.1.0"
 description = "Mastering Briscola with model-free Deep Reinforcement Learning."
+authors = ["Lorenzo Cavuoti"]
+license = "MIT"
 readme = "README.md"
-requires-python = ">= 3.9"
-authors = [{ name = "Lorenzo Cavuoti", email = "lorenzocav97@gmail.com" }]
-license = { text = "MIT License" }
-keywords = ["Reinforcement Learning", "game", "RL", "AI", "gymnasium"]
-dependencies = [
-    "numpy",
-    "gymnasium",
-    "pygame",
-    "onnxruntime",
-    "pettingzoo",
-    "torch",
-    "requests",
-    "scipy",
-    "wandb",
-    "pytest"
-]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^1.26.3"
+gymnasium = "^0.29.1"
+pygame = "^2.5.2"
+pettingzoo = "^1.24.3"
+requests = "^2.31.0"
+scipy = "^1.12.0"
+pytest = "^7.4.4"
+
+[tool.poetry.group.dev.dependencies]
+mlflow = "^2.9.2"
+torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.1.2%2Bcpu-cp311-cp311-linux_x86_64.whl" }
+
+[tool.poetry.group.train.dependencies]
+wandb = "^0.16.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[build-system.packages]
+include = ["src"]
+
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
 ]
-dynamic = ["version"]
-
+keywords = ["Reinforcement Learning", "game", "RL", "AI", "gymnasium"]
